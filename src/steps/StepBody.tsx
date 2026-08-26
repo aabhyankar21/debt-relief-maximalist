@@ -71,8 +71,11 @@ export function StepBody({
     );
   };
 
-  const anchorSecureNoteToZip =
-    step.kind === 'fields' && step.fields.some((field) => field.type === 'zip');
+  const anchorSecureNoteToField =
+    step.kind === 'fields' &&
+    step.fields.some(
+      (field) => field.type === 'zip' || field.type === 'email',
+    );
 
   return (
     <div className={styles.body} aria-live="polite">
@@ -155,16 +158,18 @@ export function StepBody({
         {step.kind === 'fields' ? (
           <div className={ui.fieldStack}>
             {step.fields.map((field) => (
-              <TextField
-                key={field.id}
-                field={field}
-                value={journey.fields[field.id] ?? ''}
-                onChange={(value) => journey.setField(field.id, value)}
-              />
+              <Fragment key={field.id}>
+                <TextField
+                  field={field}
+                  value={journey.fields[field.id] ?? ''}
+                  onChange={(value) => journey.setField(field.id, value)}
+                />
+                {(field.type === 'email' || field.type === 'zip') &&
+                step.secureNote ? (
+                  <SecureNote text={step.secureNote} />
+                ) : null}
+              </Fragment>
             ))}
-            {anchorSecureNoteToZip && step.secureNote ? (
-              <SecureNote text={step.secureNote} />
-            ) : null}
           </div>
         ) : null}
 
@@ -205,7 +210,7 @@ export function StepBody({
         {step.bullets ? <CheckBullets items={step.bullets} /> : null}
         {step.guidance ? <DotBullets items={step.guidance} /> : null}
         {step.disclaimer ? <Disclaimer text={step.disclaimer} /> : null}
-        {step.secureNote && !anchorSecureNoteToZip ? (
+        {step.secureNote && !anchorSecureNoteToField ? (
           <SecureNote text={step.secureNote} />
         ) : null}
         {step.callout && !hideCallout ? (

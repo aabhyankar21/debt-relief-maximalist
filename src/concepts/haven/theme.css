@@ -34,14 +34,14 @@
   --content-max: 520px;
 
   --eyebrow-color: #4a7c59;
-  --choice-hover-bg: #f7f3ed;
+  --choice-hover-bg: #eef3ec;
   --choice-shadow: none;
   --input-bg: #fbfaf6;
   --callout-bg: #243028;
   --callout-text: #eef3ec;
   --button-radius: 999px;
   --button-shadow: 0 8px 20px rgb(74 124 89 / 18%);
-  --button-shadow-hover: 0 14px 28px rgb(212 120 90 / 30%), 0 2px 8px rgb(36 48 40 / 8%);
+  --button-shadow-hover: 0 14px 28px rgb(74 124 89 / 28%), 0 2px 8px rgb(36 48 40 / 8%);
   --bullet-bg: rgb(74 124 89 / 14%);
   --track-bg: rgb(36 48 40 / 10%);
   --progress-fill: #4a7c59;

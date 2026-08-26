@@ -43,7 +43,6 @@ export const insights: Record<string, InsightDef> = {
     value: 70,
     suffix: '%',
     label: 'of household debt is mortgages',
-    source: 'NY Fed Household Debt and Credit, Q2 2026',
     chart: 'mix',
     notes: [
       { value: '$1.26T', label: 'Credit cards' },
@@ -72,7 +71,6 @@ export const insights: Record<string, InsightDef> = {
     suffix: 'M',
     decimals: 1,
     label: 'identity-theft reports filed with the FTC last year',
-    body: 'A one-time text is how matches confirm it is you. Phone numbers stay inside the secure handoff — they are not a marketing list.',
     chart: 'secure',
   },
   income: {

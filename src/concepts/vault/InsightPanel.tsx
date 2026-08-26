@@ -8,7 +8,9 @@ import {
   useTransform,
 } from 'motion/react';
 import { useJourney } from '../../engine/journey';
-import { insights, mixSegments, type ChartKind } from './figures';
+import { insights, type ChartKind } from './figures';
+import dollarBill from './dollar-bill.png';
+import houseMortgage from './house-mortgage.png';
 import styles from './vault.module.css';
 
 function useMetricText(
@@ -70,6 +72,16 @@ function RiseChart({ reduce }: { reduce: boolean }) {
           />
         </clipPath>
       </defs>
+
+      <g className={styles.chartGrid}>
+        <line x1="0" y1="48" x2={RISE_W} y2="48" />
+        <line x1="0" y1="82" x2={RISE_W} y2="82" />
+        <line x1="0" y1="116" x2={RISE_W} y2="116" />
+        <line className={styles.chartBase} x1="0" y1="150" x2={RISE_W} y2="150" />
+        <line x1="8" y1="150" x2="8" y2="155" />
+        <line x1="428" y1="150" x2="428" y2="155" />
+      </g>
+
       <g clipPath="url(#vaultRiseClip)">
         <motion.path
           d={RISE_AREA}
@@ -125,35 +137,55 @@ function RiseChart({ reduce }: { reduce: boolean }) {
         animate={{ scale: 1 }}
         transition={{ delay: 0.95, type: 'spring', stiffness: 260, damping: 16 }}
       />
+
+      <text className={styles.chartLabel} x="8" y="174">
+        2019
+      </text>
+      <text className={styles.chartLabel} x="428" y="174" textAnchor="end">
+        2026
+      </text>
     </svg>
   );
 }
 
-function MixChart({ reduce }: { reduce: boolean }) {
+function MixChart({
+  notes = [],
+  reduce,
+}: {
+  notes?: { value: string; label: string }[];
+  reduce: boolean;
+}) {
   return (
-    <div className={styles.mix}>
-      <div className={styles.mixTrack}>
-        {mixSegments.map((segment) => (
-          <motion.span
-            key={segment.id}
-            className={styles.mixSeg}
-            style={{ background: segment.color }}
-            initial={reduce ? false : { width: 0 }}
-            animate={{ width: `${segment.share}%` }}
-            transition={{ duration: 0.7, ease }}
-          />
-        ))}
-      </div>
-      <ul className={styles.mixLegend}>
-        {mixSegments.map((segment, i) => (
+    <div className={styles.mixHouse}>
+      <motion.img
+        className={styles.mixHousePhoto}
+        src={houseMortgage}
+        alt=""
+        aria-hidden="true"
+        initial={reduce ? false : { opacity: 0, scale: 0.94, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease }}
+      />
+      <ul
+        className={styles.mixHouseCards}
+        aria-label="Non-mortgage debt categories"
+      >
+        {notes.map((item, i) => (
           <motion.li
-            key={segment.id}
-            initial={reduce ? false : { opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.12 + i * 0.05, duration: 0.36, ease }}
+            key={item.label}
+            className={styles.mixHouseCard}
+            data-slot={i + 1}
+            initial={reduce ? false : { opacity: 0, y: 16, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              delay: 0.25 + i * 0.12,
+              type: 'spring',
+              stiffness: 200,
+              damping: 18,
+            }}
           >
-            <i style={{ background: segment.color }} />
-            {segment.label} {segment.share}%
+            <strong>{item.value}</strong>
+            <span>{item.label}</span>
           </motion.li>
         ))}
       </ul>
@@ -193,6 +225,62 @@ function StressChart({ value, reduce }: { value: number; reduce: boolean }) {
         transition={{ duration: 1, ease }}
       />
     </svg>
+  );
+}
+
+function BillChart({ reduce }: { reduce: boolean }) {
+  return (
+    <motion.div
+      className={styles.billScene}
+      initial={reduce ? false : { opacity: 0, y: 16, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={
+        reduce
+          ? { duration: 0 }
+          : { type: 'spring', stiffness: 88, damping: 16, mass: 1 }
+      }
+    >
+      <div className={styles.billFloat}>
+        <img
+          className={styles.billPhoto}
+          src={dollarBill}
+          alt=""
+          aria-hidden="true"
+        />
+        <span
+          className={styles.billGrain}
+          aria-hidden="true"
+          style={{
+            WebkitMaskImage: `url(${dollarBill})`,
+            maskImage: `url(${dollarBill})`,
+          }}
+        >
+          <svg
+            className={styles.billGrainTex}
+            viewBox="0 0 180 180"
+            preserveAspectRatio="none"
+          >
+            <filter
+              id="vaultBillGrain"
+              x="0%"
+              y="0%"
+              width="100%"
+              height="100%"
+            >
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.9"
+                numOctaves="3"
+                stitchTiles="stitch"
+              />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#vaultBillGrain)" />
+          </svg>
+        </span>
+      </div>
+      <span className={styles.billWash} aria-hidden="true" />
+    </motion.div>
   );
 }
 
@@ -348,17 +436,37 @@ function SecureChart({ reduce }: { reduce: boolean }) {
 
 function DtiChart({ reduce }: { reduce: boolean }) {
   return (
-    <div className={styles.coins} aria-hidden="true">
-      {Array.from({ length: 9 }, (_, i) => (
+    <div className={styles.dtiScene} aria-hidden="true">
+      <motion.div
+        className={styles.dtiBill}
+        initial={reduce ? false : { opacity: 0, y: 12, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.55, ease }}
+      >
+        <span className={styles.dtiBillMark}>$</span>
         <motion.span
-          key={i}
-          className={styles.coin}
-          data-on={i === 0}
-          initial={reduce ? false : { scale: 0.6, opacity: 0 }}
+          className={styles.dtiBillFold}
+          initial={reduce ? false : { scale: 0.4, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: i * 0.05, type: 'spring', stiffness: 240 }}
+          transition={{
+            delay: 0.28,
+            type: 'spring',
+            stiffness: 220,
+            damping: 16,
+          }}
         />
-      ))}
+      </motion.div>
+      <motion.span
+        className={styles.dtiLooseCoin}
+        initial={reduce ? false : { opacity: 0, x: -10, y: 18 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        transition={{
+          delay: 0.48,
+          type: 'spring',
+          stiffness: 170,
+          damping: 14,
+        }}
+      />
     </div>
   );
 }
@@ -399,19 +507,23 @@ function CompareChart({ reduce }: { reduce: boolean }) {
 function Chart({
   kind,
   value,
+  notes,
   reduce,
 }: {
   kind: ChartKind;
   value: number;
+  notes?: { value: string; label: string }[];
   reduce: boolean;
 }) {
   switch (kind) {
     case 'rise':
       return <RiseChart reduce={reduce} />;
     case 'mix':
-      return <MixChart reduce={reduce} />;
+      return <MixChart notes={notes} reduce={reduce} />;
     case 'stress':
       return <StressChart value={value} reduce={reduce} />;
+    case 'paper':
+      return <BillChart reduce={reduce} />;
     case 'share':
       return <ShareChart value={value} reduce={reduce} />;
     case 'secure':
@@ -438,12 +550,15 @@ export function InsightPanel({ compact = false }: { compact?: boolean }) {
     insight.decimals ?? 0,
   );
 
+  if (finished) return null;
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.article
         key={id}
         className={styles.insight}
         data-compact={compact ? 'true' : 'false'}
+        data-chart={insight.chart}
         initial={reduce ? false : { opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         exit={reduce ? undefined : { opacity: 0, y: -10 }}
@@ -456,12 +571,19 @@ export function InsightPanel({ compact = false }: { compact?: boolean }) {
         {compact ? null : (
           <>
             <div className={styles.chartWrap}>
-              <Chart kind={insight.chart} value={insight.value} reduce={reduce} />
+              <Chart
+                kind={insight.chart}
+                value={insight.value}
+                notes={insight.notes}
+                reduce={reduce}
+              />
             </div>
             {insight.body ? (
               <p className={styles.insightBody}>{insight.body}</p>
             ) : null}
-            {insight.notes && insight.notes.length > 0 ? (
+            {insight.notes &&
+            insight.notes.length > 0 &&
+            insight.chart !== 'mix' ? (
               <ul className={styles.notes}>
                 {insight.notes.map((note, i) => (
                   <motion.li
@@ -482,6 +604,10 @@ export function InsightPanel({ compact = false }: { compact?: boolean }) {
             ) : null}
           </>
         )}
+
+        {insight.source ? (
+          <p className={styles.source}>{insight.source}</p>
+        ) : null}
       </motion.article>
     </AnimatePresence>
   );

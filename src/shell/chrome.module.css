@@ -77,7 +77,8 @@
   border-color: var(--c-border);
 }
 
-:global([data-concept='haven']) .backButton {
+:global([data-concept='haven']) .backButton,
+:global([data-concept='vault']) .backButton {
   transition:
     translate 180ms var(--ease-out),
     color 180ms var(--ease-out),
@@ -89,9 +90,17 @@
 :global([data-concept='haven']) .backButton:hover {
   translate: -2px 0;
   color: var(--c-text);
-  background: #f4efe8;
-  border-color: rgb(212 120 90 / 32%);
-  box-shadow: 0 4px 12px rgb(212 120 90 / 10%);
+  background: #eef3ec;
+  border-color: rgb(74 124 89 / 32%);
+  box-shadow: 0 4px 12px rgb(74 124 89 / 12%);
+}
+
+:global([data-concept='vault']) .backButton:hover {
+  translate: -2px 0;
+  color: var(--c-text);
+  background: rgb(0 200 150 / 10%);
+  border-color: rgb(0 200 150 / 32%);
+  box-shadow: 0 4px 12px rgb(0 200 150 / 12%);
 }
 
 .backButton svg {
@@ -125,14 +134,16 @@
 .progressWrap {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: clamp(8px, 1.6vw, 12px);
   width: 100%;
+  min-width: 0;
 }
 
 .progressTrack {
   position: relative;
-  flex: 1;
-  height: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: clamp(4px, 0.7vw, 6px);
   overflow: hidden;
   background: var(--track-bg, var(--c-accent-soft));
   border-radius: var(--radius-pill);
@@ -141,13 +152,16 @@
 .progressFill {
   position: absolute;
   inset: 0 auto 0 0;
+  min-width: 0;
+  max-width: 100%;
   background: var(--progress-fill, var(--c-accent));
   border-radius: var(--radius-pill);
 }
 
 .progressValue {
-  min-width: 42px;
-  font-size: 0.8125rem;
+  flex: none;
+  min-width: 2.4em;
+  font-size: clamp(0.7rem, 0.62rem + 0.4vw, 0.8125rem);
   font-weight: 650;
   font-variant-numeric: tabular-nums;
   text-align: right;
@@ -240,6 +254,34 @@
   border-bottom-color: currentColor;
 }
 
+:global([data-concept='haven']) .legal {
+  justify-items: start;
+  width: 100%;
+  max-width: none;
+  padding: 4px var(--main-inline, 40px) 30px;
+  text-align: left;
+}
+
+:global([data-concept='vault']) .legal {
+  justify-items: start;
+  width: 100%;
+  max-width: none;
+  padding: 4px var(--main-inline, 40px) 30px;
+  text-align: left;
+}
+
+:global([data-concept='haven']) .legalLinks {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+:global([data-concept='vault']) .legalLinks {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: var(--content-max);
+}
+
 :global([data-concept='flux']) .brand {
   transition: transform 220ms var(--ease-out);
 }
@@ -316,7 +358,8 @@
     animation: none;
   }
 
-  :global([data-concept='haven']) .backButton:hover {
+  :global([data-concept='haven']) .backButton:hover,
+  :global([data-concept='vault']) .backButton:hover {
     translate: none;
   }
 }
@@ -324,5 +367,18 @@
 @media (max-width: 767px) {
   .legal {
     padding: 18px 16px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  :global([data-concept='haven']) .legal {
+    padding: 4px var(--main-inline, 16px) calc(24px + env(safe-area-inset-bottom));
+  }
+
+  :global([data-concept='vault']) .legal {
+    padding: 4px var(--main-inline, 16px) calc(24px + env(safe-area-inset-bottom));
+  }
+
+  :global([data-concept='haven']) .trustBadge {
+    padding: 6px 10px;
+    font-size: 0.6875rem;
   }
 }

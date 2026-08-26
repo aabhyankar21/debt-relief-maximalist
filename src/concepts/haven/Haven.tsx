@@ -5,6 +5,7 @@ import { StepBody } from '../../steps/StepBody';
 import {
   BackButton,
   LegalFooter,
+  ProgressBar,
   TrustBadge,
 } from '../../shell/Chrome';
 import { HavenResult } from './HavenResult';
@@ -23,7 +24,7 @@ function HavenBrand() {
 
 export function Haven() {
   const journey = useJourney();
-  const { step, index, direction, finished } = journey;
+  const { step, index, progress, direction, finished } = journey;
   const hasSidePanel = useMediaQuery('(min-width: 1024px)');
 
   return (
@@ -51,6 +52,11 @@ export function Haven() {
             </span>
             <TrustBadge />
           </div>
+          {finished ? null : (
+            <div className={styles.progressSlot}>
+              <ProgressBar value={progress} />
+            </div>
+          )}
         </header>
 
         {hasSidePanel || finished ? null : (

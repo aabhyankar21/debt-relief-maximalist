@@ -6,12 +6,11 @@ import {
   BackButton,
   Brand,
   LegalFooter,
-  ProgressRing,
-  StepDots,
+  ProgressBar,
   TrustBadge,
 } from '../../shell/Chrome';
-import { ResultScreen } from '../../shell/ResultScreen';
 import { InsightPanel } from './InsightPanel';
+import { VaultResult } from './VaultResult';
 import styles from './vault.module.css';
 import './theme.css';
 
@@ -28,73 +27,73 @@ function Glow() {
 
 export function Vault() {
   const journey = useJourney();
-  const { step, index, totalSteps, progress, direction, finished } = journey;
+  const { step, index, progress, direction, finished } = journey;
   const hasSidePanel = useMediaQuery('(min-width: 1024px)');
 
   return (
-    <div className={styles.shell} data-concept="vault">
+    <div
+      className={styles.shell}
+      data-concept="vault"
+      data-result={finished ? 'true' : undefined}
+    >
       <Glow />
 
-      <aside className={styles.stage}>
+      <aside className={styles.stage} hidden={finished}>
         <div className={styles.stageTop}>
           <Brand logo />
-          <StepDots total={totalSteps} index={finished ? totalSteps : index} />
         </div>
-        <div className={styles.stageStack}>
-          <InsightPanel />
-          {!finished && step.callout && hasSidePanel ? (
-            <aside className={styles.stageCallout}>
-              <p className={styles.stageCalloutTitle}>{step.callout.title}</p>
-              <p className={styles.stageCalloutBody}>{step.callout.body}</p>
-            </aside>
-          ) : null}
-        </div>
+        {finished ? null : <InsightPanel />}
       </aside>
 
       <div className={styles.main}>
         <header className={styles.header}>
-          <div className={styles.headerMeta}>
+          <div className={styles.headerRow}>
             <BackButton
               onClick={journey.back}
-              hidden={index === 0 && !finished}
+              hidden={index === 0 || finished}
             />
             <span className={styles.headerBrand}>
               <Brand logo />
             </span>
-          </div>
-          <div className={styles.headerMeta}>
             <TrustBadge />
-            <ProgressRing value={progress} />
           </div>
+          {finished ? null : (
+            <div className={styles.progressSlot}>
+              <ProgressBar value={progress} />
+            </div>
+          )}
         </header>
 
-        {hasSidePanel ? null : (
+        {hasSidePanel || finished ? null : (
           <div className={styles.mobileInsight}>
             <InsightPanel compact />
           </div>
         )}
 
-        <main className={styles.content} data-sticky-cta="true">
+        <main
+          className={styles.content}
+          data-sticky-cta="true"
+          data-result={finished ? 'true' : undefined}
+        >
           <AnimatePresence mode="wait" initial={false}>
-            <motion.section
+            <motion.div
               key={finished ? 'result' : step.id}
-              className={styles.card}
+              className={finished ? styles.stepWrap : styles.card}
+              data-result={finished ? 'true' : undefined}
               initial={{ opacity: 0, y: direction * 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: direction * -14, filter: 'blur(8px)' }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             >
               {finished ? (
-                <ResultScreen />
+                <VaultResult />
               ) : (
-                <StepBody step={step} hideCallout={hasSidePanel} />
+                <StepBody step={step} hideCallout />
               )}
-            </motion.section>
+            </motion.div>
           </AnimatePresence>
         </main>
-      </div>
 
-      <div className={styles.footer}>
         <LegalFooter />
       </div>
     </div>

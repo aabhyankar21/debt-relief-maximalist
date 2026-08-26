@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 
-const ConceptContext = createContext('haven');
+const ConceptContext = createContext('vault');
 
 export function ConceptProvider({
   id,

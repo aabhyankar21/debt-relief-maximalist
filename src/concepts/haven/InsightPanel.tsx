@@ -8,8 +8,9 @@ import {
   useTransform,
 } from 'motion/react';
 import { useJourney } from '../../engine/journey';
-import { insights, mixSegments, type ChartKind } from './figures';
+import { insights, type ChartKind } from './figures';
 import dollarBill from './dollar-bill.png';
+import houseMortgage from './house-mortgage.png';
 import styles from './haven.module.css';
 
 function useMetricText(
@@ -154,30 +155,45 @@ function RiseChart() {
   );
 }
 
-function MixChart() {
+function MixChart({
+  notes = [],
+}: {
+  notes?: { value: string; label: string }[];
+}) {
+  const reduce = useReducedMotion() ?? false;
+
   return (
-    <div className={styles.mix}>
-      <div className={styles.mixBar}>
-        <div className={styles.mixTrack}>
-          {mixSegments.map((segment) => (
-            <motion.span
-              key={segment.id}
-              className={styles.mixSeg}
-              style={{ background: segment.color }}
-              initial={{ width: 0 }}
-              animate={{ width: `${segment.share}%` }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            />
-          ))}
-        </div>
-        <span className={styles.mixShine} aria-hidden="true" />
-      </div>
-      <ul className={styles.mixLegend}>
-        {mixSegments.map((segment) => (
-          <li key={segment.id}>
-            <i style={{ background: segment.color }} />
-            {segment.label} {segment.share}%
-          </li>
+    <div className={styles.mixHouse}>
+      <motion.img
+        className={styles.mixHousePhoto}
+        src={houseMortgage}
+        alt=""
+        aria-hidden="true"
+        initial={reduce ? false : { opacity: 0, scale: 0.94, y: 12 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <ul
+        className={styles.mixHouseCards}
+        aria-label="Non-mortgage debt categories"
+      >
+        {notes.map((item, i) => (
+          <motion.li
+            key={item.label}
+            className={styles.mixHouseCard}
+            data-slot={i + 1}
+            initial={reduce ? false : { opacity: 0, y: 16, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              delay: 0.25 + i * 0.12,
+              type: 'spring',
+              stiffness: 200,
+              damping: 18,
+            }}
+          >
+            <strong>{item.value}</strong>
+            <span>{item.label}</span>
+          </motion.li>
         ))}
       </ul>
     </div>
@@ -436,30 +452,27 @@ function DtiChart() {
   const reduce = useReducedMotion() ?? false;
 
   return (
-    <div className={styles.coins} aria-hidden="true">
-      {Array.from({ length: 9 }, (_, i) => {
-        const on = i === 0;
-        return (
-          <motion.span
-            key={i}
-            className={styles.coin}
-            data-on={on}
-            initial={
-              reduce
-                ? false
-                : { scale: 0.48, opacity: 0, rotateY: -86 }
-            }
-            animate={{ scale: 1, opacity: 1, rotateY: 0 }}
-            transition={{
-              delay: reduce ? 0 : 0.05 + i * 0.064,
-              type: 'spring',
-              stiffness: on ? 200 : 260,
-              damping: on ? 14 : 18,
-            }}
-            style={{ transformPerspective: 240 }}
-          />
-        );
-      })}
+    <div className={styles.dtiScene} aria-hidden="true">
+      <div className={styles.dtiCoins}>
+        {Array.from({ length: 10 }, (_, i) => {
+          const on = i === 0;
+          return (
+            <motion.span
+              key={i}
+              className={styles.dtiCoin}
+              data-on={on}
+              initial={reduce ? false : { scale: 0.5, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={{
+                delay: reduce ? 0 : 0.04 + i * 0.05,
+                type: 'spring',
+                stiffness: on ? 200 : 260,
+                damping: on ? 14 : 18,
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -500,15 +513,17 @@ function CompareChart() {
 function Chart({
   kind,
   value,
+  notes,
 }: {
   kind: ChartKind;
   value: number;
+  notes?: { value: string; label: string }[];
 }) {
   switch (kind) {
     case 'rise':
       return <RiseChart />;
     case 'mix':
-      return <MixChart />;
+      return <MixChart notes={notes} />;
     case 'stress':
       return <StressChart value={value} />;
     case 'paper':
@@ -546,7 +561,7 @@ export function InsightPanel({ compact = false }: { compact?: boolean }) {
         key={id}
         className={styles.insight}
         data-compact={compact ? 'true' : 'false'}
-        data-chart={insight.chart}
+        data-chart={insight.chart ?? undefined}
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
@@ -558,13 +573,21 @@ export function InsightPanel({ compact = false }: { compact?: boolean }) {
 
         {compact ? null : (
           <>
-            <div className={styles.chartWrap}>
-              <Chart kind={insight.chart} value={insight.value} />
-            </div>
+            {insight.chart ? (
+              <div className={styles.chartWrap}>
+                <Chart
+                  kind={insight.chart}
+                  value={insight.value}
+                  notes={insight.notes}
+                />
+              </div>
+            ) : null}
             {insight.body ? (
               <p className={styles.body}>{insight.body}</p>
             ) : null}
-            {insight.notes && insight.notes.length > 0 ? (
+            {insight.notes &&
+            insight.notes.length > 0 &&
+            insight.chart !== 'mix' ? (
               <ul className={styles.notes}>
                 {insight.notes.map((item) => (
                   <li key={item.label}>

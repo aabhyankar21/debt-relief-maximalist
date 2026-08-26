@@ -35,12 +35,23 @@ export const concepts: ConceptEntry[] = [
   },
 ];
 
-/** This build ships Haven only. Vault/Flux stay in source but are not selectable. */
-export const defaultConcept = 'haven';
+/** This build defaults to Vault; Haven is available via the preview switcher. */
+export const defaultConcept = 'vault';
+
+/** Concepts exposed in the review switcher. */
+export const previewConcepts = concepts.filter(
+  (concept) => concept.id === 'vault' || concept.id === 'haven',
+);
 
 export const liveConcept =
   concepts.find((concept) => concept.id === defaultConcept)!;
 
-export function resolveConcept(_id?: string | null): ConceptEntry {
-  return liveConcept;
+export function resolveConcept(id?: string | null): ConceptEntry {
+  const match = previewConcepts.find((concept) => concept.id === id);
+  return match ?? liveConcept;
+}
+
+export function readConceptFromUrl(): string {
+  const raw = new URLSearchParams(window.location.search).get('c');
+  return resolveConcept(raw).id;
 }

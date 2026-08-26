@@ -61,8 +61,8 @@
 :global([data-concept='haven']) .restart:hover {
   translate: 0 -2px;
   color: var(--c-on-accent);
-  background: var(--c-warm, #d4785a);
-  border-color: var(--c-warm, #d4785a);
+  background: #3d6a4b;
+  border-color: #3d6a4b;
   box-shadow: var(--button-shadow-hover);
 }
 
