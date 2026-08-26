@@ -1,0 +1,250 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--c-bg);
+}
+
+.appBar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  gap: 10px;
+  padding: 14px 28px 12px;
+  background: rgb(255 255 255 / 88%);
+  border-bottom: 1px solid var(--c-border);
+  backdrop-filter: blur(12px);
+}
+
+.appBarRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 40px;
+}
+
+.appBarLeft,
+.appBarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.appBarRight {
+  flex-shrink: 1;
+  overflow: hidden;
+}
+
+.appBarDots {
+  display: inline-flex;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 0;
+  flex: 1;
+}
+
+.formCol {
+  display: flex;
+  justify-content: center;
+  padding: 40px 32px 44px;
+}
+
+.formInner {
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+/* ---------- Data panel ---------- */
+
+.panelCol {
+  position: relative;
+  padding: 32px;
+  background: var(--c-panel);
+  border-left: 1px solid var(--c-border);
+  background-image: radial-gradient(var(--c-border) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.panelSticky {
+  position: sticky;
+  top: 92px;
+  display: grid;
+  gap: 14px;
+}
+
+.panelCard {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px rgb(13 15 26 / 5%), 0 12px 30px rgb(13 15 26 / 5%);
+}
+
+.panelLabel {
+  font-size: 0.6875rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+
+.metricRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.metric {
+  font-family: var(--font-display);
+  font-size: 2.9rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.metricUnit {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--c-faint);
+}
+
+.spark {
+  width: 100%;
+  height: 92px;
+  overflow: visible;
+}
+
+.bars {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: end;
+  gap: 6px;
+  height: 10px;
+}
+
+.bar {
+  height: 10px;
+  background: var(--c-accent-soft);
+  border-radius: 999px;
+  transform-origin: bottom;
+}
+
+.bar[data-state='done'] {
+  background: var(--c-accent);
+}
+
+.bar[data-state='active'] {
+  background: linear-gradient(180deg, #6366f1, #4f46e5);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--c-text);
+  background: var(--c-surface-2);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+}
+
+.chip svg {
+  width: 13px;
+  height: 13px;
+  color: var(--c-success);
+}
+
+.panelCallout {
+  display: grid;
+  gap: 8px;
+  padding: 20px;
+  color: var(--callout-text);
+  background: var(--callout-bg);
+  border-radius: var(--radius-lg);
+}
+
+.panelCalloutTitle {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.panelCalloutBody {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  opacity: 0.82;
+}
+
+/* ---------- Mobile ---------- */
+
+.mobilePanel {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+
+  .panelCol {
+    display: none;
+  }
+
+  .mobilePanel {
+    display: block;
+    padding: 12px 16px 0;
+  }
+
+  .mobileStrip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-md);
+  }
+
+  .mobileStrip .spark {
+    height: 40px;
+  }
+
+  .mobileStripMetric {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .appBar {
+    padding: 12px 16px 10px;
+  }
+
+  .appBarDots {
+    display: none;
+  }
+
+  .formCol {
+    padding: 18px 16px 32px;
+  }
+}

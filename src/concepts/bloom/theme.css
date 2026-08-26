@@ -1,0 +1,57 @@
+[data-concept='bloom'] {
+  --c-bg: #fff1e4;
+  --c-panel: #ffe3c8;
+  --c-surface: #ffffff;
+  --c-surface-2: #fff7ef;
+
+  --c-text: #1b1233;
+  --c-muted: #5d5472;
+  --c-faint: #8d84a3;
+
+  --c-border: rgb(27 18 51 / 12%);
+  --c-border-strong: rgb(27 18 51 / 28%);
+
+  --c-accent: #ff2d78;
+  --c-accent-soft: rgb(255 45 120 / 12%);
+  --c-on-accent: #fff7ef;
+  --c-success: #17b36a;
+  --c-danger: #e11d48;
+
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+
+  --shadow-card: 0 10px 28px rgb(255 45 120 / 10%), 0 2px 0 rgb(27 18 51 / 4%);
+  --shadow-lift: 0 16px 36px rgb(255 45 120 / 22%);
+
+  --font-display: 'Syne', 'Inter Tight', system-ui, sans-serif;
+  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --display-weight: 750;
+  --display-tracking: -0.04em;
+
+  --content-max: 540px;
+
+  --eyebrow-color: #ff2d78;
+  --choice-hover-bg: #fff3ea;
+  --choice-shadow: 0 8px 18px rgb(27 18 51 / 6%);
+  --choice-icon-bg: #1b1233;
+  --choice-icon-color: #fff7ef;
+  --choice-icon-radius: 16px;
+  --choice-icon-selected-bg: #ff2d78;
+  --choice-icon-selected-color: #fff7ef;
+  --input-bg: #ffffff;
+  --callout-bg: #3d5afe;
+  --callout-text: #f4f6ff;
+  --callout-shadow: 0 16px 40px rgb(61 90 254 / 28%);
+  --button-bg: linear-gradient(135deg, #ff2d78 0%, #ff6b3d 100%);
+  --button-radius: 999px;
+  --button-shadow: 0 12px 28px rgb(255 45 120 / 32%);
+  --button-shadow-hover: 0 16px 36px rgb(255 107 61 / 40%);
+  --bullet-bg: rgb(23 179 106 / 14%);
+  --track-bg: rgb(27 18 51 / 10%);
+  --progress-fill: linear-gradient(90deg, #ff2d78, #ffb800);
+  --badge-bg: #fff7ef;
+  --legal-text: #8d84a3;
+
+  color-scheme: light;
+}

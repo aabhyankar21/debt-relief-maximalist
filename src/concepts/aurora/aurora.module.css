@@ -1,0 +1,328 @@
+.shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  color: var(--c-text);
+  background: var(--c-bg);
+}
+
+/* ---------- Backdrop ---------- */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blobLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.blobA {
+  top: -14%;
+  left: -8%;
+  width: 46vw;
+  height: 46vw;
+  background: radial-gradient(circle, #1d6ef5 0%, transparent 68%);
+  animation: driftA 22s ease-in-out infinite alternate;
+}
+
+.blobB {
+  right: -12%;
+  bottom: -18%;
+  width: 52vw;
+  height: 52vw;
+  background: radial-gradient(circle, #7c3aed 0%, transparent 66%);
+  animation: driftB 26s ease-in-out infinite alternate;
+}
+
+.blobC {
+  top: 24%;
+  right: 18%;
+  width: 30vw;
+  height: 30vw;
+  background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
+  opacity: 0.36;
+  animation: driftC 19s ease-in-out infinite alternate;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 3.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 3.5%) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 78%);
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    transparent 35%,
+    rgb(6 7 15 / 78%) 100%
+  );
+}
+
+@keyframes driftA {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(9vw, 7vh, 0) scale(1.14);
+  }
+}
+
+@keyframes driftB {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(-11vw, -8vh, 0) scale(1);
+  }
+}
+
+@keyframes driftC {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-7vw, 9vh, 0);
+  }
+}
+
+/* ---------- Visual column ---------- */
+
+.stage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 30px 40px 40px;
+}
+
+.stageTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.orbWrap {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  padding: 10px 0;
+}
+
+.orb {
+  width: min(380px, 78%);
+  height: auto;
+  overflow: visible;
+}
+
+.orbCore {
+  transform-origin: center;
+  animation: pulse 5.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
+}
+
+.orbValue {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  fill: #f2f6ff;
+}
+
+.stageFoot {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+
+/* ---------- Form column ---------- */
+
+.main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 22px 40px 14px;
+  background: linear-gradient(
+    to bottom,
+    rgb(6 7 15 / 92%) 0%,
+    rgb(6 7 15 / 78%) 62%,
+    rgb(6 7 15 / 0%) 100%
+  );
+  backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+}
+
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.headerBrand {
+  display: none;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  padding: 18px 40px 34px;
+}
+
+.card {
+  width: 100%;
+  max-width: calc(var(--content-max) + 56px);
+  padding: 34px 34px 34px;
+  background: rgb(255 255 255 / 5%);
+  border: 1px solid rgb(255 255 255 / 11%);
+  border-radius: 26px;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 8%) inset,
+    0 30px 80px rgb(0 0 0 / 45%);
+  backdrop-filter: blur(18px);
+}
+
+.footer {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+}
+
+.mobileOrb {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    display: none;
+  }
+
+  .headerBrand {
+    display: inline-flex;
+  }
+
+  .mobileOrb {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    padding: 4px 20px 0;
+  }
+
+  .mobileOrb .orb {
+    width: 132px;
+  }
+
+  .mobileOrb .orbArc {
+    stroke-width: 9;
+  }
+
+  .main {
+    min-height: auto;
+  }
+
+  .header {
+    padding: 16px 20px 10px;
+  }
+
+  .content {
+    padding: 14px 16px 28px;
+  }
+
+  .card {
+    padding: 22px 18px 26px;
+    border-radius: 22px;
+  }
+
+  /* Cheaper backdrop on small screens */
+  .blob {
+    filter: blur(56px);
+    opacity: 0.75;
+    animation: none;
+  }
+
+  .blobA {
+    top: -8%;
+    left: -30%;
+    width: 110vw;
+    height: 110vw;
+  }
+
+  .blobB {
+    right: -34%;
+    bottom: -6%;
+    width: 116vw;
+    height: 116vw;
+  }
+
+  .blobC {
+    display: none;
+  }
+
+  .grid {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blob,
+  .orbCore {
+    animation: none;
+  }
+}

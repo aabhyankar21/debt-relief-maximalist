@@ -1,0 +1,58 @@
+[data-concept='haven'] {
+  --c-bg: #f3f6f1;
+  --c-panel: #e7eee6;
+  --c-surface: #fbfaf6;
+  --c-surface-2: #eef3ec;
+
+  --c-text: #243028;
+  --c-muted: #5c675e;
+  --c-faint: #8a938b;
+
+  --c-border: rgb(36 48 40 / 12%);
+  --c-border-strong: rgb(36 48 40 / 26%);
+
+  --c-accent: #4a7c59;
+  --c-accent-soft: rgb(74 124 89 / 12%);
+  --c-on-accent: #fbfaf6;
+  --c-warm: #d4785a;
+  --c-success: #3f6b4f;
+  --c-danger: #b42318;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+
+  --shadow-card: 0 1px 2px rgb(36 48 40 / 4%);
+  --shadow-lift: 0 12px 28px rgb(74 124 89 / 12%);
+
+  --font-display: 'Schnyder S', 'Iowan Old Style', Georgia, serif;
+  --font-heading: 'Work Sans', 'Inter Tight', system-ui, sans-serif;
+  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+
+  --content-max: 520px;
+
+  --eyebrow-color: #4a7c59;
+  --choice-hover-bg: #f7f3ed;
+  --choice-shadow: none;
+  --input-bg: #fbfaf6;
+  --callout-bg: #243028;
+  --callout-text: #eef3ec;
+  --button-radius: 999px;
+  --button-shadow: 0 8px 20px rgb(74 124 89 / 18%);
+  --button-shadow-hover: 0 14px 28px rgb(212 120 90 / 30%), 0 2px 8px rgb(36 48 40 / 8%);
+  --bullet-bg: rgb(74 124 89 / 14%);
+  --track-bg: rgb(36 48 40 / 10%);
+  --progress-fill: #4a7c59;
+  --badge-bg: #eef3ec;
+  --legal-text: #8a938b;
+
+  color-scheme: light;
+}
+
+[data-concept='haven'] h1,
+[data-concept='haven'] h2 {
+  font-style: italic;
+  font-weight: 500;
+}

@@ -1,0 +1,88 @@
+.splash {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-size: 0.875rem;
+  font-weight: 550;
+  letter-spacing: 0.04em;
+  color: #8a8a95;
+  background: #f7f4ef;
+}
+
+.splash[data-concept='aurora'] {
+  color: rgb(184 192 222 / 70%);
+  background: #06070f;
+}
+
+.splash[data-concept='momentum'] {
+  color: #8a8fa8;
+  background: #ffffff;
+}
+
+.splash[data-concept='vault'] {
+  color: rgb(158 168 180 / 72%);
+  background: #07090c;
+}
+
+.splash[data-concept='bloom'] {
+  color: #8d84a3;
+  background: #fff1e4;
+}
+
+.splash[data-concept='haven'] {
+  color: #8a938b;
+  background: #f3f6f1;
+}
+
+.splash[data-concept='flux'] {
+  color: rgb(168 162 190 / 70%);
+  background: #08070d;
+}
+
+.mark {
+  width: 10px;
+  height: 10px;
+  background: #1f6f52;
+  border-radius: 50%;
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+.splash[data-concept='aurora'] .mark {
+  background: #6ee7f9;
+}
+
+.splash[data-concept='momentum'] .mark {
+  background: #4f46e5;
+}
+
+.splash[data-concept='vault'] .mark {
+  background: #00c896;
+}
+
+.splash[data-concept='bloom'] .mark {
+  background: #ff2d78;
+}
+
+.splash[data-concept='haven'] .mark {
+  background: #4a7c59;
+}
+
+.splash[data-concept='flux'] .mark {
+  background: #d6ff3d;
+}
+
+@keyframes pulse {
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    animation: none;
+  }
+}

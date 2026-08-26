@@ -1,0 +1,58 @@
+[data-concept='aurora'] {
+  --c-bg: #06070f;
+  --c-panel: rgb(255 255 255 / 4%);
+  --c-surface: rgb(255 255 255 / 6%);
+  --c-surface-2: rgb(255 255 255 / 10%);
+
+  --c-text: #f3f5ff;
+  --c-muted: rgb(203 210 236 / 78%);
+  --c-faint: rgb(184 192 222 / 58%);
+
+  --c-border: rgb(255 255 255 / 13%);
+  --c-border-strong: rgb(255 255 255 / 30%);
+
+  --c-accent: #6ee7f9;
+  --c-accent-soft: rgb(110 231 249 / 13%);
+  --c-on-accent: #041c24;
+  --c-success: #5eead4;
+  --c-danger: #ff8ba0;
+
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-card: 0 20px 60px rgb(0 0 0 / 45%);
+  --shadow-lift: 0 18px 44px rgb(110 231 249 / 18%);
+
+  --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --display-weight: 650;
+  --display-tracking: -0.032em;
+
+  --content-max: 560px;
+
+  --eyebrow-color: #8fe9ff;
+  --card-blur: blur(14px);
+  --choice-hover-bg: rgb(255 255 255 / 10%);
+  --choice-shadow: 0 1px 0 rgb(255 255 255 / 6%) inset;
+  --input-bg: rgb(255 255 255 / 6%);
+  --callout-bg: rgb(255 255 255 / 6%);
+  --callout-border: rgb(255 255 255 / 12%);
+  --callout-text: #eaf0ff;
+  --callout-shadow: 0 20px 50px rgb(0 0 0 / 35%);
+  --button-bg: linear-gradient(115deg, #6ee7f9 0%, #a78bfa 100%);
+  --button-radius: 999px;
+  --button-shadow: 0 10px 30px rgb(110 231 249 / 20%);
+  --button-shadow-hover: 0 14px 40px rgb(167 139 250 / 32%);
+  --bullet-bg: rgb(94 234 212 / 16%);
+  --track-bg: rgb(255 255 255 / 12%);
+  --progress-fill: linear-gradient(90deg, #6ee7f9, #a78bfa);
+  --badge-bg: rgb(255 255 255 / 6%);
+  --legal-text: rgb(184 192 222 / 55%);
+
+  color-scheme: dark;
+}
+
+[data-concept='aurora'] select option {
+  color: #10131f;
+  background: #ffffff;
+}

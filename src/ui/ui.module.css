@@ -1,0 +1,576 @@
+/* Theme-agnostic primitives. All colour comes from the token contract. */
+
+.choiceGrid {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.choiceGridIcons {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.choiceCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 60px;
+  padding: 16px 18px;
+  overflow: hidden;
+  text-align: left;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--choice-shadow, none);
+  backdrop-filter: var(--card-blur, none);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.choiceCard[data-kinetic='true']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    170px circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgb(214 255 61 / 22%),
+    transparent 58%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.choiceCard[data-kinetic='true']:hover::before {
+  opacity: 1;
+}
+
+.choiceCardIcon {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  min-height: 116px;
+  padding: 18px;
+}
+
+.choiceCard:hover {
+  border-color: var(--c-accent);
+  background: var(--choice-hover-bg, var(--c-surface-2));
+}
+
+:global([data-concept='haven']) .choiceCard {
+  transition:
+    translate 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow 180ms var(--ease-out);
+}
+
+:global([data-concept='haven']) .choiceCard:hover {
+  translate: 0 -2px;
+  border-color: var(--c-warm, #d4785a);
+  background: #f7f3ed;
+  box-shadow: 0 10px 22px rgb(212 120 90 / 14%);
+}
+
+:global([data-concept='haven']) .choiceCard[data-selected='true']:hover {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+  box-shadow: 0 8px 18px rgb(74 124 89 / 12%);
+}
+
+.choiceCard:active {
+  transform: scale(0.985);
+}
+
+.choiceCard[data-selected='true'] {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+  box-shadow: 0 0 0 1.5px var(--c-accent) inset;
+}
+
+.choiceLabel {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.choiceIconWrap {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--choice-icon-color, var(--c-accent));
+  background: var(--choice-icon-bg, var(--c-accent-soft));
+  border-radius: var(--choice-icon-radius, 12px);
+  transition:
+    transform var(--dur-base) var(--ease-spring),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.choiceCard[data-kinetic='true']:hover .choiceIconWrap {
+  transform: translateY(-5px) scale(1.1) rotate(-8deg);
+}
+
+.choiceCard[data-selected='true'] .choiceIconWrap {
+  color: var(--choice-icon-selected-color, var(--choice-icon-color, var(--c-accent)));
+  background: var(--choice-icon-selected-bg, var(--choice-icon-bg, var(--c-accent-soft)));
+}
+
+.choiceCard:hover .choiceIconWrap {
+  transform: translateY(-2px) scale(1.04);
+}
+
+:global([data-concept='haven']) .choiceCard:hover .choiceIconWrap {
+  color: var(--c-warm, #d4785a);
+  background: rgb(212 120 90 / 14%);
+}
+
+:global([data-concept='haven']) .choiceCard[data-selected='true']:hover .choiceIconWrap {
+  color: var(--choice-icon-selected-color, var(--choice-icon-color, var(--c-accent)));
+  background: var(--choice-icon-selected-bg, var(--choice-icon-bg, var(--c-accent-soft)));
+}
+
+.choiceIconWrap svg {
+  width: 24px;
+  height: 24px;
+}
+
+.choiceMark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--c-on-accent);
+  background: var(--c-accent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity var(--dur-fast) var(--ease-out),
+    transform var(--dur-base) var(--ease-spring);
+}
+
+.choiceCardIcon .choiceMark {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+}
+
+.choiceCard[data-selected='true'] .choiceMark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.choiceMark svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- Fields ---------- */
+
+.fieldStack {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.fieldLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--c-muted);
+}
+
+.optionalTag {
+  font-weight: 500;
+  color: var(--c-faint);
+}
+
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input,
+.select {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 16px;
+  color: var(--c-text);
+  background: var(--input-bg, var(--c-surface));
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-md);
+  backdrop-filter: var(--card-blur, none);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--c-faint);
+}
+
+.input:hover,
+.select:hover {
+  border-color: var(--c-border-strong);
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--c-accent);
+  outline: none;
+  box-shadow: 0 0 0 4px var(--c-accent-soft);
+}
+
+.input[data-invalid='true'] {
+  border-color: var(--c-danger);
+}
+
+.input[data-valid='true'] {
+  padding-right: 44px;
+}
+
+.validMark {
+  position: absolute;
+  right: 15px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  color: var(--c-success);
+  pointer-events: none;
+  animation: pop var(--dur-base) var(--ease-spring);
+}
+
+.validMark svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.select[data-empty='true'] {
+  color: var(--c-faint);
+}
+
+.selectArrow {
+  position: absolute;
+  right: 14px;
+  width: 10px;
+  height: 10px;
+  border-right: 1.8px solid var(--c-muted);
+  border-bottom: 1.8px solid var(--c-muted);
+  transform: translateY(-3px) rotate(45deg);
+  pointer-events: none;
+}
+
+.errorText {
+  font-size: 0.8125rem;
+  color: var(--c-danger);
+}
+
+/* ---------- Button ---------- */
+
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 24px;
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--c-on-accent);
+  background: var(--button-bg, var(--c-accent));
+  border-radius: var(--button-radius, var(--radius-md));
+  box-shadow: var(--button-shadow, none);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    filter var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+.button[data-kinetic='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    180px circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgb(255 255 255 / 34%),
+    transparent 58%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.button[data-kinetic='true']:hover:not(:disabled)::after {
+  opacity: 1;
+}
+
+.buttonLabel {
+  position: relative;
+  z-index: 1;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: var(--button-shadow-hover, var(--shadow-lift));
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+  filter: grayscale(0.35);
+}
+
+.button svg {
+  position: relative;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.button:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+:global([data-concept='haven']) .button {
+  transition:
+    translate 180ms var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    background-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out),
+    filter 180ms var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+:global([data-concept='haven']) .button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgb(251 250 246 / 0%) 38%,
+    rgb(251 250 246 / 36%) 50%,
+    rgb(251 250 246 / 0%) 62%
+  );
+  transform: translateX(-70%);
+  opacity: 0;
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 0ms linear 180ms;
+}
+
+:global([data-concept='haven']) .button:hover:not(:disabled) {
+  translate: 0 -2px;
+  filter: none;
+  background-color: var(--c-warm, #d4785a);
+  box-shadow: var(--button-shadow-hover);
+}
+
+:global([data-concept='haven']) .button:hover:not(:disabled)::after {
+  transform: translateX(70%);
+  opacity: 1;
+  transition:
+    transform 200ms var(--ease-out),
+    opacity 140ms var(--ease-out);
+}
+
+:global([data-concept='haven']) .button:active:not(:disabled) {
+  translate: 0 0;
+}
+
+/* ---------- Notes ---------- */
+
+.bulletList {
+  display: grid;
+  gap: 10px;
+}
+
+.bullet {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.9375rem;
+  color: var(--c-muted);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+:global([data-concept='flux']) .bullet:hover {
+  color: var(--c-text);
+  transform: translateX(5px);
+}
+
+.bulletMark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--c-success);
+  background: var(--bullet-bg, rgb(16 185 129 / 12%));
+  border-radius: 50%;
+}
+
+.bulletMark svg {
+  width: 12px;
+  height: 12px;
+}
+
+.dotBullet {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+.dotBullet::before {
+  content: '';
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-top: 9px;
+  background: var(--c-accent);
+  border-radius: 50%;
+}
+
+.secureNote {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: var(--c-faint);
+}
+
+.secureNote svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+
+.disclaimer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--c-muted);
+  background: var(--c-accent-soft);
+  border-radius: var(--radius-md);
+}
+
+.disclaimer svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-top: 1px;
+  color: var(--c-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-concept='haven']) .button:hover:not(:disabled),
+  :global([data-concept='haven']) .choiceCard:hover {
+    translate: none;
+  }
+
+  :global([data-concept='haven']) .button::after,
+  :global([data-concept='haven']) .button:hover:not(:disabled)::after {
+    content: none;
+    opacity: 0;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Concepts opt into a thumb-reachable CTA on small screens. */
+@media (max-width: 1023px) {
+  [data-sticky-cta='true'] .button {
+    position: sticky;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    z-index: 4;
+  }
+}
+
+@media (max-width: 560px) {
+  .fieldRow {
+    gap: 8px;
+  }
+
+  .choiceGridIcons {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .choiceCardIcon {
+    min-height: 104px;
+    padding: 14px;
+  }
+}

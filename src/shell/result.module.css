@@ -1,0 +1,101 @@
+.result {
+  display: grid;
+  gap: 22px;
+  justify-items: start;
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  color: var(--c-on-accent);
+  background: var(--c-success);
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgb(16 185 129 / 30%);
+}
+
+.badge svg {
+  width: 28px;
+  height: 28px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.3rem);
+  font-weight: var(--display-weight);
+  line-height: 1.15;
+  letter-spacing: var(--display-tracking);
+  text-wrap: balance;
+}
+
+.restart {
+  min-height: 48px;
+  padding: 12px 22px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--c-text);
+  border: 1.5px solid var(--c-border-strong);
+  border-radius: var(--radius-pill);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.restart:hover {
+  background: var(--c-accent-soft);
+  border-color: var(--c-accent);
+}
+
+:global([data-concept='haven']) .restart {
+  transition:
+    translate 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out);
+}
+
+:global([data-concept='haven']) .restart:hover {
+  translate: 0 -2px;
+  color: var(--c-on-accent);
+  background: var(--c-warm, #d4785a);
+  border-color: var(--c-warm, #d4785a);
+  box-shadow: var(--button-shadow-hover);
+}
+
+:global([data-concept='flux']) .restart {
+  transition:
+    transform 220ms var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow 220ms var(--ease-out);
+}
+
+:global([data-concept='flux']) .restart:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 12px 28px rgb(214 255 61 / 18%);
+}
+
+:global([data-concept='flux']) .badge {
+  animation: fluxBadge 2.2s ease-in-out infinite;
+}
+
+@keyframes fluxBadge {
+  50% {
+    box-shadow: 0 10px 36px rgb(61 255 176 / 55%);
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global([data-concept='flux']) .badge {
+    animation: none;
+  }
+
+  :global([data-concept='haven']) .restart:hover {
+    translate: none;
+  }
+}

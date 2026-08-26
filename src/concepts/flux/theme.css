@@ -1,0 +1,71 @@
+[data-concept='flux'] {
+  --c-bg: #08070d;
+  --c-panel: #0e0c16;
+  --c-surface: #16131f;
+  --c-surface-2: #1d1928;
+
+  --c-text: #f6f4ff;
+  --c-muted: rgb(214 210 232 / 74%);
+  --c-faint: rgb(168 162 190 / 62%);
+
+  --c-border: rgb(255 255 255 / 12%);
+  --c-border-strong: rgb(255 255 255 / 26%);
+
+  --c-accent: #d6ff3d;
+  --c-accent-soft: rgb(214 255 61 / 14%);
+  --c-on-accent: #12100a;
+  --c-success: #3dffb0;
+  --c-danger: #ff5d7a;
+
+  --radius-sm: 14px;
+  --radius-md: 22px;
+  --radius-lg: 32px;
+
+  --shadow-card: 0 18px 50px rgb(0 0 0 / 38%), 0 0 0 1px rgb(255 255 255 / 5%) inset;
+  --shadow-lift: 0 18px 44px rgb(214 255 61 / 18%);
+
+  --font-display: 'Outfit', 'Inter Tight', system-ui, sans-serif;
+  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --display-weight: 700;
+  --display-tracking: -0.045em;
+
+  --content-max: 540px;
+
+  --eyebrow-color: #d6ff3d;
+  --card-blur: blur(18px);
+  --choice-hover-bg: rgb(214 255 61 / 8%);
+  --choice-shadow: 0 10px 28px rgb(0 0 0 / 22%);
+  --choice-icon-bg: #221e2e;
+  --choice-icon-color: #d6ff3d;
+  --choice-icon-radius: 16px;
+  --choice-icon-selected-bg: #d6ff3d;
+  --choice-icon-selected-color: #12100a;
+  --input-bg: #120f1a;
+  --callout-bg: rgb(255 255 255 / 6%);
+  --callout-text: #f6f4ff;
+  --callout-shadow: 0 20px 48px rgb(0 0 0 / 36%);
+  --button-bg: linear-gradient(135deg, #d6ff3d 0%, #3dffb0 100%);
+  --button-radius: 999px;
+  --button-shadow: 0 14px 34px rgb(214 255 61 / 28%);
+  --button-shadow-hover: 0 18px 44px rgb(61 255 176 / 34%);
+  --bullet-bg: rgb(61 255 176 / 16%);
+  --track-bg: rgb(255 255 255 / 12%);
+  --progress-fill: linear-gradient(90deg, #d6ff3d, #ff3d9a);
+  --badge-bg: rgb(255 255 255 / 7%);
+  --legal-text: rgb(168 162 190 / 55%);
+
+  color-scheme: dark;
+}
+
+[data-concept='flux'] select option {
+  color: #120f1a;
+  background: #f6f4ff;
+}
+
+/* Forms stay still. Everything around them can move. */
+[data-concept='flux'] input,
+[data-concept='flux'] select {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
