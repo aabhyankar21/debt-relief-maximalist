@@ -1,0 +1,189 @@
+/**
+ * No panel split: one scene spans the whole surface and the form floats on
+ * it, with only the controls cut from the blob's glass. Layout runs on
+ * container queries so the scene lab's width presets exercise exactly the
+ * breakpoints a real resize would.
+ *
+ * The goal is one fold: every step should land inside the frame without
+ * scrolling. Two things get us there. Every vertical measure is a function of
+ * cqh, so padding, gaps and type all give way together as the frame gets
+ * shorter, between a floor and the size they want to be — the coefficients
+ * are set so a ~890px frame gets the comfortable maximum and anything
+ * shorter tightens proportionally. And those maxima are themselves tighter
+ * than the other concepts', because the tallest step here is a four-line
+ * headline over five options and a callout.
+ *
+ * The overrides that reach into the shared step body and controls live next
+ * to the rules they adjust, each clamped the same way.
+ */
+
+.root {
+  /* Size, not inline-size: the fold fit depends on knowing the height. */
+  container-type: size;
+  container-name: morph;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+/* Pinned to the frame while the form scrolls over it, so the blob keeps its
+   place on screen however tall a given step turns out to be. */
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ---------------------------- header ---------------------------- */
+
+.header {
+  flex: none;
+  display: grid;
+  gap: clamp(5px, 1cqh, 9px);
+  padding: clamp(8px, 1.6cqh, 14px) clamp(16px, 4cqw, 44px)
+    clamp(4px, 0.8cqh, 7px);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: clamp(30px, 4.3cqh, 38px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.016em;
+  color: var(--c-text);
+}
+
+.brandMark {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--c-accent);
+}
+
+/* The arc around the blob is the primary progress cue; this is the plain
+   readout that sits alongside it. */
+.progressSlot {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+/* ------------------------- the chromeless form ------------------------- */
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: clamp(4px, 1.35cqh, 12px) clamp(14px, 3.5cqw, 40px)
+    clamp(8px, 2.5cqh, 22px);
+}
+
+/* No card: no background, border, radius or shadow. The form sits directly
+   on the scene and only the controls carry glass. The padding is here for
+   the scrim to fade across, so it can go small but not to nothing. */
+.card {
+  position: relative;
+  width: 100%;
+  max-width: calc(var(--content-max) + 36px);
+  padding: clamp(8px, 1.6cqh, 14px) clamp(18px, 4cqw, 30px)
+    clamp(10px, 2cqh, 18px);
+}
+
+/* The copy still needs the scene calmed behind it, so the panel is replaced
+   by a scrim with no edge to it: a soft wash plus a frost, both faded out by
+   the mask. What reads is a region where the mesh goes quiet, not a shape.
+   Any alpha left over where the fade meets the bounds shows up as a seam —
+   the box coming back under another name — so both gradients are sized
+   closest-side, which lands zero exactly on all four edges. Staying inside
+   the bounds also keeps the scrim out of the scroll height: an overhanging
+   scrim makes the fold overflow by itself. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    closest-side,
+    rgb(255 255 255 / 54%) 0%,
+    rgb(255 255 255 / 34%) 46%,
+    rgb(255 255 255 / 0%) 100%
+  );
+  -webkit-backdrop-filter: var(--scrim-blur);
+  backdrop-filter: var(--scrim-blur);
+  -webkit-mask-image: radial-gradient(
+    closest-side,
+    #000 0%,
+    rgb(0 0 0 / 52%) 52%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    closest-side,
+    #000 0%,
+    rgb(0 0 0 / 52%) 52%,
+    transparent 100%
+  );
+}
+
+.stepWrap {
+  width: 100%;
+}
+
+/* The form stays pinned to the bottom at every breakpoint rather than
+   centring: free space collects above it, which is where the blob lives.
+   Short steps therefore show the blob outright, tall ones show it behind
+   the copy. */
+@container morph (min-width: 768px) {
+  .header {
+    padding: clamp(10px, 1.9cqh, 17px) clamp(24px, 5cqw, 60px)
+      clamp(5px, 1cqh, 9px);
+  }
+
+  .content {
+    padding: clamp(8px, 1.8cqh, 16px) clamp(24px, 5cqw, 60px)
+      clamp(12px, 3.1cqh, 28px);
+  }
+
+  .card {
+    padding: clamp(10px, 2cqh, 18px) clamp(24px, 4cqw, 40px)
+      clamp(12px, 2.5cqh, 22px);
+  }
+}
+
+@container morph (min-width: 1200px) {
+  .content {
+    padding: clamp(8px, 1.8cqh, 16px) clamp(32px, 6cqw, 96px)
+      clamp(12px, 3.6cqh, 32px);
+  }
+}
+
+/* The step body splits into two columns on frames too short to stack (see
+   stepBody.module.css), so the form needs the width to carry them. */
+@container morph (max-height: 660px) and (min-width: 1000px) {
+  .card {
+    max-width: min(940px, 86cqw);
+  }
+}

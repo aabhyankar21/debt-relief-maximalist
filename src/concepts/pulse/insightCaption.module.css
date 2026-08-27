@@ -1,0 +1,69 @@
+/**
+ * Annotation scale, not headline scale: this is a note pinned to a point in
+ * the field. It shares the tick language of the title's underline so the two
+ * read as the same system.
+ */
+
+.caption {
+  position: absolute;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  /* Anchored by its own left edge but nudged up, so the tick sits level with
+     the point in the field it refers to. */
+  translate: 0 -50%;
+  max-width: min(21ch, 42vw);
+  pointer-events: none;
+}
+
+.mark {
+  flex: none;
+  width: 14px;
+  height: 2px;
+  /* Baseline alignment on a bare span needs the offset to land on the text's
+     x-height rather than its baseline. */
+  translate: 0 -0.32em;
+  background: var(--pulse-accent);
+  border-radius: 2px;
+}
+
+.text {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--pulse-caption);
+  text-wrap: pretty;
+  text-shadow: var(--copy-shadow, none);
+}
+
+/* Mirrored when the caption hangs from the right edge, so the tick still
+   points at the field rather than away from it. */
+.caption[data-side='right'] {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+/* The income step's caption is the largest of the flow — the one moment the
+   annotation is allowed to compete with the title for attention. */
+.caption[data-tone='hero'] {
+  max-width: min(26ch, 52vw);
+}
+
+.caption[data-tone='hero'] .text {
+  font-size: 0.94rem;
+  line-height: 1.4;
+  color: var(--pulse-text);
+}
+
+.caption[data-tone='hero'] .mark {
+  width: 20px;
+}
+
+@media (max-width: 767px) {
+  .text {
+    font-size: 0.72rem;
+  }
+
+  .caption[data-tone='hero'] .text {
+    font-size: 0.82rem;
+  }
+}

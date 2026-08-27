@@ -6,7 +6,7 @@
   display: grid;
   gap: 8px;
   justify-items: end;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Work Sans', system-ui, sans-serif;
 }
 
 .toggle {

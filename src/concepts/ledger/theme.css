@@ -24,8 +24,8 @@
   --shadow-card: 0 1px 1px rgb(22 21 15 / 4%);
   --shadow-lift: 0 8px 22px rgb(22 21 15 / 10%);
 
-  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 600;
   --display-tracking: -0.015em;
 

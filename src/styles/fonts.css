@@ -1,36 +1,4 @@
 /**
- * Schnyder S (Grilli Type) — local webfonts for Vault and Haven titles.
- * Files live in src/assets/fonts; font-display:block avoids a fallback flash.
+ * Work Sans is loaded as a variable font from Google Fonts in index.html.
+ * Local Schnyder files in src/assets/fonts are unused.
  */
-
-@font-face {
-  font-family: 'Schnyder S';
-  src: url('../assets/fonts/SchnyderS-Light.otf') format('opentype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: 'Schnyder S';
-  src: url('../assets/fonts/SchnyderS-Demi.otf') format('opentype');
-  font-weight: 500 600;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: 'Schnyder S';
-  src: url('../assets/fonts/SchnyderS-DemiItalic.otf') format('opentype');
-  font-weight: 500 600;
-  font-style: italic;
-  font-display: block;
-}
-
-@font-face {
-  font-family: 'Schnyder S';
-  src: url('../assets/fonts/SchnyderS-Bold.ttf') format('truetype');
-  font-weight: 650 700;
-  font-style: normal;
-  font-display: block;
-}

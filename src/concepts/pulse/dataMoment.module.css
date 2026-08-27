@@ -1,0 +1,116 @@
+/**
+ * Data moments sit on the field, not inside a card. They must never look
+ * clickable: no pointer cursor, no hover lift, no button-like shadow.
+ */
+
+.moment {
+  pointer-events: none;
+  cursor: default;
+}
+
+.barBlock,
+.arcBlock,
+.trust,
+.counter {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.barTrack {
+  position: relative;
+  width: min(100%, 280px);
+  height: 8px;
+  overflow: hidden;
+  background: rgb(47 107 255 / 12%);
+  border-radius: 999px;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  background: var(--pulse-accent);
+  border-radius: inherit;
+}
+
+.barMarker {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 14px;
+  background: var(--pulse-accent-deep);
+  translate: -50% 0;
+}
+
+.arcBlock {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.arc {
+  display: block;
+}
+
+.trust {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 12px;
+}
+
+.shield {
+  width: 36px;
+  height: 40px;
+}
+
+.counterValue {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.028em;
+  color: var(--pulse-text);
+  text-shadow: var(--copy-shadow, none);
+}
+
+.caption {
+  max-width: 34ch;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--pulse-caption);
+  text-wrap: pretty;
+  text-shadow: var(--copy-shadow, none);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Flat chips on purpose — a border + shadow here would read as a button. */
+.chip {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  padding: 6px 2px 4px;
+}
+
+.chipLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pulse-caption);
+}
+
+.chipValue {
+  font-size: 0.92rem;
+  font-weight: 550;
+  letter-spacing: -0.016em;
+  color: var(--pulse-text);
+  text-shadow: var(--copy-shadow, none);
+}

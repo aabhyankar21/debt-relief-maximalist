@@ -1,0 +1,114 @@
+/**
+ * There is no panel split here: one scene spans the whole surface and the
+ * form floats on it in glass. Layout is driven by container queries so the
+ * scene lab's width presets exercise the same breakpoints as a real resize.
+ */
+
+/* The scene is pinned to the frame and the form scrolls over it, so the
+   thread keeps the same place on screen however tall a step happens to be. */
+.root {
+  container-type: inline-size;
+  container-name: thread;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ---------- header ---------- */
+
+.header {
+  flex: none;
+  display: grid;
+  gap: 12px;
+  padding: 14px clamp(16px, 4cqw, 40px) 8px;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: 40px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--c-text);
+}
+
+.brandMark {
+  flex: none;
+  width: 30px;
+  height: 17px;
+  color: var(--c-faint);
+}
+
+.progressSlot {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+/* ---------- glass card ---------- */
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 18px clamp(14px, 3.5cqw, 40px) 26px;
+}
+
+/* Deliberately not a card: only the fields themselves are glass, so the
+   thread runs behind the copy with nothing painted over it. */
+.card {
+  width: 100%;
+  max-width: calc(var(--content-max) + 24px);
+}
+
+.stepWrap {
+  width: 100%;
+}
+
+/* On a wide screen the thread runs the full width behind the column, so
+   the card sits a little high and leaves the far end of the line clear. */
+@container thread (min-width: 768px) {
+  .content {
+    align-items: center;
+    padding: 24px clamp(24px, 5cqw, 56px) 40px;
+  }
+
+  .header {
+    padding: 20px clamp(24px, 5cqw, 56px) 10px;
+  }
+}
+
+@container thread (min-width: 1200px) {
+  .content {
+    padding: 28px clamp(32px, 6cqw, 88px) 48px;
+  }
+}

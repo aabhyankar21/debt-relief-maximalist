@@ -60,6 +60,14 @@
   padding: 18px;
 }
 
+@media (max-width: 767px) {
+  :global([data-concept='mosaic']) .choiceCard,
+  :global([data-concept='unburden']) .choiceCard {
+    min-height: 50px;
+    padding: 12px 14px;
+  }
+}
+
 .choiceCard:hover {
   border-color: var(--c-accent);
   background: var(--choice-hover-bg, var(--c-surface-2));
@@ -118,6 +126,127 @@
   font-size: 1rem;
   font-weight: 550;
   letter-spacing: -0.01em;
+}
+
+/* Magnitude rail and trailing arrow are opt-in per concept. */
+.choiceRail,
+.choiceGo {
+  display: none;
+}
+
+/* ---------- Haven: ordered amount bands read as value cards ---------- */
+
+:global([data-concept='haven']) .choiceGrid[data-step='debt-amount'] {
+  gap: 10px;
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard {
+  min-height: 66px;
+  padding: 14px 14px 14px 26px;
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  box-shadow: 0 1px 2px rgb(36 48 40 / 5%);
+}
+
+/* Sans, not the display serif: its figures make $30K read as $50K. */
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceLabel {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Height steps up with the band so the list reads as a rising scale. */
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceRail {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  width: 6px;
+  height: calc(24% + var(--choice-rank, 1) * 15%);
+  background: var(--c-accent);
+  border-radius: 0 6px 6px 0;
+  opacity: calc(0.5 + var(--choice-rank, 1) * 0.1);
+  transform: translateY(-50%);
+  transition:
+    height 220ms var(--ease-out),
+    opacity 220ms var(--ease-out);
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceGo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--c-accent);
+  background: var(--c-accent-soft);
+  border-radius: 50%;
+  transition:
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    transform 180ms var(--ease-out);
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceGo
+  svg {
+  width: 15px;
+  height: 15px;
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard:hover {
+  background: var(--c-surface);
+  box-shadow: 0 12px 26px rgb(74 124 89 / 16%);
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard:hover
+  .choiceRail,
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard[data-selected='true']
+  .choiceRail {
+  height: 100%;
+  opacity: 1;
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard:hover
+  .choiceGo {
+  color: var(--c-on-accent);
+  background: var(--c-accent);
+  transform: translateX(3px);
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard[data-selected='true'] {
+  background: var(--c-accent-soft);
+  box-shadow: none;
+}
+
+:global([data-concept='haven'])
+  .choiceGrid[data-step='debt-amount']
+  .choiceCard[data-selected='true']
+  .choiceGo {
+  display: none;
 }
 
 .choiceIconWrap {
@@ -201,6 +330,24 @@
 .choiceMark svg {
   width: 14px;
   height: 14px;
+}
+
+/* Morph fits each step into one fold, so its controls give up height as the
+   scene container gets shorter. Hit targets keep a floor no smaller than the
+   44px minimum. */
+:global([data-concept='morph']) .choiceGrid {
+  gap: clamp(5px, 1cqh, 9px);
+}
+
+:global([data-concept='morph']) .choiceCard {
+  min-height: clamp(44px, 5.9cqh, 52px);
+  padding: clamp(9px, 1.5cqh, 13px) 18px;
+}
+
+:global([data-concept='morph']) .choiceCardIcon {
+  min-height: clamp(78px, 11.5cqh, 102px);
+  padding: clamp(11px, 1.8cqh, 16px);
+  gap: clamp(6px, 1.2cqh, 10px);
 }
 
 /* ---------- Fields ---------- */
@@ -340,6 +487,24 @@
   color: var(--c-danger);
 }
 
+:global([data-concept='morph']) .fieldStack {
+  gap: clamp(7px, 1.35cqh, 12px);
+}
+
+:global([data-concept='morph']) .field {
+  gap: clamp(2px, 0.55cqh, 6px);
+}
+
+:global([data-concept='morph']) .fieldLabel {
+  font-size: clamp(0.74rem, 1.55cqh, 0.8125rem);
+}
+
+:global([data-concept='morph']) .input,
+:global([data-concept='morph']) .select {
+  min-height: clamp(44px, 5.7cqh, 50px);
+  padding-block: clamp(9px, 1.4cqh, 12px);
+}
+
 /* ---------- Button ---------- */
 
 .button {
@@ -356,6 +521,8 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--c-on-accent);
+  text-decoration: none;
+  cursor: pointer;
   background: var(--button-bg, var(--c-accent));
   border-radius: var(--button-radius, var(--radius-md));
   box-shadow: var(--button-shadow, none);
@@ -387,6 +554,11 @@
 .buttonLabel {
   position: relative;
   z-index: 1;
+}
+
+:global([data-concept='morph']) .button {
+  min-height: clamp(46px, 5.9cqh, 52px);
+  padding-block: clamp(11px, 1.6cqh, 14px);
 }
 
 .button:hover:not(:disabled) {
@@ -576,12 +748,117 @@
   color: var(--c-accent);
 }
 
+:global([data-concept='morph']) .bulletList {
+  gap: clamp(5px, 1cqh, 9px);
+}
+
+/* Morph has no boxes left anywhere else, and the tinted panel here is both
+   off-message and the single biggest block standing between the tallest step
+   and its fold. The text stays; the container goes. */
+:global([data-concept='morph']) .disclaimer {
+  padding: 0;
+  font-size: clamp(0.72rem, 1.5cqh, 0.8rem);
+  line-height: 1.45;
+  color: var(--c-faint);
+  background: none;
+}
+
+:global([data-concept='morph']) .disclaimer svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Pulse sits the form on the field. Controls keep a solid fill + shadow so
+   they still look tappable; decorative ticks share the same blue, so shape
+   is what separates the two. Focus reuses the title's tick-underline. */
+:global([data-concept='pulse']) .choiceCard,
+:global([data-concept='pulse']) .input,
+:global([data-concept='pulse']) .select {
+  cursor: pointer;
+  background: #fff;
+  backdrop-filter: none;
+  box-shadow: var(--choice-shadow);
+}
+
+:global([data-concept='pulse']) .input {
+  cursor: text;
+}
+
+:global([data-concept='pulse']) .choiceCard:focus-visible,
+:global([data-concept='pulse']) .button:focus-visible,
+:global([data-concept='pulse']) .input:focus-visible,
+:global([data-concept='pulse']) .select:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+
+:global([data-concept='pulse']) .inputWrap::after,
+:global([data-concept='pulse']) .selectWrap::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 8px;
+  height: 2px;
+  background: var(--c-accent);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  transition: transform 180ms var(--ease-out);
+}
+
+:global([data-concept='pulse']) .inputWrap:focus-within::after,
+:global([data-concept='pulse']) .selectWrap:focus-within::after {
+  transform: scaleX(1);
+}
+
+:global([data-concept='pulse']) .input:focus,
+:global([data-concept='pulse']) .select:focus {
+  box-shadow: var(--choice-shadow);
+}
+
+:global([data-concept='pulse']) .disclaimer {
+  padding: 0;
+  color: var(--c-faint);
+  background: none;
+}
+
+:global([data-concept='pulse']) .button {
+  cursor: pointer;
+}
+
+/* A frame this short but this wide is a desktop window, not a phone, so the
+   44px touch floors can come down enough to hold the fold. Narrow frames
+   keep their full hit targets at every height. */
+@container morph (max-height: 680px) and (min-width: 1100px) {
+  :global([data-concept='morph']) .input,
+  :global([data-concept='morph']) .select {
+    min-height: 40px;
+  }
+
+  :global([data-concept='morph']) .button {
+    min-height: 42px;
+  }
+
+  :global([data-concept='morph']) .choiceCard {
+    min-height: 40px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :global([data-concept='haven']) .button:hover:not(:disabled),
   :global([data-concept='haven']) .choiceCard:hover,
   :global([data-concept='vault']) .button:hover:not(:disabled),
   :global([data-concept='vault']) .choiceCard:hover {
     translate: none;
+  }
+
+  :global([data-concept='haven'])
+    .choiceGrid[data-step='debt-amount']
+    .choiceCard:hover
+    .choiceGo {
+    transform: none;
   }
 
   :global([data-concept='haven']) .button::after,
@@ -616,5 +893,37 @@
   .choiceCardIcon {
     min-height: 104px;
     padding: 14px;
+  }
+
+  /* Two columns keeps all five bands inside the first screen. */
+  :global([data-concept='haven']) .choiceGrid[data-step='debt-amount'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  :global([data-concept='haven'])
+    .choiceGrid[data-step='debt-amount']
+    .choiceCard {
+    min-height: 56px;
+    padding: 12px 10px 12px 18px;
+  }
+
+  :global([data-concept='haven'])
+    .choiceGrid[data-step='debt-amount']
+    .choiceCard:last-child {
+    grid-column: span 2;
+  }
+
+  :global([data-concept='haven'])
+    .choiceGrid[data-step='debt-amount']
+    .choiceLabel {
+    font-size: 1.05rem;
+    white-space: nowrap;
+  }
+
+  :global([data-concept='haven'])
+    .choiceGrid[data-step='debt-amount']
+    .choiceGo {
+    display: none;
   }
 }

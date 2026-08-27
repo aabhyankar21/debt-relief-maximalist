@@ -24,8 +24,8 @@
   --shadow-card: 0 10px 28px rgb(255 45 120 / 10%), 0 2px 0 rgb(27 18 51 / 4%);
   --shadow-lift: 0 16px 36px rgb(255 45 120 / 22%);
 
-  --font-display: 'Syne', 'Inter Tight', system-ui, sans-serif;
-  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 750;
   --display-tracking: -0.04em;
 

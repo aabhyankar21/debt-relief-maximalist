@@ -1,101 +1,106 @@
-.result {
-  display: grid;
-  gap: 22px;
-  justify-items: start;
-  width: 100%;
-  max-width: var(--content-max);
+.kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eyebrow-color, var(--c-accent));
 }
 
 .badge {
-  display: grid;
-  place-items: center;
-  width: 58px;
-  height: 58px;
-  color: var(--c-on-accent);
-  background: var(--c-success);
-  border-radius: 50%;
-  box-shadow: 0 10px 30px rgb(16 185 129 / 30%);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 0;
+  padding: 6px 12px 6px 6px;
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eyebrow-color, var(--c-accent));
+  background: var(--c-accent-soft);
+  border-radius: var(--radius-pill);
 }
 
-.badge svg {
+.partner {
+  display: grid;
+  gap: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--c-border);
+}
+
+.partnerName {
+  margin: 0;
+  font-family: var(--font-heading, var(--font-display));
+  font-size: 1.15rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.logo {
+  display: block;
+  height: 72px;
+  width: auto;
+  max-width: min(320px, 100%);
+  object-fit: contain;
+  padding: 8px 12px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
+}
+
+.centered {
+  text-align: center;
+  justify-items: center;
+}
+
+.centered .badge {
+  color: #ffffff;
+  background: var(--c-success);
+}
+
+.centered .badge > span {
+  color: var(--c-success);
+  background: #ffffff;
+}
+
+.centered .partner {
+  justify-items: center;
+  width: 100%;
+}
+
+.centered .status {
+  width: min(100%, 38ch);
+  text-align: left;
+}
+
+.centered .statusIcon {
+  margin-top: 2px;
+}
+
+.status {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 550;
+  line-height: 1.5;
+}
+
+.statusIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
   width: 28px;
   height: 28px;
-}
-
-.heading {
-  font-family: var(--font-display);
-  font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.3rem);
-  font-weight: var(--display-weight);
-  line-height: 1.15;
-  letter-spacing: var(--display-tracking);
-  text-wrap: balance;
-}
-
-.restart {
-  min-height: 48px;
-  padding: 12px 22px;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: var(--c-text);
-  border: 1.5px solid var(--c-border-strong);
-  border-radius: var(--radius-pill);
-  transition:
-    background-color var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out);
-}
-
-.restart:hover {
-  background: var(--c-accent-soft);
-  border-color: var(--c-accent);
-}
-
-:global([data-concept='haven']) .restart {
-  transition:
-    translate 180ms var(--ease-out),
-    color 180ms var(--ease-out),
-    background-color 180ms var(--ease-out),
-    border-color 180ms var(--ease-out),
-    box-shadow 180ms var(--ease-out);
-}
-
-:global([data-concept='haven']) .restart:hover {
-  translate: 0 -2px;
+  margin-top: 1px;
   color: var(--c-on-accent);
-  background: #3d6a4b;
-  border-color: #3d6a4b;
-  box-shadow: var(--button-shadow-hover);
+  background: var(--c-accent);
+  border-radius: 50%;
 }
 
-:global([data-concept='flux']) .restart {
-  transition:
-    transform 220ms var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out),
-    border-color var(--dur-fast) var(--ease-out),
-    box-shadow 220ms var(--ease-out);
-}
-
-:global([data-concept='flux']) .restart:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 12px 28px rgb(214 255 61 / 18%);
-}
-
-:global([data-concept='flux']) .badge {
-  animation: fluxBadge 2.2s ease-in-out infinite;
-}
-
-@keyframes fluxBadge {
-  50% {
-    box-shadow: 0 10px 36px rgb(61 255 176 / 55%);
-    transform: scale(1.06);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  :global([data-concept='flux']) .badge {
-    animation: none;
-  }
-
-  :global([data-concept='haven']) .restart:hover {
-    translate: none;
-  }
+.statusIcon svg {
+  width: 14px;
+  height: 14px;
 }

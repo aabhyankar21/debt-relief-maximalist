@@ -1,12 +1,7 @@
 import { motion } from 'motion/react';
+import { resultScreen } from '../../data/journey';
 import ndrLogo from './national-debt-relief.png';
 import styles from './haven.module.css';
-
-const BENEFITS = [
-  'A+ BBB rating and AFCC accredited',
-  'Free consultation and personalized savings estimate',
-  'Combine high-interest debts into one low monthly payment',
-];
 
 function BadgeCheckIcon() {
   return (
@@ -70,24 +65,24 @@ export function HavenResult() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      <p className={styles.resultEyebrow}>Congratulations!</p>
+      <p className={styles.resultEyebrow}>{resultScreen.eyebrow}</p>
       <h1 className={styles.resultHeading}>
-        We have matched you with your personalized Debt Relief provider
+        {resultScreen.heading}
       </h1>
 
       <article className={styles.pickCard}>
         <p className={styles.pickBadge}>
           <BadgeCheckIcon />
-          Our pick for you
+          {resultScreen.badge}
         </p>
 
         <div className={styles.pickBrand}>
-          <p className={styles.pickName}>National Debt Relief</p>
           <img
             className={styles.pickLogo}
             src={ndrLogo}
-            alt="National Debt Relief"
+            alt=""
           />
+          <p className={styles.pickName}>{resultScreen.partnerName}</p>
         </div>
 
         <hr className={styles.pickRule} />
@@ -96,12 +91,11 @@ export function HavenResult() {
           <span className={styles.pickPhoneIcon}>
             <StatusPhoneIcon />
           </span>
-          You’re almost done! A representative will call shortly to help finish
-          the process.
+          {resultScreen.status}
         </p>
 
         <ul className={styles.pickBenefits}>
-          {BENEFITS.map((item) => (
+          {resultScreen.bullets.map((item) => (
             <li key={item}>
               <BenefitCheckIcon />
               <span>{item}</span>
@@ -109,8 +103,8 @@ export function HavenResult() {
           ))}
         </ul>
 
-        <a className={styles.callNow} href="tel:#">
-          Call Now
+        <a className={styles.callNow} href={resultScreen.phoneHref}>
+          {resultScreen.buttonLabel}
           <CallPhoneIcon />
         </a>
       </article>

@@ -1,0 +1,100 @@
+/* One continuous background: gradient, bokeh, thread. Nothing in here
+   draws a boundary — the form's glass cards sit straight on top of it. */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    160deg,
+    var(--ts-backdrop-from) 0%,
+    var(--ts-backdrop-to) 100%
+  );
+}
+
+.bokehLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bokeh {
+  position: absolute;
+  background: radial-gradient(
+    circle,
+    var(--ts-bokeh-cool) 0%,
+    var(--ts-bokeh-cool) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(28px);
+  transform: translate(-50%, -50%);
+  animation-name: bokehDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+/* Cross-faded rather than transitioned: gradient stops do not interpolate. */
+.bokehWarm {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    var(--ts-bokeh-warm) 0%,
+    var(--ts-bokeh-warm) 45%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 2.4s var(--ease-out);
+}
+
+.bokehWarm[data-on='true'] {
+  opacity: 1;
+}
+
+@keyframes bokehDrift {
+  0% {
+    translate: 0 0;
+    scale: 1;
+  }
+
+  33% {
+    translate: var(--dx) var(--dy);
+    scale: 1.05;
+  }
+
+  66% {
+    translate: calc(var(--dx) * -0.6) calc(var(--dy) * -0.45);
+    scale: 0.97;
+  }
+
+  100% {
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.name {
+  font-family: var(--font-script, var(--font-body));
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.stage[data-motion='off'] .bokeh {
+  animation: none;
+}
+
+.stage[data-motion='off'] .bokehWarm {
+  transition: none;
+}

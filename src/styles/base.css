@@ -36,8 +36,9 @@
   --shadow-lift: 0 10px 30px rgb(0 0 0 / 12%);
 
   /* Type */
-  --font-display: 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 600;
   --display-tracking: -0.02em;
 

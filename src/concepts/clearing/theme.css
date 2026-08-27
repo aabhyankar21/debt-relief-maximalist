@@ -1,0 +1,69 @@
+/* Tokens derived from the ClearingScene palette: cool slate surfaces,
+   warm dusk accent. Keep in step with CLEARING_PALETTE. */
+
+[data-concept='clearing'] {
+  --c-bg: #171c26;
+  --c-panel: #1c222e;
+  --c-surface: #171c26;
+  --c-surface-2: #1f2632;
+
+  --c-text: #f3e7d6;
+  --c-muted: rgb(203 210 224 / 76%);
+  --c-faint: rgb(160 170 188 / 60%);
+
+  --c-border: rgb(244 216 176 / 14%);
+  --c-border-strong: rgb(244 216 176 / 30%);
+
+  --c-accent: #f4b878;
+  --c-accent-soft: rgb(244 184 120 / 14%);
+  --c-on-accent: #241708;
+  --c-warm: #ffb35c;
+  --c-success: #8fc9a3;
+  --c-danger: #ff8b93;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-card: 0 18px 48px rgb(8 10 16 / 46%);
+  --shadow-lift: 0 16px 38px rgb(244 184 120 / 16%);
+
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --display-weight: 500;
+  --display-tracking: -0.024em;
+
+  --content-max: 520px;
+
+  --eyebrow-color: #f4b878;
+  --card-blur: blur(14px);
+  --choice-hover-bg: rgb(244 216 176 / 8%);
+  --choice-shadow: 0 1px 0 rgb(255 255 255 / 5%) inset;
+  --choice-icon-bg: #232a38;
+  --choice-icon-color: #f3e7d6;
+  --choice-icon-radius: 14px;
+  --choice-icon-selected-bg: #f4b878;
+  --choice-icon-selected-color: #241708;
+  --input-bg: #131822;
+  --callout-bg: rgb(244 216 176 / 6%);
+  --callout-border: rgb(244 216 176 / 12%);
+  --callout-text: #f3e7d6;
+  --callout-shadow: 0 16px 40px rgb(8 10 16 / 38%);
+  --button-bg: #f4b878;
+  --button-radius: 999px;
+  --button-shadow: 0 10px 26px rgb(244 184 120 / 24%);
+  --button-shadow-hover: 0 14px 34px rgb(244 184 120 / 34%);
+  --bullet-bg: rgb(244 184 120 / 16%);
+  --track-bg: rgb(244 216 176 / 12%);
+  --progress-fill: #f4b878;
+  --badge-bg: rgb(244 216 176 / 7%);
+  --legal-text: rgb(160 170 188 / 55%);
+
+  color-scheme: dark;
+}
+
+[data-concept='clearing'] select option {
+  color: #171c26;
+  background: #ffffff;
+}

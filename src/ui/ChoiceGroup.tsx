@@ -44,6 +44,7 @@ export function ChoiceGroup({ name, choices, value, onSelect, label }: Props) {
             refCallback={(node) => {
               refs.current[i] = node;
             }}
+            choiceId={choice.id}
             name={name}
             selected={selected}
             tabIndex={i === tabbableIndex ? 0 : -1}
@@ -66,6 +67,7 @@ export function ChoiceGroup({ name, choices, value, onSelect, label }: Props) {
 
 function ChoiceCard({
   refCallback,
+  choiceId,
   name,
   selected,
   tabIndex,
@@ -78,6 +80,7 @@ function ChoiceCard({
   onJump,
 }: {
   refCallback: (node: HTMLButtonElement | null) => void;
+  choiceId: string;
   name: string;
   selected: boolean;
   tabIndex: number;
@@ -112,6 +115,7 @@ function ChoiceCard({
       aria-checked={selected}
       name={name}
       tabIndex={tabIndex}
+      data-choice-id={choiceId}
       data-selected={selected}
       data-kinetic={kinetic ? 'true' : undefined}
       className={`${styles.choiceCard} ${iconLayout ? styles.choiceCardIcon : ''}`}

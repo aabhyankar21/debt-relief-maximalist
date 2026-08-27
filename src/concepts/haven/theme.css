@@ -25,9 +25,9 @@
   --shadow-card: 0 1px 2px rgb(36 48 40 / 4%);
   --shadow-lift: 0 12px 28px rgb(74 124 89 / 12%);
 
-  --font-display: 'Schnyder S', 'Iowan Old Style', Georgia, serif;
-  --font-heading: 'Work Sans', 'Inter Tight', system-ui, sans-serif;
-  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 500;
   --display-tracking: -0.02em;
 

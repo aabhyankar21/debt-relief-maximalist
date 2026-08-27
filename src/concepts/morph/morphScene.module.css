@@ -1,0 +1,211 @@
+/**
+ * One continuous physical surface: mesh gradient, glass blob, film grain.
+ * Nothing in here draws a panel edge or a boundary — the form's own glass
+ * cards sit straight on top of this, made of the same material.
+ *
+ * `isolation: isolate` keeps the grain's blend mode inside the scene, and
+ * doubles as the backdrop root the blob's backdrop-filter samples from.
+ */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ms-base);
+  isolation: isolate;
+}
+
+/* ---------------------------- mesh gradient ---------------------------- */
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Each wash drifts on its own minute-plus loop. Overlapping at low opacity
+   is what stops the gradient reading as flat wallpaper. */
+.meshLayer {
+  position: absolute;
+  aspect-ratio: 1;
+  background: radial-gradient(
+    circle at center,
+    var(--ms-layer) 0%,
+    transparent 68%
+  );
+  border-radius: 50%;
+  translate: -50% -50%;
+  animation-name: meshDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes meshDrift {
+  0% {
+    translate: -50% -50%;
+    scale: 1;
+  }
+
+  33% {
+    translate: calc(-50% + var(--dx)) calc(-50% + var(--dy));
+    scale: 1.06;
+  }
+
+  66% {
+    translate: calc(-50% + (var(--dx) * -0.7)) calc(-50% + (var(--dy) * -0.5));
+    scale: 0.97;
+  }
+
+  100% {
+    translate: -50% -50%;
+    scale: 1;
+  }
+}
+
+/* Cross-faded rather than transitioned: gradient stops do not interpolate. */
+.warm {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 28% 108%, var(--ms-coral) 0%, transparent 62%),
+    radial-gradient(90% 70% at 86% 6%, var(--ms-coral) 0%, transparent 58%);
+  opacity: 0;
+  mix-blend-mode: soft-light;
+}
+
+/* ------------------------------- the blob ------------------------------- */
+
+/* All blob geometry is in this box's own pixel space, which keeps the
+   backdrop filter bounded to a region instead of the whole viewport. */
+.box {
+  position: absolute;
+  left: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+/* The traced metaball contour is written to `clip-path` every frame; every
+   layer below is clipped to it, so they all share one silhouette. */
+.glass {
+  position: absolute;
+  inset: 0;
+  -webkit-backdrop-filter: var(--ms-backdrop);
+  backdrop-filter: var(--ms-backdrop);
+}
+
+.fill,
+.solid,
+.tint,
+.inner,
+.sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Graded rather than flat, so the body reads as a curved surface. */
+.fill {
+  background: linear-gradient(
+    158deg,
+    rgb(255 255 255 / 26%) 0%,
+    var(--ms-glass) 46%,
+    rgb(255 255 255 / 8%) 100%
+  );
+}
+
+/* Step 6 tightens the material. This adds body without a colour change. */
+.solid {
+  background: var(--ms-glass);
+  opacity: 0;
+}
+
+/* Hue-rotated by debt type, so the blob stays the same material throughout. */
+.tint {
+  background: radial-gradient(
+    124% 124% at 32% 22%,
+    var(--ms-tint) 0%,
+    transparent 74%
+  );
+  opacity: 0.2;
+}
+
+/* Fakes a light source off one edge. Follows the pointer on fine pointers. */
+.inner {
+  background: radial-gradient(
+    58% 58% at var(--ms-hl-x, 36%) var(--ms-hl-y, 27%),
+    var(--ms-highlight) 0%,
+    rgb(255 255 255 / 24%) 34%,
+    transparent 70%
+  );
+}
+
+/* Sweeps across once on step 6 — the physical "locked in" cue. */
+.sweep {
+  inset: -30%;
+  background: linear-gradient(
+    102deg,
+    transparent 41%,
+    var(--ms-highlight) 50%,
+    transparent 59%
+  );
+  opacity: 0;
+}
+
+/* Contact shadow, edge lens and rim: three more passes over the same traced
+   contour, one behind the glass and two in front of it. */
+.underlay,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.rim {
+  stroke-width: 1.6;
+}
+
+/* --------------------------- progress indicator --------------------------- */
+
+.progress {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Plain linear fallback, for when the arc alone is not clear enough. */
+.linear {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--ms-track);
+}
+
+.linearFill {
+  height: 100%;
+  background: var(--ms-accent);
+  transition: width 420ms var(--ease-out);
+}
+
+/* -------------------------------- grain -------------------------------- */
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.06;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* ----------------------------- reduced motion ----------------------------- */
+
+.stage[data-motion='off'] .meshLayer {
+  animation: none;
+}

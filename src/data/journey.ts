@@ -231,12 +231,19 @@ export const steps: Step[] = [
 ];
 
 export const resultScreen = {
-  heading: 'We Highly Recommend Getting Multiple Estimates',
+  eyebrow: 'Congratulations!',
+  heading: 'We have matched you with your personalized Debt Relief provider',
+  badge: 'Our pick for you',
+  partnerName: 'National Debt Relief',
+  status:
+    'You’re almost done! A representative will call shortly to help finish the process.',
   bullets: [
-    'Instantly matched with top-rated debt relief partners',
-    'No impact to your credit score to check your options',
-    'Reduce monthly payments and regain financial control',
+    'A+ BBB rating and AFCC accredited',
+    'Free consultation and personalized savings estimate',
+    'Combine high-interest debts into one low monthly payment',
   ],
+  buttonLabel: 'Call Now',
+  phoneHref: 'tel:#',
 };
 
 export const fallbackScreen = {

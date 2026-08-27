@@ -129,6 +129,13 @@
   color: var(--c-success);
 }
 
+.trustCluster {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
 /* ---------- Linear progress ---------- */
 
 .progressWrap {
@@ -254,6 +261,18 @@
   border-bottom-color: currentColor;
 }
 
+.headerLegal {
+  display: none;
+}
+
+/* Morph fits each step into one fold, and the footer is the last block
+   competing for that space. */
+:global([data-concept='morph']) .legal {
+  gap: clamp(4px, 0.8cqh, 7px);
+  padding: clamp(6px, 1.35cqh, 12px) 20px
+    calc(clamp(8px, 2cqh, 18px) + env(safe-area-inset-bottom));
+}
+
 :global([data-concept='haven']) .legal {
   justify-items: start;
   width: 100%;
@@ -270,6 +289,14 @@
   text-align: left;
 }
 
+:global([data-concept='unburden']) .legal {
+  justify-items: start;
+  width: 100%;
+  max-width: none;
+  padding: 8px var(--header-inline, var(--main-inline, 16px)) 24px;
+  text-align: left;
+}
+
 :global([data-concept='haven']) .legalLinks {
   justify-content: flex-start;
   width: 100%;
@@ -280,6 +307,35 @@
   justify-content: flex-start;
   width: 100%;
   max-width: var(--content-max);
+}
+
+:global([data-concept='unburden']) .legalLinks {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+@media (min-width: 1024px) {
+  .headerLegal {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    width: auto;
+    max-width: none;
+    color: var(--legal-text, var(--c-faint));
+  }
+
+  :global([data-concept='haven']) .headerLegal,
+  :global([data-concept='vault']) .headerLegal,
+  :global([data-concept='unburden']) .headerLegal {
+    justify-content: flex-end;
+    width: auto;
+    max-width: none;
+  }
+
+  .legal {
+    display: none;
+  }
 }
 
 :global([data-concept='flux']) .brand {
@@ -377,8 +433,18 @@
     padding: 4px var(--main-inline, 16px) calc(24px + env(safe-area-inset-bottom));
   }
 
+  :global([data-concept='unburden']) .legal {
+    padding: 8px var(--main-inline, 16px) calc(24px + env(safe-area-inset-bottom));
+  }
+
   :global([data-concept='haven']) .trustBadge {
     padding: 6px 10px;
     font-size: 0.6875rem;
+  }
+
+  :global([data-concept='unburden']) .trustBadge {
+    padding: 4px 8px;
+    font-size: 0.6875rem;
+    gap: 5px;
   }
 }

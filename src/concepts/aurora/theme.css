@@ -23,8 +23,8 @@
   --shadow-card: 0 20px 60px rgb(0 0 0 / 45%);
   --shadow-lift: 0 18px 44px rgb(110 231 249 / 18%);
 
-  --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 650;
   --display-tracking: -0.032em;
 

@@ -1,0 +1,69 @@
+/* Pale, low-saturation surfaces with a warm accent, matching
+   THREAD_PALETTE. Every card surface is translucent: the scene behind it
+   is the only background in the layout, so nothing may paint over it. */
+
+[data-concept='thread'] {
+  --c-bg: #fdfbf9;
+  --c-panel: rgb(255 255 255 / 58%);
+  --c-surface: rgb(255 255 255 / 62%);
+  --c-surface-2: rgb(255 255 255 / 76%);
+
+  --c-text: #33302a;
+  --c-muted: rgb(74 69 61 / 78%);
+  --c-faint: rgb(94 88 78 / 62%);
+
+  --c-border: rgb(120 106 88 / 18%);
+  --c-border-strong: rgb(120 106 88 / 34%);
+
+  --c-accent: #d1793a;
+  --c-accent-soft: rgb(224 138 60 / 13%);
+  --c-on-accent: #fffaf4;
+  --c-success: #6f8f63;
+  --c-danger: #c2452f;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+
+  --shadow-card: 0 1px 1px rgb(60 48 32 / 4%), 0 18px 44px rgb(60 48 32 / 8%);
+  --shadow-lift: 0 14px 34px rgb(180 116 56 / 18%);
+
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --font-script: 'Work Sans', system-ui, sans-serif;
+  --display-weight: 600;
+  --display-tracking: -0.022em;
+
+  --content-max: 520px;
+
+  --eyebrow-color: #b8672f;
+  /* Light enough that the thread still reads through the glass — a heavy
+     blur erases a 2px line completely. */
+  --card-blur: blur(6px) saturate(1.12);
+  --choice-hover-bg: rgb(255 255 255 / 84%);
+  --choice-shadow:
+    0 1px 0 rgb(255 255 255 / 70%) inset,
+    0 8px 22px rgb(60 48 32 / 6%);
+  --choice-icon-bg: rgb(224 138 60 / 12%);
+  --choice-icon-color: #b8672f;
+  --choice-icon-radius: 13px;
+  --choice-icon-selected-bg: #d1793a;
+  --choice-icon-selected-color: #fffaf4;
+  --input-bg: rgb(255 255 255 / 62%);
+  --callout-bg: rgb(255 255 255 / 52%);
+  --callout-border: rgb(120 106 88 / 16%);
+  --callout-text: #33302a;
+  --callout-shadow: 0 14px 34px rgb(60 48 32 / 7%);
+  --button-bg: #d1793a;
+  --button-radius: 999px;
+  --button-shadow: 0 10px 24px rgb(180 116 56 / 22%);
+  --button-shadow-hover: 0 14px 30px rgb(180 116 56 / 30%);
+  --bullet-bg: rgb(111 143 99 / 16%);
+  --track-bg: rgb(120 106 88 / 14%);
+  --progress-fill: #d1793a;
+  --badge-bg: rgb(255 255 255 / 58%);
+  --legal-text: rgb(94 88 78 / 58%);
+
+  color-scheme: light;
+}

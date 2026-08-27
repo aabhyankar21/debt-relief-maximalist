@@ -26,7 +26,10 @@ export interface JourneyState {
   fields: Record<string, string>;
   dob: DateValue;
   canAdvance: boolean;
+  /** Choice the pointer/keyboard is resting on, before it is committed. */
+  preview: string | undefined;
   selectChoice: (stepId: string, choiceId: string) => void;
+  setPreview: (choiceId: string | undefined) => void;
   setField: (fieldId: string, value: string) => void;
   setDobPart: (part: keyof DateValue, value: string) => void;
   next: () => void;
@@ -53,11 +56,17 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
   const [choices, setChoices] = useState<Record<string, string>>({});
   const [fields, setFields] = useState<Record<string, string>>({});
   const [dob, setDob] = useState<DateValue>(emptyDob);
+  const [preview, setPreviewState] = useState<string | undefined>(undefined);
 
   const step = steps[index];
 
+  const setPreview = useCallback((choiceId: string | undefined) => {
+    setPreviewState(choiceId);
+  }, []);
+
   const next = useCallback(() => {
     setDirection(1);
+    setPreviewState(undefined);
     setIndex((current) => {
       if (current >= steps.length - 1) {
         setFinished(true);
@@ -69,6 +78,7 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
 
   const back = useCallback(() => {
     setDirection(-1);
+    setPreviewState(undefined);
     if (finished) {
       setFinished(false);
       return;
@@ -95,6 +105,7 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
     setChoices({});
     setFields({});
     setDob(emptyDob);
+    setPreviewState(undefined);
   }, []);
 
   const canAdvance = useMemo(() => {
@@ -118,7 +129,9 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       fields,
       dob,
       canAdvance,
+      preview,
       selectChoice,
+      setPreview,
       setField,
       setDobPart,
       next,
@@ -134,7 +147,9 @@ export function JourneyProvider({ children }: { children: ReactNode }) {
       fields,
       dob,
       canAdvance,
+      preview,
       selectChoice,
+      setPreview,
       setField,
       setDobPart,
       next,

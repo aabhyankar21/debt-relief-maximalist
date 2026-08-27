@@ -5,9 +5,12 @@
   max-width: var(--content-max);
 }
 
+/* Concepts that float type straight onto artwork set --copy-shadow to keep
+   the glyph edges; everywhere else it stays off. */
 .head {
   display: grid;
   gap: 10px;
+  text-shadow: var(--copy-shadow, none);
 }
 
 .eyebrow {
@@ -19,14 +22,16 @@
 }
 
 .heading {
-  font-family: var(--font-heading, var(--font-display));
+  font-family: var(--font-heading);
   font-size: clamp(1.75rem, 1.15rem + 2.1vw, 2.6rem);
-  font-weight: max(700, var(--display-weight));
+  font-weight: 700;
   line-height: 1.12;
   letter-spacing: var(--display-tracking);
   text-wrap: balance;
 }
 
+/* Haven italicizes h1/h2 for display type; keep the step title roman so
+   Work Sans Bold actually shows. */
 :global([data-concept='vault']) .heading,
 :global([data-concept='haven']) .heading {
   font-style: normal;
@@ -66,12 +71,14 @@
 .footNotes {
   display: grid;
   gap: 14px;
+  text-shadow: var(--copy-shadow, none);
 }
 
 .callout {
   display: grid;
   gap: 8px;
   padding: 20px;
+  text-shadow: none;
   color: var(--callout-text, var(--c-on-callout, #fff));
   background: var(--callout-bg, var(--c-text));
   border: 1px solid var(--callout-border, transparent);
@@ -93,6 +100,176 @@
   opacity: 0.86;
 }
 
+/* Morph lands every step inside one fold, so its rhythm and type scale both
+   track the height of the scene container. On the headline the width term
+   still governs narrow screens and the height term is what gives way when
+   the frame is short, whichever binds first. */
+:global([data-concept='morph']) .body {
+  gap: clamp(8px, 1.8cqh, 16px);
+}
+
+:global([data-concept='morph']) .head {
+  gap: clamp(3px, 0.8cqh, 7px);
+}
+
+:global([data-concept='morph']) .heading {
+  font-size: min(
+    clamp(1.45rem, 1.05rem + 2.6cqw, 2.15rem),
+    clamp(1.3rem, 3.9cqh, 2.15rem)
+  );
+}
+
+:global([data-concept='morph']) .question {
+  font-size: min(
+    clamp(1.02rem, 0.96rem + 0.5cqw, 1.28rem),
+    clamp(0.98rem, 2.3cqh, 1.28rem)
+  );
+}
+
+:global([data-concept='morph']) .subtext {
+  font-size: clamp(0.78rem, 1.7cqh, 0.95rem);
+  line-height: 1.48;
+}
+
+:global([data-concept='morph']) .controls {
+  gap: clamp(8px, 1.6cqh, 14px);
+}
+
+:global([data-concept='morph']) .footNotes {
+  gap: clamp(6px, 1.25cqh, 11px);
+}
+
+:global([data-concept='morph']) .callout {
+  padding: clamp(10px, 1.8cqh, 16px) clamp(13px, 2cqh, 18px);
+}
+
+:global([data-concept='morph']) .calloutTitle {
+  font-size: clamp(0.92rem, 1.9cqh, 1rem);
+}
+
+:global([data-concept='morph']) .calloutBody {
+  font-size: clamp(0.82rem, 1.7cqh, 0.9rem);
+  line-height: 1.48;
+}
+
+:global([data-concept='pulse']) .body {
+  gap: 28px;
+}
+
+:global([data-concept='pulse']) .head {
+  gap: 12px;
+}
+
+:global([data-concept='pulse']) .heading {
+  font-size: clamp(1.55rem, 1.1rem + 1.8vw, 2.15rem);
+}
+
+:global([data-concept='mosaic']) .body {
+  gap: 24px;
+}
+
+:global([data-concept='mosaic']) .head {
+  gap: 12px;
+}
+
+:global([data-concept='mosaic']) .heading,
+:global([data-concept='unburden']) .heading {
+  font-size: clamp(1.5rem, 1.08rem + 1.7vw, 2.05rem);
+}
+
+:global([data-concept='unburden']) .body {
+  gap: 24px;
+}
+
+:global([data-concept='unburden']) .head {
+  gap: 12px;
+}
+
+@media (max-width: 767px) {
+  :global([data-concept='mosaic']) .eyebrow,
+  :global([data-concept='unburden']) .eyebrow {
+    display: none;
+  }
+
+  :global([data-concept='mosaic']) .body,
+  :global([data-concept='unburden']) .body {
+    gap: 14px;
+  }
+
+  :global([data-concept='mosaic']) .head,
+  :global([data-concept='unburden']) .head {
+    gap: 7px;
+  }
+
+  :global([data-concept='mosaic']) .heading,
+  :global([data-concept='unburden']) .heading {
+    font-size: clamp(1.28rem, 1.02rem + 2.2vw, 1.6rem);
+  }
+
+  :global([data-concept='mosaic']) .question {
+    font-size: 1.02rem;
+  }
+
+  :global([data-concept='mosaic']) .subtext {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+}
+
+/* Last things to go, and only when the frame genuinely cannot hold them. The
+   callout is reassurance copy and the eyebrow is a label, so on a short frame
+   they yield the fold to the question and its answers rather than pushing
+   those under the crease. Everything load-bearing — including the secure note
+   and the disclaimer — stays at every height. */
+@container morph (max-height: 900px) {
+  :global([data-concept='morph']) .callout {
+    display: none;
+  }
+}
+
+/* Short and wide. A window this shape cannot hold the stack no matter how
+   tight the scale gets, and a landscape fold wants the question on one side
+   and its answers on the other regardless — so the copy takes the left
+   column and the controls take the right. Only frames that genuinely cannot
+   stack get this; a 1280x700 laptop still reads as one column. */
+@container morph (max-height: 660px) and (min-width: 1000px) {
+  :global([data-concept='morph']) .body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    column-gap: clamp(28px, 4cqw, 56px);
+    align-items: start;
+    max-width: none;
+  }
+
+  :global([data-concept='morph']) .head {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  :global([data-concept='morph']) .footNotes {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  :global([data-concept='morph']) .controls {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+}
+
+@container morph (max-height: 720px) {
+  :global([data-concept='morph']) .eyebrow {
+    display: none;
+  }
+
+  /* A laptop fold this short is the one place the headline gives up a step
+     more than the proportional scale would take. */
+  :global([data-concept='morph']) .heading {
+    font-size: min(clamp(1.4rem, 1.05rem + 2.6cqw, 1.8rem), 3.45cqh);
+  }
+}
+
 @media (max-width: 767px) {
   .body {
     gap: 18px;
@@ -100,5 +277,27 @@
 
   .heading {
     font-size: clamp(1.5rem, 1.1rem + 3.2vw, 2rem);
+  }
+
+  /* Haven trades headline size for getting every band above the fold. */
+  :global([data-concept='haven']) .body {
+    gap: 15px;
+  }
+
+  :global([data-concept='haven']) .head {
+    gap: 7px;
+  }
+
+  :global([data-concept='haven']) .heading {
+    font-size: clamp(1.32rem, 1.02rem + 2.6vw, 1.7rem);
+  }
+
+  :global([data-concept='haven']) .question {
+    font-size: 1.05rem;
+  }
+
+  :global([data-concept='haven']) .subtext {
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 }

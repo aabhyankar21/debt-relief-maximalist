@@ -1,0 +1,292 @@
+.root {
+  container-type: size;
+  container-name: unburden;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.shell {
+  --main-inline: clamp(16px, 4cqw, 44px);
+  --header-inline: clamp(16px, 4vw, 72px);
+  --stage-max: 1080px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  flex: none;
+  display: grid;
+  gap: 0;
+  width: 100%;
+  padding: 6px var(--header-inline) 2px;
+  background: #fff;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+  min-width: 0;
+  min-height: 26px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.brandLogo {
+  display: block;
+  height: 15px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+}
+
+.formChrome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+.backSlot {
+  flex: none;
+}
+
+.backSlot :global(button) {
+  min-height: unset;
+  padding: 0;
+}
+
+.progressSlot {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 0;
+  width: min(100%, var(--stage-max));
+  max-width: var(--stage-max);
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.sceneSlot {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 34cqh, 320px);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.formCol {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  align-content: start;
+  gap: clamp(8px, 1.4cqh, 14px);
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin-top: -48px;
+  padding: 18px var(--main-inline) 20px;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -12px 28px rgb(43 38 32 / 8%);
+}
+
+.stepWrap {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+@container unburden (min-width: 768px) {
+  .header {
+    padding: clamp(12px, 2cqh, 20px) var(--header-inline) clamp(5px, 1cqh, 10px);
+  }
+
+  .headerRow {
+    min-height: clamp(30px, 4.2cqh, 38px);
+  }
+
+  .brandLogo {
+    height: 18px;
+    max-width: 168px;
+  }
+
+  /* Pin the progress bar and form 48px below the header. Shorter steps
+     used to centre in leftover space and jump; extra space stays below. */
+  .content {
+    align-items: flex-start;
+    padding: 48px 0 0;
+  }
+
+  .formCol {
+    padding: 18px var(--main-inline) 24px;
+  }
+
+  .sceneSlot {
+    display: block;
+    height: clamp(240px, 36cqh, 340px);
+  }
+}
+
+@container unburden (min-width: 960px) {
+  .content {
+    justify-content: center;
+    padding: 48px 0 clamp(20px, 4cqh, 48px);
+  }
+
+  .stage {
+    width: min(var(--stage-max), calc(100% - 2 * var(--main-inline)));
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+  }
+
+  .formCol {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    margin-top: 0;
+    padding: 0;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    box-shadow: none;
+  }
+
+  .sceneSlot {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    height: min(560px, 74cqh);
+    position: sticky;
+    top: 16px;
+    align-self: start;
+    overflow: visible;
+  }
+}
+
+.root[data-unburden-solo] .sceneSlot {
+  display: block;
+  height: 100%;
+}
+
+/* Field steps (3–5, 8) and the partner match (9): no figure column.
+   Form sits in the middle; the cluster occupies the leftover page as a
+   full-bleed field behind it. */
+.root[data-unburden-layout='spread'] .header {
+  background: #fff;
+}
+
+.root[data-unburden-layout='spread'] .sceneSlot {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  pointer-events: none;
+}
+
+.root[data-unburden-layout='spread'] .content {
+  z-index: 2;
+  flex: 1 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 0 28px;
+}
+
+.root[data-unburden-layout='spread'] .stage {
+  width: min(100%, calc(var(--content-max) + 2 * var(--main-inline)));
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  margin-inline: auto;
+}
+
+.root[data-unburden-layout='spread'] .formCol {
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 3;
+  width: 100%;
+  max-width: none;
+  margin-top: 0;
+  padding: 4px var(--main-inline) 8px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+@container unburden (max-width: 767px) {
+  .formCol {
+    margin-top: -88px;
+  }
+
+  .root[data-unburden-layout='spread'] .formCol {
+    margin-top: 0;
+    padding: 4px 20px 8px;
+  }
+}
+
+@media (max-width: 767px) {
+  .root[data-unburden-layout='spread'] .content {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 16px 0 24px;
+  }
+}
+
+/* Partner match: same spread field as steps 3–5, with the copy parked in
+   the middle of the frame instead of pinned under the header. */
+.root[data-result='true'][data-unburden-layout='spread'] .content {
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0 28px;
+}
+
+.root[data-result='true'][data-unburden-layout='spread'] .formCol {
+  align-content: center;
+  transform: translateY(-80px);
+}
+
+.root[data-result='true'][data-unburden-layout='spread'] .stepWrap {
+  margin-inline: auto;
+}
+
+@media (max-width: 767px) {
+  .root[data-result='true'][data-unburden-layout='spread'] .content {
+    align-items: center;
+    padding: 16px 0 24px;
+  }
+}

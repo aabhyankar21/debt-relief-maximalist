@@ -24,8 +24,8 @@
   --shadow-card: 0 18px 50px rgb(0 0 0 / 38%), 0 0 0 1px rgb(255 255 255 / 5%) inset;
   --shadow-lift: 0 18px 44px rgb(214 255 61 / 18%);
 
-  --font-display: 'Outfit', 'Inter Tight', system-ui, sans-serif;
-  --font-body: 'Inter Tight', 'Inter', system-ui, sans-serif;
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
   --display-weight: 700;
   --display-tracking: -0.045em;
 

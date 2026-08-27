@@ -1,0 +1,309 @@
+.collage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+  animation: rise 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.item {
+  --spot-x: 0%;
+  --spot-y: 2%;
+  --spot-s: 1.36;
+  --item-blur: 7px;
+  --glow-y: 0px;
+  --glow-spread: 0px;
+  --glow-halo: 0px;
+  --glow-warm: rgb(248 177 149 / 0%);
+  --glow-cool: rgb(165 180 212 / 0%);
+  position: absolute;
+  width: 52%;
+  height: 52%;
+  left: 24%;
+  top: 22%;
+  transform-origin: center;
+  will-change: transform;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.figure {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center;
+  filter:
+    blur(var(--item-blur))
+    saturate(1.08)
+    drop-shadow(0 var(--glow-y) var(--glow-spread) var(--glow-warm))
+    drop-shadow(0 0 var(--glow-halo) var(--glow-cool));
+  transition:
+    filter 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.item,
+.item[data-pose='rest'] {
+  transform: translate(var(--rest-x), var(--rest-y)) rotate(var(--rest-r))
+    scale(1);
+}
+
+.item[data-pose='spot'] {
+  z-index: 6;
+  --item-blur: 0px;
+  --glow-y: 14px;
+  --glow-spread: 28px;
+  --glow-halo: 36px;
+  --glow-warm: rgb(248 177 149 / 42%);
+  --glow-cool: rgb(165 180 212 / 34%);
+  transform: translate(var(--spot-x), var(--spot-y)) rotate(0deg)
+    scale(var(--spot-s));
+}
+
+.item[data-pose='spot'] .figure {
+  animation: bob 2.8s ease-in-out infinite;
+}
+
+.item[data-pose='park'] {
+  --item-blur: 11px;
+  transform: translate(var(--park-x), var(--park-y)) rotate(var(--park-r))
+    scale(0.78);
+}
+
+.item[data-pose='park'] .figure {
+  opacity: 0.36;
+  filter:
+    blur(var(--item-blur))
+    saturate(0.92)
+    drop-shadow(0 0 0 transparent)
+    drop-shadow(0 0 0 transparent);
+}
+
+/* Hover / keyboard focus on a category wins over the rest pile and over a
+   previously selected type. Park the others, then lift the matching still. */
+:global(
+  [data-unburden-root]:has([data-choice-id]:is(:hover, :focus-visible))
+) .item {
+  --item-blur: 11px;
+  transform: translate(var(--park-x), var(--park-y)) rotate(var(--park-r))
+    scale(0.78);
+}
+
+:global(
+  [data-unburden-root]:has([data-choice-id]:is(:hover, :focus-visible))
+) .item .figure {
+  opacity: 0.36;
+  filter:
+    blur(11px)
+    saturate(0.92)
+    drop-shadow(0 0 0 transparent)
+    drop-shadow(0 0 0 transparent);
+  animation: none;
+}
+
+:global(
+  [data-unburden-root]:has(
+      [data-choice-id='personal-loans']:is(:hover, :focus-visible)
+    )
+) .item[data-id='personal-loans'],
+:global(
+  [data-unburden-root]:has(
+      [data-choice-id='credit-card']:is(:hover, :focus-visible)
+    )
+) .item[data-id='credit-card'],
+:global(
+  [data-unburden-root]:has([data-choice-id='medical']:is(:hover, :focus-visible))
+) .item[data-id='medical'],
+:global(
+  [data-unburden-root]:has([data-choice-id='student']:is(:hover, :focus-visible))
+) .item[data-id='student'] {
+  z-index: 6;
+  --item-blur: 0px;
+  --glow-y: 14px;
+  --glow-spread: 28px;
+  --glow-halo: 36px;
+  --glow-warm: rgb(248 177 149 / 42%);
+  --glow-cool: rgb(165 180 212 / 34%);
+  transform: translate(var(--spot-x), var(--spot-y)) rotate(0deg)
+    scale(var(--spot-s));
+}
+
+:global(
+  [data-unburden-root]:has(
+      [data-choice-id='personal-loans']:is(:hover, :focus-visible)
+    )
+) .item[data-id='personal-loans'] .figure,
+:global(
+  [data-unburden-root]:has(
+      [data-choice-id='credit-card']:is(:hover, :focus-visible)
+    )
+) .item[data-id='credit-card'] .figure,
+:global(
+  [data-unburden-root]:has([data-choice-id='medical']:is(:hover, :focus-visible))
+) .item[data-id='medical'] .figure,
+:global(
+  [data-unburden-root]:has([data-choice-id='student']:is(:hover, :focus-visible))
+) .item[data-id='student'] .figure {
+  opacity: 1;
+  filter:
+    blur(0)
+    saturate(1.08)
+    drop-shadow(0 14px 28px rgb(248 177 149 / 42%))
+    drop-shadow(0 0 36px rgb(165 180 212 / 34%));
+  animation: bob 2.8s ease-in-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -9px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collage {
+    animation: none;
+  }
+
+  .item,
+  .figure {
+    transition-duration: 180ms;
+  }
+
+  .item[data-pose='spot'] .figure,
+  :global(
+    [data-unburden-root]:has([data-choice-id]:is(:hover, :focus-visible))
+  ) .item .figure {
+    animation: none;
+  }
+}
+
+@container unburden (max-width: 767px) {
+  .item {
+    width: 58%;
+    height: 58%;
+    left: 21%;
+    top: 8%;
+    --spot-y: -4%;
+    --spot-s: 1.28;
+    --item-blur: 0px;
+  }
+
+  .item,
+  .item[data-pose='rest'],
+  .item[data-pose='park'],
+  .item[data-pose='spot'] {
+    --item-blur: 0px;
+    --glow-y: 0px;
+    --glow-spread: 0px;
+    --glow-halo: 0px;
+    --glow-warm: rgb(248 177 149 / 0%);
+    --glow-cool: rgb(165 180 212 / 0%);
+    transform: translate(var(--rest-x), var(--rest-y)) rotate(var(--rest-r))
+      scale(1);
+  }
+
+  .item[data-pose='park'] .figure,
+  .item[data-pose='spot'] .figure,
+  .item .figure {
+    opacity: 1;
+    filter:
+      blur(0)
+      saturate(1.08)
+      drop-shadow(0 0 0 transparent)
+      drop-shadow(0 0 0 transparent);
+    animation: none;
+  }
+
+  :global(
+    [data-unburden-root]:has([data-choice-id]:is(:hover, :focus-visible))
+  ) .item {
+    --item-blur: 0px;
+    transform: translate(var(--rest-x), var(--rest-y)) rotate(var(--rest-r))
+      scale(1);
+  }
+
+  :global(
+    [data-unburden-root]:has([data-choice-id]:is(:hover, :focus-visible))
+  ) .item .figure {
+    opacity: 1;
+    filter:
+      blur(0)
+      saturate(1.08)
+      drop-shadow(0 0 0 transparent)
+      drop-shadow(0 0 0 transparent);
+    animation: none;
+  }
+
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='personal-loans']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='personal-loans'],
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='credit-card']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='credit-card'],
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='medical']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='medical'],
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='student']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='student'] {
+    z-index: auto;
+    --item-blur: 0px;
+    --glow-y: 0px;
+    --glow-spread: 0px;
+    --glow-halo: 0px;
+    transform: translate(var(--rest-x), var(--rest-y)) rotate(var(--rest-r))
+      scale(1);
+  }
+
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='personal-loans']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='personal-loans'] .figure,
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='credit-card']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='credit-card'] .figure,
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='medical']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='medical'] .figure,
+  :global(
+    [data-unburden-root]:has(
+        [data-choice-id='student']:is(:hover, :focus-visible)
+      )
+  ) .item[data-id='student'] .figure {
+    filter:
+      blur(0)
+      saturate(1.08)
+      drop-shadow(0 0 0 transparent)
+      drop-shadow(0 0 0 transparent);
+    animation: none;
+  }
+}

@@ -1,0 +1,149 @@
+/**
+ * No panel split and no boxed form. The mosaic and the question sit on
+ * the same warm ground. Layout uses container queries so the lab's width
+ * presets exercise the same breakpoints a real resize would.
+ */
+
+.root {
+  container-type: size;
+  container-name: mosaic;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-bg);
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ---------------------------- header ---------------------------- */
+
+.header {
+  flex: none;
+  display: grid;
+  gap: clamp(5px, 1cqh, 9px);
+  padding: clamp(10px, 1.8cqh, 16px) clamp(16px, 4cqw, 44px)
+    clamp(4px, 0.8cqh, 8px);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: clamp(30px, 4.2cqh, 38px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--c-text);
+  text-shadow: var(--copy-shadow, none);
+}
+
+.brandMark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+
+.progressSlot {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+/* ------------------------------ stage ------------------------------ */
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(12px, 2.4cqh, 28px) clamp(18px, 4.5cqw, 56px)
+    clamp(16px, 3.2cqh, 36px);
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 3cqh, 28px);
+  width: 100%;
+  max-width: 1080px;
+}
+
+.mosaicSlot {
+  flex: none;
+  width: min(128px, 42cqw);
+  aspect-ratio: 1;
+  max-height: min(128px, 20cqh);
+}
+
+.stepWrap {
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+@container mosaic (min-width: 768px) {
+  .header {
+    padding: clamp(12px, 2cqh, 20px) clamp(24px, 5cqw, 60px)
+      clamp(5px, 1cqh, 10px);
+  }
+
+  .content {
+    padding: clamp(16px, 3cqh, 36px) clamp(28px, 6cqw, 80px)
+      clamp(20px, 4cqh, 48px);
+  }
+
+  .mosaicSlot {
+    width: min(300px, 46cqw);
+    max-height: min(300px, 42cqh);
+  }
+}
+
+@container mosaic (min-width: 960px) {
+  .stage {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(36px, 5cqw, 72px);
+  }
+
+  .mosaicSlot {
+    order: 2;
+    flex: 1 1 380px;
+    width: auto;
+    max-width: 520px;
+    max-height: min(520px, 72cqh);
+    aspect-ratio: 1;
+    position: sticky;
+    top: 16px;
+    align-self: center;
+  }
+
+  .stepWrap {
+    order: 1;
+    flex: 0 1 var(--content-max);
+  }
+}
+
+@container mosaic (min-width: 1200px) {
+  .content {
+    padding: clamp(18px, 3.4cqh, 42px) clamp(40px, 8cqw, 120px)
+      clamp(24px, 4.4cqh, 56px);
+  }
+}

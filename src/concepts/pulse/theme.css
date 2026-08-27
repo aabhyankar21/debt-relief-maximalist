@@ -1,0 +1,96 @@
+/**
+ * Warm beige ground, one electric blue, and a warm dark neutral for type.
+ * The blue is reserved for the field, word highlights, and real controls.
+ * Title ticks use a separate warm copper so the underline does not read as
+ * the same signal as the particles sitting behind it.
+ *
+ * There is no glass card. Interactive surfaces (pills, inputs, buttons)
+ * carry their own fill and shadow so they still read as clickable against
+ * the field. Decorative ticks share the blue, so shape — not colour —
+ * is what separates "tap this" from "look at this".
+ */
+
+[data-concept='pulse'] {
+  --c-bg: #f2ede4;
+  --c-surface: #ffffff;
+  --c-surface-2: #ffffff;
+
+  --c-text: #2b2620;
+  --c-muted: #5c5347;
+  --c-faint: #857a6b;
+
+  /* Warm-tinted rather than grey: a neutral line reads cold against beige. */
+  --c-border: rgb(120 98 68 / 18%);
+  --c-border-strong: rgb(120 98 68 / 34%);
+
+  --c-accent: #2f6bff;
+  --c-accent-soft: rgb(47 107 255 / 10%);
+  --c-on-accent: #ffffff;
+  --c-success: #3f8f6a;
+  --c-danger: #c0392b;
+
+  /* Read by the title and caption modules, which are shared with the lab. */
+  --pulse-accent: #2f6bff;
+  --pulse-accent-deep: #1d4fd1;
+  --pulse-tick: #c4843a;
+  --pulse-text: #2b2620;
+  --pulse-caption: #6b6255;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-card:
+    0 1px 0 rgb(255 255 255 / 70%) inset,
+    0 20px 50px rgb(74 58 38 / 10%);
+  --shadow-lift: 0 14px 34px rgb(47 107 255 / 22%);
+
+  /**
+   * Work Sans is loaded as a variable font (wght 300..800) because the
+   * title's weight ramp animates the axis itself. Swapping this for a family
+   * with only static instances silently turns the ramp into a step change.
+   */
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --display-weight: 560;
+  --display-tracking: -0.024em;
+
+  --content-max: 440px;
+
+  --eyebrow-color: #8a7a5f;
+
+  --card-blur: none;
+
+  /* Captions and copy sit directly on the moving field. */
+  --copy-shadow: 0 1px 2px rgb(242 237 228 / 80%);
+
+  --choice-hover-bg: #ffffff;
+  --choice-shadow:
+    0 1px 0 rgb(255 255 255 / 90%) inset,
+    0 10px 24px rgb(74 58 38 / 10%);
+  --choice-icon-bg: rgb(47 107 255 / 10%);
+  --choice-icon-color: #2f6bff;
+  --choice-icon-radius: 12px;
+  --choice-icon-selected-bg: #2f6bff;
+  --choice-icon-selected-color: #ffffff;
+
+  --input-bg: #ffffff;
+  --callout-bg: transparent;
+  --callout-border: rgb(120 98 68 / 14%);
+  --callout-text: #3a332a;
+  --callout-shadow: none;
+
+  --button-bg: #2f6bff;
+  --button-radius: 12px;
+  --button-shadow: 0 10px 24px rgb(47 107 255 / 24%);
+  --button-shadow-hover: 0 14px 30px rgb(47 107 255 / 32%);
+
+  --bullet-bg: rgb(63 143 106 / 14%);
+  --track-bg: rgb(120 98 68 / 16%);
+  --progress-fill: #2f6bff;
+  --badge-bg: rgb(255 255 255 / 60%);
+  --legal-text: rgb(133 122 107 / 90%);
+
+  color-scheme: light;
+}

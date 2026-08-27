@@ -1,0 +1,208 @@
+/**
+ * Layout is driven by container queries rather than media queries so the
+ * demo's width presets exercise exactly the same breakpoints as a real
+ * viewport resize. `.root` is the query container; `.shell` is the first
+ * element the queries are allowed to style, since a container can never
+ * match its own query.
+ */
+
+.root {
+  container-type: inline-size;
+  container-name: clearing;
+  height: 100%;
+  min-height: 100%;
+}
+
+.shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 100%;
+  background: var(--c-bg);
+}
+
+/* ---------- visual panel ---------- */
+
+.visual {
+  position: relative;
+  min-width: 0;
+  /* Sized from the container, not the viewport, so the demo frame is honest. */
+  height: clamp(240px, 60cqw, 340px);
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+}
+
+.visualOverlay {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgb(14 17 24 / 66%) 0%,
+    rgb(14 17 24 / 24%) 48%,
+    transparent 100%
+  );
+}
+
+.visualCopy {
+  display: grid;
+  gap: 4px;
+  max-width: 28rem;
+}
+
+.visualKicker {
+  font-size: 0.66rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+
+.visualLine {
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 0.86rem + 0.7vw, 1.42rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: #f3e7d6;
+  text-wrap: pretty;
+}
+
+.visualBrand {
+  display: none;
+}
+
+/* ---------- form column ---------- */
+
+.main {
+  --main-inline: clamp(16px, 4cqw, 44px);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--c-surface);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: grid;
+  gap: 12px;
+  padding: 14px var(--main-inline) 10px;
+  background: color-mix(in srgb, var(--c-surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: 40px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+}
+
+.brandMark {
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+
+.progressSlot {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  padding: 26px var(--main-inline) 32px;
+}
+
+.content[data-result='true'] {
+  align-items: safe center;
+  justify-content: center;
+}
+
+.stepWrap {
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+/* ---------- split view ---------- */
+
+@container clearing (min-width: 900px) {
+  .shell {
+    grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+    grid-template-rows: minmax(0, 1fr);
+    height: 100%;
+  }
+
+  .visual {
+    height: 100%;
+  }
+
+  .visualOverlay {
+    padding: 30px 32px;
+  }
+
+  .visualBrand {
+    position: absolute;
+    inset: 26px auto auto 32px;
+    z-index: 2;
+    display: inline-flex;
+    color: #f3e7d6;
+    pointer-events: none;
+  }
+
+  .headerBrand {
+    display: none;
+  }
+
+  /* Only the form column scrolls; the scene stays put beside it. */
+  .main {
+    overflow-y: auto;
+  }
+
+  .content {
+    padding: 40px var(--main-inline) 40px;
+  }
+}
+
+@container clearing (min-width: 1200px) {
+  .visualOverlay {
+    padding: 38px 40px;
+  }
+
+  .content {
+    padding: 56px var(--main-inline) 48px;
+  }
+}
+
+/* The arrival step keeps the split view — the partner silhouette in the
+   scene is the payoff, so it stays on screen beside the result. */
+.shell[data-result='true'] .content {
+  align-items: safe center;
+}

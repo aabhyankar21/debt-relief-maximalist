@@ -5,6 +5,7 @@ import {
   BackButton,
   Brand,
   LegalFooter,
+  LegalLinks,
   ProgressBar,
 } from '../../shell/Chrome';
 import { ResultScreen } from '../../shell/ResultScreen';
@@ -39,6 +40,7 @@ export function Ledger() {
             <span className={styles.headerBrand}>
               <Brand />
             </span>
+            <LegalLinks inHeader />
           </div>
           <ProgressBar value={progress} />
         </header>

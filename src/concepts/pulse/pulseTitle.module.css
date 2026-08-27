@@ -1,0 +1,55 @@
+/**
+ * The title resolves into focus rather than arriving from somewhere, so
+ * nothing here animates position. Typography itself comes from whichever
+ * shared class the caller passes in; this module only adds the pieces the
+ * treatment needs.
+ */
+
+.title {
+  /* Segments are inline spans, so the tick needs a block context to sit
+     under rather than beside the copy. */
+  display: block;
+}
+
+.plain {
+  /* Blur on an inline span is fine, but it needs to keep the surrounding
+     whitespace: `pre-wrap` stops the split from eating the spaces either
+     side of a highlighted phrase. */
+  white-space: pre-wrap;
+}
+
+/* Colour only. No weight change and no background block — the weight ramp is
+   a separate, title-wide effect and must not be doubled up here. */
+.highlight,
+.highlightPlain {
+  color: var(--pulse-accent);
+  white-space: pre-wrap;
+}
+
+.highlight {
+  /* The phrase's own tick. Drawn as a background so it breaks across lines
+     with the text; the width is animated from 0. */
+  background-image: linear-gradient(
+    var(--pulse-accent),
+    var(--pulse-accent)
+  );
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 2px;
+  padding-bottom: 2px;
+}
+
+/* Tabular figures so digit widths cannot jitter mid-count. */
+.numeral {
+  font-variant-numeric: tabular-nums;
+}
+
+.tick {
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 0.42em;
+  background: var(--pulse-tick);
+  border-radius: 2px;
+  transform-origin: left center;
+}

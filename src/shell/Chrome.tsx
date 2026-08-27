@@ -50,9 +50,12 @@ export function BackButton({
 
 export function TrustBadge() {
   return (
-    <span className={styles.trustBadge}>
-      <ShieldIcon />
-      {chrome.trustBadge}
+    <span className={styles.trustCluster}>
+      <LegalLinks inHeader />
+      <span className={styles.trustBadge}>
+        <ShieldIcon />
+        {chrome.trustBadge}
+      </span>
     </span>
   );
 }
@@ -138,16 +141,25 @@ export function StepDots({ total, index }: { total: number; index: number }) {
   );
 }
 
+export function LegalLinks({ inHeader = false }: { inHeader?: boolean }) {
+  return (
+    <nav
+      className={`${styles.legalLinks} ${inHeader ? styles.headerLegal : ''}`}
+      aria-label="Legal"
+    >
+      {chrome.legalLinks.map((link) => (
+        <a className={styles.legalLink} href="#" key={link}>
+          {link}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
 export function LegalFooter() {
   return (
     <footer className={styles.legal}>
-      <nav className={styles.legalLinks} aria-label="Legal">
-        {chrome.legalLinks.map((link) => (
-          <a className={styles.legalLink} href="#" key={link}>
-            {link}
-          </a>
-        ))}
-      </nav>
+      <LegalLinks />
     </footer>
   );
 }

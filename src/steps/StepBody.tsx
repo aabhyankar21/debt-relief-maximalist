@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef, type ReactNode } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { days, months, years, type Step } from '../data/journey';
 import { useConcept } from '../engine/concept';
@@ -41,12 +41,35 @@ function escapeRe(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/**
+ * One line of a step's copy, handed to a concept that wants to animate the
+ * words themselves. The frozen strings and the layout classes still come
+ * from here — a concept may only change how they resolve on screen.
+ */
+export interface StepCopySlot {
+  kind: 'heading' | 'question' | 'subtext';
+  text: string;
+  /** Words the live journey emphasises, where the slot has any. */
+  emphasis?: string[];
+  className: string;
+}
+
+export type StepCopyRenderer = (slot: StepCopySlot) => ReactNode;
+
 export function StepBody({
   step,
   hideCallout = false,
+  renderCopy,
+  addon,
+  advanceDelay,
 }: {
   step: Step;
   hideCallout?: boolean;
+  renderCopy?: StepCopyRenderer;
+  /** Inserted between copy and controls — used for per-step data moments. */
+  addon?: ReactNode;
+  /** Overrides the pause between selecting a choice and advancing. */
+  advanceDelay?: number | ((choiceId: string) => number);
 }) {
   const journey = useJourney();
   const concept = useConcept();
@@ -65,10 +88,11 @@ export function StepBody({
   const handleSelect = (choiceId: string) => {
     journey.selectChoice(step.id, choiceId);
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
-    advanceTimer.current = window.setTimeout(
-      () => journey.next(),
-      reduceMotion ? 120 : 420,
-    );
+    const delay =
+      typeof advanceDelay === 'function'
+        ? advanceDelay(choiceId)
+        : (advanceDelay ?? (reduceMotion ? 120 : 420));
+    advanceTimer.current = window.setTimeout(() => journey.next(), delay);
   };
 
   const anchorSecureNoteToField =
@@ -91,7 +115,13 @@ export function StepBody({
           </motion.p>
         ) : null}
 
-        {staggerHeadlines ? (
+        {renderCopy ? (
+          renderCopy({
+            kind: 'heading',
+            text: step.heading,
+            className: styles.heading,
+          })
+        ) : staggerHeadlines ? (
           <WordReveal text={step.heading} className={styles.heading} />
         ) : (
           <motion.h1
@@ -109,7 +139,13 @@ export function StepBody({
         )}
 
         {step.question ? (
-          staggerHeadlines ? (
+          renderCopy ? (
+            renderCopy({
+              kind: 'question',
+              text: step.question,
+              className: styles.question,
+            })
+          ) : staggerHeadlines ? (
             <WordReveal
               text={step.question}
               as="h2"
@@ -133,16 +169,34 @@ export function StepBody({
         ) : null}
 
         {step.subtext ? (
-          <motion.p
-            className={styles.subtext}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <EmphasisText text={step.subtext} emphasis={step.subtextEmphasis} />
-          </motion.p>
+          renderCopy ? (
+            renderCopy({
+              kind: 'subtext',
+              text: step.subtext,
+              emphasis: step.subtextEmphasis,
+              className: styles.subtext,
+            })
+          ) : (
+            <motion.p
+              className={styles.subtext}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.1,
+                duration: 0.36,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <EmphasisText
+                text={step.subtext}
+                emphasis={step.subtextEmphasis}
+              />
+            </motion.p>
+          )
         ) : null}
       </header>
+
+      {addon}
 
       <div className={styles.controls}>
         {step.kind === 'choice' ? (

@@ -1,0 +1,12 @@
+.scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mass {
+  z-index: 2;
+}
