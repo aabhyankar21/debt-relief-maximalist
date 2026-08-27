@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
   type FocusEvent,
   type PointerEvent,
@@ -28,9 +27,6 @@ import {
 import forbesAdvisorLogo from './forbes-advisor-logo.png';
 import styles from './unburden.module.css';
 import './theme.css';
-
-const PHONE_INDEX = 4;
-const VERIFY_HOLD_MS = 900;
 
 const TITLE_TREATMENT: Record<
   number,
@@ -86,28 +82,10 @@ export function Unburden() {
   const canHover = useMediaQuery('(hover: hover) and (pointer: fine)');
 
   const [hoverChoice, setHoverChoice] = useState<string | null>(null);
-  const [verifying, setVerifying] = useState(false);
-  const previousIndex = useRef(index);
-
-  useEffect(() => {
-    const from = previousIndex.current;
-    previousIndex.current = index;
-    if (reduceMotion || from !== PHONE_INDEX || index !== PHONE_INDEX + 1) {
-      setVerifying(false);
-      return;
-    }
-    setVerifying(true);
-    const timer = window.setTimeout(() => setVerifying(false), VERIFY_HOLD_MS);
-    return () => window.clearTimeout(timer);
-  }, [index, reduceMotion]);
 
   useEffect(() => setHoverChoice(null), [index, finished]);
 
-  const sceneStep = finished
-    ? 9
-    : verifying
-      ? 6
-      : SCENE_STEP_BY_INDEX[index] ?? 1;
+  const sceneStep = finished ? 9 : (SCENE_STEP_BY_INDEX[index] ?? 1);
 
   const amountId =
     step.id === 'debt-amount'
