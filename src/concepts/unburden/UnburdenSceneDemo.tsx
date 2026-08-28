@@ -188,8 +188,9 @@ export function UnburdenSceneDemo() {
           <h1>Unburden</h1>
           <p>
             Scene 2 swaps the hand for a blurred pile of debt-type stills.
-            Scenes 3–5, 8 and 9 drop the figure, centre the form, and spread
-            the cluster around the page. Arrow keys scrub scenes.
+            Scenes 3–5 and 8 use floating stills (contact, calendar, phone,
+            address). Scene 9 drops the figure, centres the form, and
+            spreads the cluster around the page. Arrow keys scrub scenes.
           </p>
         </div>
         <div className={styles.presets} role="group" aria-label="Preview width">

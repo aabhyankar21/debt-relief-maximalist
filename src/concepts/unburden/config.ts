@@ -74,9 +74,9 @@ export const UNBURDEN_CONFIG = {
   },
 
   /**
-   * Field steps (contact, birth date, phone, address) and the partner
-   * match break the palm cluster into loose orbs across the page. Cap
-   * is a field budget, not a packed sphere.
+   * The partner match breaks the palm cluster into loose orbs across the
+   * page. Cap is a field budget, not a packed sphere. Contact (3), birth
+   * date (4), phone (5), and address (8) use floating stills instead.
    */
   spread: {
     cap: 170,
@@ -128,6 +128,17 @@ export const DEBT_BAND_WEIGHT: Record<string, number> = {
 };
 
 export const DEBT_AMOUNT_OPTIONS = Object.keys(DEBT_BAND_WEIGHT);
+
+/**
+ * Income choice → pile weight on the annual income scene.
+ * `unsure` is omitted so it keeps the default pile.
+ */
+export const INCOME_BAND_WEIGHT: Record<string, number> = {
+  'lt-10k': 0,
+  '10-50k': 0.3,
+  '50-100k': 0.65,
+  '100k-plus': 1,
+};
 
 export const SCENE_STEP_BY_INDEX = [1, 2, 3, 4, 5, 7, 8];
 
@@ -198,9 +209,9 @@ export function poseForScene(step: number): PoseId {
   return POSE_BY_SCENE[step] ?? 1;
 }
 
-/** Contact, birth date, phone, address, and the partner match drop the figure and scatter the cluster. */
+/** The partner match drops the figure and scatters the cluster. */
 export function isSpreadScene(step: number) {
-  return step === 3 || step === 4 || step === 5 || step === 8 || step === 9;
+  return step === 9;
 }
 
 export function unburdenAdvanceDelay(reduced: boolean) {

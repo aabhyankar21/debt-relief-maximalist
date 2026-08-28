@@ -20,6 +20,7 @@ import { PulseTitle } from '../pulse/PulseTitle';
 import { UnburdenScene } from './UnburdenScene';
 import {
   DEBT_BAND_WEIGHT,
+  INCOME_BAND_WEIGHT,
   SCENE_STEP_BY_INDEX,
   isSpreadScene,
   unburdenAdvanceDelay,
@@ -46,8 +47,8 @@ const TITLE_TREATMENT: Record<
   },
   3: { animateWeight: false, tick: false },
   4: {
-    animateWeight: true,
-    tick: true,
+    animateWeight: false,
+    tick: false,
     highlight: ['no impact on your credit score.'],
     highlightTick: false,
   },
@@ -100,6 +101,19 @@ export function Unburden() {
       ? (hoverChoice ?? choices['debt-type'] ?? null)
       : null;
 
+  const incomeId =
+    step.id === 'income'
+      ? canHover
+        ? (hoverChoice ?? choices.income ?? '')
+        : (choices.income ?? '')
+      : '';
+  const incomeBand =
+    incomeId &&
+    incomeId !== 'unsure' &&
+    incomeId in INCOME_BAND_WEIGHT
+      ? INCOME_BAND_WEIGHT[incomeId]
+      : null;
+
   const treatment = TITLE_TREATMENT[sceneStep] ?? TITLE_TREATMENT[1];
   const advanceDelay = unburdenAdvanceDelay(reduceMotion);
 
@@ -128,7 +142,13 @@ export function Unburden() {
 
   const trackChoiceHover = useCallback(
     (event: PointerEvent<HTMLDivElement> | FocusEvent<HTMLDivElement>) => {
-      if (step.id !== 'debt-amount' && step.id !== 'debt-type') return;
+      if (
+        step.id !== 'debt-amount' &&
+        step.id !== 'debt-type' &&
+        step.id !== 'income'
+      ) {
+        return;
+      }
       const target = (event.target as HTMLElement | null)?.closest(
         '[data-choice-id]',
       );
@@ -143,6 +163,23 @@ export function Unburden() {
       data-concept="unburden"
       data-unburden-root=""
       data-unburden-layout={isSpreadScene(sceneStep) ? 'spread' : undefined}
+      data-unburden-scene={
+        finished
+          ? 'result'
+          : sceneStep === 2
+            ? 'type'
+            : sceneStep === 3
+              ? 'contact'
+              : sceneStep === 4
+                ? 'birth'
+                : sceneStep === 5
+                  ? 'phone'
+                  : sceneStep === 7
+                    ? 'coins'
+                    : sceneStep === 8
+                      ? 'address'
+                      : undefined
+      }
       data-result={finished ? 'true' : undefined}
     >
       <div className={styles.shell}>
@@ -160,6 +197,7 @@ export function Unburden() {
                 step={sceneStep}
                 debtAmountBand={debtAmountBand}
                 spotlightId={typeSpotlight}
+                incomeBand={incomeBand}
               />
             </div>
 

@@ -71,6 +71,14 @@
 
 .centered .status {
   width: min(100%, 38ch);
+  justify-content: center;
+  text-align: center;
+}
+
+.centered :global(ul) {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
   text-align: left;
 }
 

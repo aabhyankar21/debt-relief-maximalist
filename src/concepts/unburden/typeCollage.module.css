@@ -194,14 +194,40 @@
 }
 
 @container unburden (max-width: 767px) {
+  /* Pack the four stills into the shorter peek band above the form sheet
+     so none sit under the white card. Desktop scatter/blur stays unchanged. */
   .item {
-    width: 58%;
-    height: 58%;
-    left: 21%;
-    top: 8%;
-    --spot-y: -4%;
-    --spot-s: 1.28;
+    width: 44%;
+    height: 44%;
+    left: 28%;
+    top: 0%;
+    --spot-y: 0%;
+    --spot-s: 1.12;
     --item-blur: 0px;
+  }
+
+  .item[data-id='personal-loans'] {
+    --rest-x: -18%;
+    --rest-y: -10%;
+    --rest-r: -10deg;
+  }
+
+  .item[data-id='credit-card'] {
+    --rest-x: 16%;
+    --rest-y: -8%;
+    --rest-r: 9deg;
+  }
+
+  .item[data-id='medical'] {
+    --rest-x: -14%;
+    --rest-y: 10%;
+    --rest-r: 6deg;
+  }
+
+  .item[data-id='student'] {
+    --rest-x: 14%;
+    --rest-y: 8%;
+    --rest-r: -7deg;
   }
 
   .item,
@@ -224,8 +250,8 @@
     opacity: 1;
     filter:
       blur(0)
-      saturate(1.08)
-      drop-shadow(0 0 0 transparent)
+      saturate(1.12)
+      drop-shadow(0 10px 18px rgb(58 50 40 / 14%))
       drop-shadow(0 0 0 transparent);
     animation: none;
   }
@@ -244,8 +270,8 @@
     opacity: 1;
     filter:
       blur(0)
-      saturate(1.08)
-      drop-shadow(0 0 0 transparent)
+      saturate(1.12)
+      drop-shadow(0 10px 18px rgb(58 50 40 / 14%))
       drop-shadow(0 0 0 transparent);
     animation: none;
   }
@@ -301,8 +327,8 @@
   ) .item[data-id='student'] .figure {
     filter:
       blur(0)
-      saturate(1.08)
-      drop-shadow(0 0 0 transparent)
+      saturate(1.12)
+      drop-shadow(0 10px 18px rgb(58 50 40 / 14%))
       drop-shadow(0 0 0 transparent);
     animation: none;
   }

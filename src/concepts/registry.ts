@@ -147,26 +147,11 @@ export const concepts: ConceptEntry[] = [
   },
 ];
 
-/** This Unburden preview defaults to the variation; others stay in the switcher. */
+/** This preview ships Unburden only — no concept switcher on the live link. */
 export const defaultConcept = 'unburden';
 
-/** Concepts exposed in the review switcher. */
-const previewIds = [
-  'vault',
-  'haven',
-  'clearing',
-  'clearing-lab',
-  'thread',
-  'thread-lab',
-  'morph',
-  'morph-lab',
-  'pulse',
-  'pulse-lab',
-  'mosaic',
-  'mosaic-lab',
-  'unburden',
-  'unburden-lab',
-];
+/** Concepts exposed in the review switcher. Empty / single entry hides the dock. */
+const previewIds = ['unburden'];
 
 export const previewConcepts = concepts.filter((concept) =>
   previewIds.includes(concept.id),

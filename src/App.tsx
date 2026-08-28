@@ -35,11 +35,13 @@ export function App() {
             <Concept />
           </Suspense>
         </JourneyProvider>
-        <ConceptSwitcher
-          concepts={previewConcepts}
-          activeId={concept.id}
-          onChange={handleConceptChange}
-        />
+        {previewConcepts.length > 1 ? (
+          <ConceptSwitcher
+            concepts={previewConcepts}
+            activeId={concept.id}
+            onChange={handleConceptChange}
+          />
+        ) : null}
       </ConceptProvider>
     </MotionConfig>
   );

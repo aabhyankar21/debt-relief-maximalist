@@ -7,8 +7,12 @@ import {
   poseForScene,
 } from './config';
 import { Figure, type FigureMass } from './Figure';
+import { AddressCard } from './AddressCard';
+import { BirthDateCard } from './BirthDateCard';
+import { ContactCard } from './ContactCard';
 import { IncomeBill } from './IncomeBill';
 import { MassField, type MassFieldStats } from './MassField';
+import { PhoneCard } from './PhoneCard';
 import { TypeCollage } from './TypeCollage';
 import styles from './unburdenScene.module.css';
 
@@ -17,6 +21,8 @@ export interface UnburdenSceneProps {
   debtAmountBand: number | null;
   /** Hovered or selected debt type on scene 2. */
   spotlightId?: string | null;
+  /** Hovered or selected income band (0–1) on scene 7. */
+  incomeBand?: number | null;
   reducedMotion?: boolean;
   onStats?: (stats: MassFieldStats) => void;
   className?: string;
@@ -28,6 +34,7 @@ export function UnburdenScene({
   step,
   debtAmountBand,
   spotlightId = null,
+  incomeBand = null,
   reducedMotion,
   onStats,
   className,
@@ -55,8 +62,16 @@ export function UnburdenScene({
     >
       {step === 2 ? (
         <TypeCollage activeId={spotlightId} />
+      ) : step === 3 ? (
+        <ContactCard reducedMotion={reducedMotion} />
+      ) : step === 4 ? (
+        <BirthDateCard reducedMotion={reducedMotion} />
+      ) : step === 5 ? (
+        <PhoneCard reducedMotion={reducedMotion} />
       ) : step === 7 ? (
-        <IncomeBill reducedMotion={reducedMotion} />
+        <IncomeBill incomeBand={incomeBand} reducedMotion={reducedMotion} />
+      ) : step === 8 ? (
+        <AddressCard reducedMotion={reducedMotion} />
       ) : (
         <>
           {spread ? null : (
