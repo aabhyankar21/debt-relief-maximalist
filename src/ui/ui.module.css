@@ -62,7 +62,8 @@
 
 @media (max-width: 767px) {
   :global([data-concept='mosaic']) .choiceCard,
-  :global([data-concept='unburden']) .choiceCard {
+  :global([data-concept='unburden']) .choiceCard,
+  :global([data-concept='signal']) .choiceCard {
     min-height: 50px;
     padding: 12px 14px;
   }

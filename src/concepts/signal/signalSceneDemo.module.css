@@ -1,0 +1,301 @@
+.lab {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 100%;
+  padding: 24px clamp(16px, 3vw, 32px) 40px;
+  color: var(--c-text);
+  background: #e8e2d6;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title h1 {
+  font-family: var(--font-heading);
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.024em;
+}
+
+.title p {
+  max-width: 52rem;
+  margin-top: 3px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--c-faint);
+  text-wrap: pretty;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.preset,
+.toggle {
+  padding: 7px 13px;
+  font-size: 0.78rem;
+  font-weight: 550;
+  color: var(--c-muted);
+  background: rgb(255 255 255 / 55%);
+  border: 1px solid var(--c-border);
+  border-radius: 999px;
+  transition:
+    color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out);
+}
+
+.preset:hover,
+.toggle:hover {
+  color: var(--c-text);
+  background: rgb(255 255 255 / 85%);
+}
+
+.preset[data-active='true'],
+.toggle[data-active='true'] {
+  color: var(--c-on-accent);
+  background: var(--c-accent);
+  border-color: transparent;
+}
+
+.readout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 20px;
+  padding: 11px 16px;
+  background: rgb(43 38 32 / 92%);
+  border-radius: var(--radius-md);
+}
+
+.stat {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 62%);
+}
+
+.stat strong {
+  margin-left: 6px;
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #e0c08a;
+}
+
+.statNote {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: rgb(255 255 255 / 45%);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px 20px;
+  padding: 16px 18px;
+  background: rgb(255 255 255 / 46%);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+
+.control {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+}
+
+.control[data-wide='true'] {
+  grid-column: span 2;
+}
+
+@media (max-width: 720px) {
+  .control[data-wide='true'] {
+    grid-column: span 1;
+  }
+}
+
+.controlLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+
+.controlLabel strong {
+  margin-left: 4px;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-accent);
+}
+
+.control input[type='range'] {
+  width: 100%;
+  accent-color: var(--c-accent);
+}
+
+.control select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.84rem;
+  color: var(--c-text);
+  background: #fff;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+}
+
+.note {
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--c-faint);
+  text-wrap: pretty;
+}
+
+.holder {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.frame {
+  flex: none;
+  overflow: auto;
+  resize: horizontal;
+  transform-origin: top center;
+  background: var(--c-bg);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 24px 60px rgb(74 58 38 / 14%);
+}
+
+.frame > * {
+  height: 100%;
+}
+
+.footnote {
+  font-size: 0.76rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--c-faint);
+  text-wrap: pretty;
+}
+
+.mockBrand {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.mockBadge {
+  font-size: 0.68rem;
+  color: var(--c-faint);
+}
+
+.mockTrack {
+  height: 5px;
+  overflow: hidden;
+  background: var(--track-bg);
+  border-radius: 999px;
+}
+
+.mockFill {
+  height: 100%;
+  background: var(--c-accent);
+  border-radius: inherit;
+  transition: width 400ms var(--ease-out);
+}
+
+.mockEyebrow {
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eyebrow-color);
+}
+
+.mockHeading {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.05rem + 1.1vw, 1.85rem);
+  line-height: 1.16;
+  letter-spacing: -0.026em;
+  text-wrap: balance;
+}
+
+.mockQuestion {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+}
+
+.mockBody {
+  margin-top: 9px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--c-muted);
+  text-wrap: pretty;
+}
+
+.mockChoices {
+  display: grid;
+  gap: 9px;
+  margin-top: 18px;
+}
+
+.mockChoice {
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  color: var(--c-muted);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+
+.mockField {
+  display: grid;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+.mockField span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-faint);
+}
+
+.mockField input {
+  min-height: 44px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: var(--c-text);
+  background: var(--input-bg);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  cursor: text;
+}
+
+.mockField input:hover {
+  border-color: var(--c-border-strong);
+}
+
+.mockField input:focus {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 2px;
+  border-color: var(--c-accent);
+}

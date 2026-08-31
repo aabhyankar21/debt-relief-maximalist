@@ -1,0 +1,435 @@
+/**
+ * Full-bleed photo. No panel split, no boxed form — copy and pills sit
+ * directly on the scrim. Container queries so the lab presets exercise
+ * the same breakpoints a real resize would.
+ */
+
+.root {
+  container-type: size;
+  container-name: presence;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: #1c1814;
+  color: var(--c-text);
+}
+
+/* ---------------------------- photo stage ---------------------------- */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.media,
+.photoFallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Hands weighted to the right; mobile crops tighter toward them. */
+  object-position: 72% 50%;
+}
+
+.photoFallback {
+  /* Cinemagraph loop is pending real footage. This painted still stands in:
+     warm skin-tone forms on the right two-thirds, cool-warm before-state light. */
+  background:
+    radial-gradient(
+      ellipse 18% 22% at 71% 42%,
+      rgb(220 178 148 / 70%) 0%,
+      rgb(180 130 100 / 35%) 45%,
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 22% 28% at 78% 58%,
+      rgb(200 155 120 / 65%) 0%,
+      rgb(140 100 75 / 30%) 50%,
+      transparent 75%
+    ),
+    radial-gradient(
+      ellipse 16% 20% at 64% 55%,
+      rgb(190 145 115 / 50%) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 48% 55% at 76% 54%,
+      rgb(90 65 48 / 75%) 0%,
+      rgb(40 32 26 / 90%) 60%,
+      transparent 80%
+    ),
+    linear-gradient(
+      115deg,
+      #2a241e 0%,
+      #1c1814 38%,
+      #342820 72%,
+      #1e1915 100%
+    );
+}
+
+.photoFallback[data-alive='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 36% 40% at 70% 48%,
+    rgb(255 220 180 / 10%) 0%,
+    transparent 70%
+  );
+  animation: presenceLightShift 10s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes presenceLightShift {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1) translate(0, 0);
+  }
+  40% {
+    opacity: 0.7;
+    transform: scale(1.04) translate(1.5%, -0.8%);
+  }
+  70% {
+    opacity: 0.45;
+    transform: scale(1.02) translate(-0.6%, 0.5%);
+  }
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  /* Lighting effect, not a panel — transparent where photo detail matters. */
+  background: linear-gradient(
+    90deg,
+    rgb(43 38 32 / 82%) 0%,
+    rgb(43 38 32 / 62%) 28%,
+    rgb(43 38 32 / 28%) 55%,
+    rgb(43 38 32 / 0%) 78%
+  );
+  pointer-events: none;
+}
+
+.glowSlot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------------------------- chrome ---------------------------- */
+
+.shell {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.header {
+  flex: none;
+  display: grid;
+  gap: clamp(5px, 1cqh, 9px);
+  padding: clamp(10px, 1.8cqh, 16px) clamp(16px, 4cqw, 44px)
+    clamp(4px, 0.8cqh, 8px);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+  min-width: 0;
+  min-height: clamp(30px, 4.2cqh, 38px);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.brandLogo {
+  display: block;
+  height: 18px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  /* Invert the black Forbes mark so it reads on the dark photo. */
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+}
+
+.progressSlot {
+  width: 100%;
+  max-width: var(--content-max);
+  min-width: 0;
+}
+
+/* Shield is the only SVG in the header row — warm glow material. */
+.headerRow svg {
+  color: var(--c-success);
+  filter: drop-shadow(0 0 6px rgb(217 164 65 / 45%));
+}
+
+/* Trust pill: kill the shared card blur so the label stays sharp on photo. */
+.headerRow > :last-child > :last-child {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Keep the trust pill compact in narrow frames; chrome's viewport mobile
+   rules miss the lab's 375 frame. */
+@container presence (max-width: 479px) {
+  .headerRow > :last-child {
+    max-width: min(190px, 52%);
+  }
+
+  .headerRow > :last-child > :last-child {
+    padding: 5px 9px;
+    font-size: 0.6875rem;
+    gap: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ------------------------------ copy column ------------------------------ */
+
+.content {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: clamp(8px, 1.6cqh, 20px) clamp(18px, 4.5cqw, 56px)
+    clamp(20px, 3.6cqh, 40px);
+}
+
+.column {
+  display: grid;
+  gap: clamp(16px, 2.4cqh, 22px);
+  width: 100%;
+  max-width: var(--content-max);
+}
+
+.copy {
+  display: grid;
+  gap: 10px;
+  text-shadow: var(--copy-shadow);
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--eyebrow-color);
+}
+
+.heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.55rem, 1.15rem + 1.8cqw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: var(--display-tracking);
+  color: var(--c-text);
+  text-wrap: balance;
+}
+
+.question {
+  margin-top: 2px;
+  font-family: var(--font-display);
+  font-size: clamp(1.12rem, 1rem + 0.55cqw, 1.35rem);
+  font-weight: var(--display-weight);
+  line-height: 1.3;
+  letter-spacing: var(--display-tracking);
+  color: var(--c-text);
+}
+
+.helper {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--c-muted);
+  text-wrap: pretty;
+}
+
+.insight {
+  margin-top: 2px;
+}
+
+.choices {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--c-text);
+  background: var(--c-surface);
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--choice-shadow);
+  backdrop-filter: var(--card-blur);
+  transition:
+    border-color 160ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
+}
+
+.choice:hover {
+  border-color: rgb(247 242 234 / 42%);
+  background: var(--choice-hover-bg);
+}
+
+.choice[data-selected='true'] {
+  border-color: #c9744f;
+  background: #c9744f;
+  color: #fffaf4;
+  backdrop-filter: none;
+  box-shadow: 0 10px 24px rgb(201 116 79 / 36%);
+}
+
+.choiceLabel {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.choiceMark {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--c-accent);
+  background: var(--c-on-accent);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.5);
+  transition:
+    opacity 160ms var(--ease-out),
+    transform 280ms var(--ease-spring);
+}
+
+.choice[data-selected='true'] .choiceMark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.choiceMark svg {
+  width: 14px;
+  height: 14px;
+}
+
+.footerSlot {
+  margin-top: auto;
+}
+
+/* Legal links on dark photo need the warm muted tone. */
+.footerSlot :global(footer),
+.footerSlot :global([class*='legal']) {
+  color: var(--legal-text);
+}
+
+/* ---------------------------- breakpoints ---------------------------- */
+
+/*
+ * Chrome's header legal links use a viewport media query, so a 375px lab
+ * frame inside a wide desktop window still shows them. Hide by container
+ * width so the mobile composition matches a real phone.
+ */
+@container presence (max-width: 1023px) {
+  .headerRow nav {
+    display: none;
+  }
+}
+
+@container presence (max-width: 479px) {
+  .media,
+  .photoFallback {
+    object-position: 78% 46%;
+  }
+
+  .scrim {
+    background: linear-gradient(
+      180deg,
+      rgb(43 38 32 / 72%) 0%,
+      rgb(43 38 32 / 58%) 42%,
+      rgb(43 38 32 / 38%) 100%
+    );
+  }
+
+  .content {
+    align-items: flex-start;
+  }
+
+  .column {
+    max-width: none;
+  }
+
+  .choice {
+    min-height: 50px;
+    padding: 12px 14px;
+  }
+
+  .brandLogo {
+    height: 16px;
+  }
+}
+
+@container presence (min-width: 768px) {
+  .header {
+    padding: clamp(12px, 2cqh, 20px) clamp(24px, 5cqw, 60px)
+      clamp(5px, 1cqh, 10px);
+  }
+
+  .content {
+    padding: clamp(12px, 2.4cqh, 28px) clamp(28px, 6cqw, 80px)
+      clamp(24px, 4cqh, 48px);
+    align-items: center;
+  }
+
+  .media,
+  .photoFallback {
+    object-position: 70% 50%;
+  }
+}
+
+@container presence (min-width: 1024px) {
+  .content {
+    padding: clamp(16px, 3cqh, 36px) clamp(40px, 7cqw, 100px)
+      clamp(28px, 4.4cqh, 56px);
+  }
+
+  .media,
+  .photoFallback {
+    object-position: 68% 48%;
+  }
+}
+
+@container presence (min-width: 1440px) {
+  .column {
+    max-width: 440px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photoFallback[data-alive='true']::after {
+    animation: none;
+    opacity: 0.45;
+  }
+}

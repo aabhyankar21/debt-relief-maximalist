@@ -265,6 +265,22 @@
   display: none;
 }
 
+/* Orbit desktop keeps legal in the header; mobile moves it under the form. */
+:global([data-concept='orbit']) .headerLegal {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  width: auto;
+  max-width: none;
+  color: var(--legal-text, var(--c-faint));
+}
+
+@media (min-width: 1024px) {
+  :global([data-concept='orbit']) .headerLegal {
+    display: flex;
+  }
+}
+
 /* Morph fits each step into one fold, and the footer is the last block
    competing for that space. */
 :global([data-concept='morph']) .legal {
@@ -444,6 +460,12 @@
 
   :global([data-concept='unburden']) .trustBadge {
     padding: 4px 8px;
+    font-size: 0.6875rem;
+    gap: 5px;
+  }
+
+  :global([data-concept='presence']) .trustBadge {
+    padding: 5px 9px;
     font-size: 0.6875rem;
     gap: 5px;
   }

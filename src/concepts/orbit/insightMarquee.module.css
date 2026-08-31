@@ -1,0 +1,120 @@
+/**
+ * Mobile insight strip — Figma cards ~115×147 with ~8px gaps,
+ * continuous leftward marquee over the orbital rings.
+ */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 168px;
+  overflow: hidden;
+}
+
+.rings {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 268px;
+  height: 268px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.95;
+}
+
+.viewport {
+  position: absolute;
+  inset: 8px 0 0;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 12px,
+    #000 calc(100% - 12px),
+    transparent 100%
+  );
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: orbitMarquee 28s linear infinite;
+  will-change: transform;
+}
+
+.group {
+  display: flex;
+  gap: 8px;
+  padding-right: 8px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: 115px;
+  height: 147px;
+  overflow: hidden;
+  border-radius: 5.5px;
+  box-shadow: 0 7.4px 7.4px rgb(0 0 0 / 10%);
+}
+
+.card[data-tone='ink'] {
+  color: #f6ead6;
+  background: #201e1c;
+}
+
+.card[data-tone='cream'] {
+  color: #000000;
+  background: #f6ead6;
+}
+
+.cardPhoto {
+  position: relative;
+  flex: 0 0 68px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 3.7px 3.7px 0 0;
+}
+
+.cardPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
+}
+
+.cardText {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 7px 7px 8px;
+  font-family: var(--font-heading);
+  font-size: 10.4px;
+  font-weight: 700;
+  line-height: 14.7px;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+@keyframes orbitMarquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .viewport {
+    mask-image: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

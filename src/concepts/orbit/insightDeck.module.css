@@ -1,0 +1,172 @@
+/**
+ * Step 1 circular collage —
+ * Desktop: Figma 560×560 ring stage (node 159:11695)
+ * Mobile:  Figma 268×268 rings in a 150px window (node 192:13248)
+ */
+
+.deck {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rings {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.avatar {
+  position: absolute;
+  transform-origin: center center;
+  cursor: pointer;
+  will-change: transform;
+  pointer-events: auto;
+}
+
+.avatarInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+  box-shadow: 0 12px 12px rgb(0 0 0 / 10%);
+  will-change: transform;
+}
+
+.avatarInner img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 28%;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Cropped fills override inset cover (blue-shirt avatars). */
+.avatarInner img[style] {
+  inset: auto;
+  object-fit: fill;
+}
+
+/* Figma 206:14446 — 260 wide, pad 12, gap 12; height grows with copy. */
+.statsCard {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  padding: 12px;
+  overflow: visible;
+  color: #2b2b2b;
+  background: #f6ead6;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.statsHeadline {
+  margin: 0;
+  width: 100%;
+  /* Work Sans is wider than Figma’s Schnyder — 20/28 keeps a 3-line wrap
+     close to the 90px headline box without clipping the stats row. */
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.statsRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Figma columns are 106 wide with 24px between (236 − 106×2). */
+.stat {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 106px;
+  width: 106px;
+}
+
+.statValue {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  letter-spacing: 0;
+  color: #0a36e6;
+}
+
+.statLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #2b2b2b;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/*
+ * Mobile — 150px window under the 48px header (form sheet at y=198).
+ * Rings sit at frame y=6 → canvas pulled up 42px under the header.
+ */
+@media (max-width: 1023px) {
+  .deck {
+    width: min(100%, 268px);
+    height: 150px;
+    aspect-ratio: auto;
+    overflow: visible;
+  }
+
+  .canvas {
+    inset: auto;
+    top: -42px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .avatar {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .statsCard {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rings,
+  .avatar,
+  .avatarInner {
+    will-change: auto;
+  }
+}

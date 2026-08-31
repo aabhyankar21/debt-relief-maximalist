@@ -1,0 +1,120 @@
+/**
+ * The beacon is decorative. No pointer events, no hover, no clickable
+ * silhouette — the glow is something you look at, not something you tap.
+ */
+
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.signal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform-origin: center;
+}
+
+.halo,
+.bloom,
+.core,
+.lock,
+.swarm,
+.orbit {
+  position: absolute;
+  pointer-events: none;
+}
+
+.halo {
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--signal-color) 0%,
+    transparent 68%
+  );
+  filter: blur(22px);
+  opacity: calc(0.38 + var(--signal-density, 0.7) * 0.32);
+}
+
+.bloom {
+  width: 58%;
+  height: 58%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--signal-color) 70%, white) 0%,
+    var(--signal-color) 42%,
+    transparent 72%
+  );
+  filter: blur(8px);
+  opacity: calc(0.62 + var(--signal-density, 0.7) * 0.38);
+}
+
+.core {
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgb(255 255 255 / 72%) 0%,
+    var(--signal-color) 46%,
+    color-mix(in srgb, var(--signal-color) 62%, #3a352c) 100%
+  );
+  box-shadow:
+    0 0 18px color-mix(in srgb, var(--signal-color) 55%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 40%);
+}
+
+.lock {
+  width: 44%;
+  height: 44%;
+  color: color-mix(in srgb, var(--signal-color) 40%, #3a352c);
+}
+
+.lock svg {
+  width: 100%;
+  height: 100%;
+}
+
+.swarm {
+  inset: 0;
+}
+
+.orbit {
+  inset: 16%;
+  transform-origin: center;
+}
+
+.orbitInner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+}
+
+.particle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--signal-color) 80%, white);
+  box-shadow: 0 0 8px var(--signal-color);
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .particle {
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+  }
+}

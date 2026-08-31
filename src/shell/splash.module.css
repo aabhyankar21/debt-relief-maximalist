@@ -42,6 +42,11 @@
   background: #08070d;
 }
 
+.splash[data-concept='signal'] {
+  color: #8a7a5f;
+  background: #f4efe6;
+}
+
 .mark {
   width: 10px;
   height: 10px;
@@ -72,6 +77,10 @@
 
 .splash[data-concept='flux'] .mark {
   background: #d6ff3d;
+}
+
+.splash[data-concept='signal'] .mark {
+  background: #d9a441;
 }
 
 @keyframes pulse {

@@ -10,6 +10,36 @@ export interface ConceptEntry {
 /** Shortlisted visual concepts. Earlier explorations remain in src/concepts/. */
 export const concepts: ConceptEntry[] = [
   {
+    id: 'orbit',
+    name: 'Orbit',
+    tagline: 'Insight collage · 8 steps',
+    Component: lazy(() =>
+      import('./orbit/Orbit').then((module) => ({
+        default: module.Orbit,
+      })),
+    ),
+  },
+  {
+    id: 'presence',
+    name: 'Presence',
+    tagline: 'Photo + glow',
+    Component: lazy(() =>
+      import('./presence/Presence').then((module) => ({
+        default: module.Presence,
+      })),
+    ),
+  },
+  {
+    id: 'presence-lab',
+    name: 'Presence lab',
+    tagline: 'Step 1 scrubber',
+    Component: lazy(() =>
+      import('./presence/PresenceSceneDemo').then((module) => ({
+        default: module.PresenceSceneDemo,
+      })),
+    ),
+  },
+  {
     id: 'vault',
     name: 'Vault',
     tagline: 'Dark luxury',
@@ -145,13 +175,33 @@ export const concepts: ConceptEntry[] = [
       })),
     ),
   },
+  {
+    id: 'signal',
+    name: 'Signal',
+    tagline: 'Trust beacon',
+    Component: lazy(() =>
+      import('./signal/Signal').then((module) => ({
+        default: module.Signal,
+      })),
+    ),
+  },
+  {
+    id: 'signal-lab',
+    name: 'Signal lab',
+    tagline: 'Beacon scrubber',
+    Component: lazy(() =>
+      import('./signal/SignalSceneDemo').then((module) => ({
+        default: module.SignalSceneDemo,
+      })),
+    ),
+  },
 ];
 
-/** This preview ships Unburden only — no concept switcher on the live link. */
-export const defaultConcept = 'unburden';
+/** This preview ships Orbit only — no concept switcher on the live link. */
+export const defaultConcept = 'orbit';
 
 /** Concepts exposed in the review switcher. Empty / single entry hides the dock. */
-const previewIds = ['unburden'];
+const previewIds = ['orbit'];
 
 export const previewConcepts = concepts.filter((concept) =>
   previewIds.includes(concept.id),

@@ -164,6 +164,18 @@
   font-size: clamp(1.55rem, 1.1rem + 1.8vw, 2.15rem);
 }
 
+:global([data-concept='signal']) .body {
+  gap: 24px;
+}
+
+:global([data-concept='signal']) .head {
+  gap: 12px;
+}
+
+:global([data-concept='signal']) .heading {
+  font-size: clamp(1.5rem, 1.08rem + 1.7vw, 2.05rem);
+}
+
 :global([data-concept='mosaic']) .body {
   gap: 24px;
 }
@@ -187,30 +199,36 @@
 
 @media (max-width: 767px) {
   :global([data-concept='mosaic']) .eyebrow,
-  :global([data-concept='unburden']) .eyebrow {
+  :global([data-concept='unburden']) .eyebrow,
+  :global([data-concept='signal']) .eyebrow {
     display: none;
   }
 
   :global([data-concept='mosaic']) .body,
-  :global([data-concept='unburden']) .body {
+  :global([data-concept='unburden']) .body,
+  :global([data-concept='signal']) .body {
     gap: 14px;
   }
 
   :global([data-concept='mosaic']) .head,
-  :global([data-concept='unburden']) .head {
+  :global([data-concept='unburden']) .head,
+  :global([data-concept='signal']) .head {
     gap: 7px;
   }
 
   :global([data-concept='mosaic']) .heading,
-  :global([data-concept='unburden']) .heading {
+  :global([data-concept='unburden']) .heading,
+  :global([data-concept='signal']) .heading {
     font-size: clamp(1.28rem, 1.02rem + 2.2vw, 1.6rem);
   }
 
-  :global([data-concept='mosaic']) .question {
+  :global([data-concept='mosaic']) .question,
+  :global([data-concept='signal']) .question {
     font-size: 1.02rem;
   }
 
-  :global([data-concept='mosaic']) .subtext {
+  :global([data-concept='mosaic']) .subtext,
+  :global([data-concept='signal']) .subtext {
     font-size: 0.88rem;
     line-height: 1.45;
   }

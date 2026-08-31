@@ -1,0 +1,78 @@
+/**
+ * Presence — photographic ground, warm type on a scrim.
+ * Progress keeps the existing blue; selected controls go terracotta so
+ * the photo system and the affordance share one warm register.
+ */
+
+[data-concept='presence'] {
+  --c-bg: #1c1814;
+  --c-surface: rgb(255 250 244 / 10%);
+  --c-surface-2: rgb(255 250 244 / 14%);
+
+  --c-text: #f7f2ea;
+  --c-muted: #d8cfc0;
+  --c-faint: #b8a994;
+
+  --c-border: rgb(247 242 234 / 22%);
+  --c-border-strong: rgb(247 242 234 / 38%);
+
+  --c-accent: #c9744f;
+  --c-accent-soft: rgb(201 116 79 / 18%);
+  --c-on-accent: #fffaf4;
+  --c-success: #d9a441;
+  --c-danger: #c0392b;
+
+  --pulse-accent: #d9a441;
+  --pulse-accent-deep: #c4843a;
+  --pulse-tick: #d9a441;
+  --pulse-text: #f7f2ea;
+  --pulse-caption: #d8cfc0;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-card: 0 10px 28px rgb(0 0 0 / 28%);
+  --shadow-lift: 0 14px 34px rgb(201 116 79 / 28%);
+
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --display-weight: 560;
+  --display-tracking: -0.024em;
+
+  --content-max: 420px;
+
+  --eyebrow-color: #b8a994;
+
+  --card-blur: blur(10px);
+  --copy-shadow: 0 1px 3px rgb(20 16 12 / 55%);
+
+  --choice-hover-bg: rgb(255 250 244 / 14%);
+  --choice-shadow: 0 8px 22px rgb(0 0 0 / 22%);
+  --choice-icon-bg: rgb(201 116 79 / 18%);
+  --choice-icon-color: #f7f2ea;
+  --choice-icon-radius: 12px;
+  --choice-icon-selected-bg: #c9744f;
+  --choice-icon-selected-color: #fffaf4;
+
+  --input-bg: rgb(255 250 244 / 10%);
+  --callout-bg: transparent;
+  --callout-border: rgb(247 242 234 / 16%);
+  --callout-text: #d8cfc0;
+  --callout-shadow: none;
+
+  --button-bg: #c9744f;
+  --button-radius: 12px;
+  --button-shadow: 0 10px 24px rgb(201 116 79 / 28%);
+  --button-shadow-hover: 0 14px 30px rgb(201 116 79 / 36%);
+
+  --bullet-bg: rgb(217 164 65 / 16%);
+  --track-bg: rgb(247 242 234 / 18%);
+  --progress-fill: #2f6bff;
+  /* Solid enough to stay legible on the photo — frosted glass washed the label out. */
+  --badge-bg: rgb(43 38 32 / 72%);
+  --legal-text: rgb(216 207 192 / 78%);
+
+  color-scheme: dark;
+}

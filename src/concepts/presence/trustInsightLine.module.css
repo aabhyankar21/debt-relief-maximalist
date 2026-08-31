@@ -1,0 +1,10 @@
+.line {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 450;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--c-muted, #d8cfc0);
+  text-wrap: pretty;
+  text-shadow: var(--copy-shadow, none);
+}

@@ -1,0 +1,45 @@
+/**
+ * Sourced from the beacon, not printed as helper text. The mark is a
+ * connector, not a bullet — low opacity, no hover, not a control.
+ */
+
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.mark {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 8px;
+  padding-top: 5px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal-callout, #6b6255);
+  opacity: 0.45;
+}
+
+.stem {
+  width: 1px;
+  height: 14px;
+  margin-top: 2px;
+  background: var(--signal-callout, #6b6255);
+  opacity: 0.28;
+}
+
+.text {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--signal-callout, #6b6255);
+  text-wrap: pretty;
+}

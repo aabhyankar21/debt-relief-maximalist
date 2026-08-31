@@ -1,0 +1,103 @@
+/**
+ * Step 5 partner-logo collage —
+ * Desktop: Figma 560×560 ring stage (node 201:14012)
+ * Mobile:  Figma 390×150 stage window (node 201:14093) — no rings
+ */
+
+.stage {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rings {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.card {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.callout {
+  position: absolute;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  color: #2b2b2b;
+  text-align: center;
+  background: #f7f7f7;
+  border-radius: 8px;
+  pointer-events: none;
+  container-type: inline-size;
+  container-name: partner-callout;
+}
+
+.calloutText {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-heading);
+  font-size: clamp(14px, 8.5cqi, 20px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+@media (max-width: 1023px) {
+  .stage {
+    width: 100%;
+    height: calc(150 * 100cqw / 390);
+    min-height: 150px;
+    aspect-ratio: auto;
+    overflow: hidden;
+    container-type: inline-size;
+    container-name: partner-orbit-stage;
+  }
+
+  .canvas {
+    inset: 0;
+  }
+
+  .rings {
+    display: none;
+  }
+
+  .calloutText {
+    font-size: 14px;
+    line-height: 16px;
+  }
+}

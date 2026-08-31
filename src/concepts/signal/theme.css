@@ -1,0 +1,87 @@
+/**
+ * Warm paper ground. The beacon carries slate → gold on its own surface;
+ * interactive controls stay a single clay-gold accent so "tap this" never
+ * shares a colour with "look at this" without also changing shape.
+ *
+ * PulseTitle is reused, so its tick/highlight tokens are mapped here.
+ */
+
+[data-concept='signal'] {
+  --c-bg: #f4efe6;
+  --c-surface: #ffffff;
+  --c-surface-2: #ffffff;
+
+  --c-text: #2b2620;
+  --c-muted: #5c5347;
+  --c-faint: #857a6b;
+
+  --c-border: rgb(120 98 68 / 18%);
+  --c-border-strong: rgb(120 98 68 / 34%);
+
+  --c-accent: #c4843a;
+  --c-accent-soft: rgb(196 132 58 / 12%);
+  --c-on-accent: #fffaf4;
+  --c-success: #3f8f6a;
+  --c-danger: #c0392b;
+
+  --pulse-accent: #c4843a;
+  --pulse-accent-deep: #a56b2c;
+  --pulse-tick: #c4843a;
+  --pulse-text: #2b2620;
+  --pulse-caption: #6b6255;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-card:
+    0 1px 0 rgb(255 255 255 / 70%) inset,
+    0 20px 50px rgb(74 58 38 / 10%);
+  --shadow-lift: 0 14px 34px rgb(196 132 58 / 22%);
+
+  --font-display: 'Work Sans', system-ui, sans-serif;
+  --font-heading: 'Work Sans', system-ui, sans-serif;
+  --font-body: 'Work Sans', system-ui, sans-serif;
+  --display-weight: 560;
+  --display-tracking: -0.024em;
+
+  --content-max: 440px;
+
+  --eyebrow-color: #8a7a5f;
+
+  --card-blur: none;
+  --copy-shadow: 0 1px 2px rgb(244 239 230 / 80%);
+
+  --choice-hover-bg: #ffffff;
+  --choice-shadow:
+    0 1px 0 rgb(255 255 255 / 90%) inset,
+    0 10px 24px rgb(74 58 38 / 10%);
+  --choice-icon-bg: rgb(196 132 58 / 12%);
+  --choice-icon-color: #c4843a;
+  --choice-icon-radius: 12px;
+  --choice-icon-selected-bg: #c4843a;
+  --choice-icon-selected-color: #fffaf4;
+
+  --input-bg: #ffffff;
+  --callout-bg: transparent;
+  --callout-border: rgb(120 98 68 / 14%);
+  --callout-text: #3a332a;
+  --callout-shadow: none;
+
+  --button-bg: #c4843a;
+  --button-radius: 12px;
+  --button-shadow: 0 10px 24px rgb(196 132 58 / 24%);
+  --button-shadow-hover: 0 14px 30px rgb(196 132 58 / 32%);
+
+  --bullet-bg: rgb(63 143 106 / 14%);
+  --track-bg: rgb(120 98 68 / 16%);
+  --progress-fill: #c4843a;
+  --badge-bg: rgb(255 255 255 / 60%);
+  --legal-text: rgb(133 122 107 / 90%);
+
+  --signal-chip-fill: #e7e0d2;
+  --signal-chip-text: #3a352c;
+  --signal-callout: #6b6255;
+
+  color-scheme: light;
+}
