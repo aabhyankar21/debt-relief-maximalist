@@ -12,8 +12,8 @@ export interface BirthdaySpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 4.
- * Desktop: dashed rings, arched portrait, insight card (Figma 201:13851).
- * Mobile: portrait + insight card in the short stage window (Figma 197:13685).
+ * Desktop: dashed rings, cutout portrait, cream insight card (Figma 201:13851).
+ * Mobile: cream banner + arched portrait in the short stage (Figma 197:13685).
  */
 export function BirthdaySpotlight({ className }: BirthdaySpotlightProps) {
   const isDesktop = useMediaQuery('(min-width: 1024px)');

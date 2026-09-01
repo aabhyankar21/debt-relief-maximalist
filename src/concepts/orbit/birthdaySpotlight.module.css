@@ -1,7 +1,7 @@
 /**
  * Step 4 birthday collage —
- * Desktop: Figma 560×560 ring stage (node 201:13851) — insight card
- * Mobile:  Figma 390×150 stage window (node 197:13685) — no rings
+ * Desktop: Figma 560×560 ring stage (node 201:13851) — cream card 217:110
+ * Mobile:  Figma 390×150 cream banner (node 197:13685) — no rings
  */
 
 .stage {
@@ -28,12 +28,14 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
+  opacity: 0.4;
   will-change: transform;
 }
 
 .photo {
   position: absolute;
-  z-index: 2;
+  /* Desktop: under cream card (Figma paints 217:110 above the portrait). */
+  z-index: 1;
   overflow: hidden;
   pointer-events: none;
   background: transparent;
@@ -45,21 +47,21 @@
   position: absolute;
   display: block;
   max-width: none;
-  object-fit: cover;
+  object-fit: fill;
   pointer-events: none;
   user-select: none;
-  /* Transparent cutout — don't composite an opaque fallback fill. */
   background: transparent;
 }
 
-/* Insight card sits behind the portrait (rings 0 < card 1 < photo 2) */
+/* Cream insight card — Figma 217:110: #f6ead6 / #e5e5e5 / 8px
+   Desktop: above the portrait (rings 0 < photo 1 < card 2). */
 .callout {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   overflow: hidden;
   box-sizing: border-box;
   color: #000000;
-  background: #f1f1f1;
+  background: #f6ead6;
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   pointer-events: none;
@@ -67,43 +69,30 @@
   container-name: birthday-callout;
 }
 
+/* Figma title at (22.5, 18.5) in 326×130 card — 16px SemiBold / 22px */
 .calloutTitle {
   margin: 0;
-  /* Figma text at (62.5, 14.5) in 326×144 card */
   position: absolute;
-  top: 10.07%;
-  left: 19.17%;
-  width: 73%;
+  top: 14.23%;
+  left: 6.9%;
+  width: 84.97%;
   font-size: clamp(13px, 4.9cqi, 16px);
   font-weight: 600;
-  line-height: 22px;
+  line-height: 1.375;
   letter-spacing: 0;
 }
 
+/* Figma body at (22.5, 43.5) w 282 in 326×130 card — 14px Regular / 22px */
 .calloutBody {
   margin: 0;
-  /* Figma text at (62.5, 39.5) in 326×144 card */
   position: absolute;
-  top: 27.43%;
-  left: 19.17%;
-  width: 74.2%;
+  top: 33.46%;
+  left: 6.9%;
+  width: 86.5%;
   font-size: clamp(12px, 4.3cqi, 14px);
   font-weight: 400;
-  line-height: 22px;
+  line-height: 1.571;
   letter-spacing: 0;
-}
-
-/*
- * Mid desktop — Figma callout peeks ~39px past the 560 ring into a 124px gap.
- * Below 1200 the body gap collapses to 40px, so that peek lands on the form.
- * Keep the Figma left edge (tuck under the portrait); shrink width so the
- * right edge stays inside the stage and the grid gap stays clear.
- */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .callout {
-    /* 100% - 48.75% Figma left */
-    width: 51.25% !important;
-  }
 }
 
 @media (max-width: 1023px) {
@@ -112,39 +101,58 @@
     height: calc(150 * 100cqw / 390);
     min-height: 150px;
     aspect-ratio: auto;
-    overflow: hidden;
+    /* Portrait arch peeks past the 150px window (Figma 128×189). */
+    overflow: visible;
     container-type: inline-size;
     container-name: birthday-stage;
   }
 
   .canvas {
     inset: 0;
+    overflow: visible;
   }
 
   .rings {
     display: none;
   }
 
-  /* Mobile keeps the callout above the portrait (Figma 197:13685). */
-  .callout {
-    z-index: 4;
+  /* Mobile: arched portrait sits above the full-bleed cream banner. */
+  .photo {
+    z-index: 2;
   }
 
+  .photo img {
+    object-fit: fill;
+  }
+
+  /* Full-bleed cream banner behind the portrait (Figma 216:14729). */
+  .callout {
+    z-index: 1;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  /* Figma text at (158.5, 25.5) / (158.5, 50.5) in 390×150 banner */
   .calloutTitle {
-    /* Figma text at (62.5, 10.5) in 292×119 card */
-    top: 8.82%;
-    left: 21.4%;
-    width: 71.2%;
+    top: 17%;
+    left: 40.64%;
+    width: 53.33%;
     font-size: 14px;
     line-height: 20px;
   }
 
   .calloutBody {
-    /* Figma text at (62.5, 35.5) in 292×119 card */
-    top: 29.83%;
-    left: 21.4%;
-    width: 70.2%;
+    top: 33.67%;
+    left: 40.64%;
+    width: 52.56%;
     font-size: 12px;
     line-height: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rings {
+    will-change: auto;
   }
 }

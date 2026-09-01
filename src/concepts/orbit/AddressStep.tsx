@@ -14,6 +14,7 @@ import iconLock from './assets/icon-lock.svg';
 import trustpilotMark from './assets/trustpilot.png';
 import { ORBIT_CONFIG } from './config';
 import { ResultsSpotlight } from './ResultsSpotlight';
+import { StickyCtaDock } from './StickyCtaDock';
 import styles from './orbit.module.css';
 import './theme.css';
 
@@ -29,8 +30,8 @@ export interface AddressStepProps {
 
 /**
  * Orbit — Step 7 (address).
- * Desktop: results-ready card orbit left, address form right (Figma 220:14833).
- * Mobile: results card above a sheeted form (same short-stage pattern).
+ * Desktop: results radar orbit left, address form right.
+ * Mobile: compact radar + copy above a sheeted form (same short-stage pattern).
  */
 export function AddressStep({
   fields,
@@ -57,8 +58,8 @@ export function AddressStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -142,7 +143,7 @@ export function AddressStep({
             </div>
           </div>
 
-          <div className={styles.ctaDock}>
+          <StickyCtaDock>
             <button
               type="button"
               className={styles.cta}
@@ -151,7 +152,7 @@ export function AddressStep({
             >
               {step7.cta}
             </button>
-          </div>
+          </StickyCtaDock>
 
           <div className={styles.trust}>
             {step7.trustItems.map((item) => (

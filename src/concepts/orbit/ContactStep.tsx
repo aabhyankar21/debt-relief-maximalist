@@ -15,6 +15,7 @@ import iconLock from './assets/icon-lock.svg';
 import trustpilotMark from './assets/trustpilot.png';
 import { ORBIT_CONFIG } from './config';
 import { PartnerSpotlight } from './PartnerSpotlight';
+import { StickyCtaDock } from './StickyCtaDock';
 import styles from './orbit.module.css';
 import './theme.css';
 
@@ -32,8 +33,8 @@ export interface ContactStepProps {
 
 /**
  * Orbit — Step 3 (contact).
- * Desktop: partner collage left, name/email form right (Figma 159:11858).
- * Mobile: summary-card collage above a sheeted form (Figma 192:13517).
+ * Desktop: secure-recap phone collage left, name/email form right.
+ * Mobile: inset device-screen banner above a sheeted form.
  */
 export function ContactStep({
   fields,
@@ -62,8 +63,8 @@ export function ContactStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -166,7 +167,7 @@ export function ContactStep({
             </span>
           </p>
 
-          <div className={styles.ctaDock}>
+          <StickyCtaDock>
             <button
               type="button"
               className={styles.cta}
@@ -175,7 +176,7 @@ export function ContactStep({
             >
               {step3.cta}
             </button>
-          </div>
+          </StickyCtaDock>
 
           <div className={styles.trust}>
             {step3.trustItems.map((item) => (

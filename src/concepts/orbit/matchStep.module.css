@@ -7,13 +7,15 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  overflow-x: hidden;
   background: var(--c-bg);
   color: var(--c-text);
 }
 
 .header {
   position: relative;
-  z-index: 2;
+  /* Match steps 1–7: stay above any stage/form stacking. */
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,77 +47,195 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  /* Figma content at y=124 under 48px header → 76px into the body. */
-  padding: 76px 24px 56px;
+  /* Keep content near the header so the card + CTA stay above the fold. */
+  padding: 28px 24px 36px;
+  background:
+    radial-gradient(
+      ellipse 72% 46% at 50% 12%,
+      rgb(0 51 255 / 7%),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 54% 38% at 50% 78%,
+      rgb(246 234 214 / 42%),
+      transparent 70%
+    );
 }
 
 .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 560px;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.heroCrown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sealWrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+
+.burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.burstPiece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+.seal {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.sealOrbit {
+  position: absolute;
+  inset: -8px;
+  border: 1.5px dashed rgb(0 51 255 / 24%);
+  border-radius: 50%;
+  animation: seal-orbit 18s linear infinite;
+}
+
+.sealPing {
+  position: absolute;
+  inset: -5px;
+  border: 2px solid rgb(0 51 255 / 35%);
+  border-radius: 50%;
+  animation: seal-ping 1.15s 0.28s ease-out 2 both;
+}
+
+.sealSvg {
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 6px 16px rgb(0 51 255 / 28%);
 }
 
 .copy {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 16px;
 }
 
 .eyebrow {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 20px;
   letter-spacing: 0;
-  color: #333333;
+  color: #0033ff;
 }
 
 .heading {
   margin: 0;
+  width: 100%;
+  max-width: none;
   font-family: var(--font-heading);
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 600;
-  line-height: 40px;
+  line-height: 32px;
   letter-spacing: 0;
+  text-wrap: balance;
   color: #171717;
+}
+
+.kicker {
+  margin: 0;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: clamp(12px, 1.15vw, 15px);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-align: center;
+  color: #515260;
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   width: 100%;
-  padding: 24px;
+  padding: 18px 20px;
   background: #ffffff;
-  border: 1px solid var(--c-border, #d7dce5);
+  border: 1px solid rgb(0 51 255 / 10%);
   border-radius: 8px;
   box-shadow:
-    0 0 1px 0 rgb(0 0 0 / 5%),
-    0 4px 8px -1px rgb(0 0 0 / 10%);
+    0 0 0 1px rgb(0 51 255 / 4%),
+    0 10px 28px rgb(0 51 255 / 10%),
+    0 4px 8px -1px rgb(0 0 0 / 8%);
 }
 
 .badge {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 4px;
   width: fit-content;
-  max-height: 44px;
+  max-height: 36px;
   margin: 0;
-  padding: 7px 16px;
+  padding: 5px 12px;
+  overflow: hidden;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 20px;
+  line-height: 16px;
   letter-spacing: 0;
   text-transform: uppercase;
   text-align: center;
-  color: #007ac8;
+  color: #0033ff;
   background: #f3f5fb;
   border-radius: 96px;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgb(255 255 255 / 70%) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  animation: badge-shine 1.15s 0.72s ease-out 1 both;
 }
 
 .badgeIcon {
@@ -147,25 +267,25 @@
 .partner {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   width: 100%;
 }
 
 .partnerName {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  line-height: 26px;
+  line-height: 24px;
   letter-spacing: 0;
   color: #171717;
 }
 
 .partnerLogo {
   display: block;
-  width: 186px;
+  width: 160px;
   max-width: 100%;
-  height: 48px;
+  height: 40px;
   object-fit: contain;
   object-position: left center;
 }
@@ -181,12 +301,12 @@
 .status {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   margin: 0;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 24px;
+  line-height: 20px;
   letter-spacing: 0;
   color: #171717;
 }
@@ -196,10 +316,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  margin-top: 4px;
-  padding: 4px;
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+  padding: 3px;
   background: #007ac8;
   border-radius: 52px;
   backdrop-filter: blur(12px);
@@ -215,7 +335,7 @@
 .benefits {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -227,31 +347,44 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 20px;
   letter-spacing: 0;
   color: #000000;
 }
 
 .benefitIcon {
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   object-fit: contain;
+}
+
+.note {
+  margin: 0;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+  color: #201e1c;
+  background: #f6ead6;
+  border-radius: 8px;
 }
 
 .cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
-  min-height: 56px;
-  padding: 14px 12px;
+  min-height: 52px;
+  padding: 12px;
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 20px;
   letter-spacing: 0;
@@ -287,49 +420,83 @@
 
 @media (max-width: 1023px) {
   .header {
+    position: sticky;
+    top: 0;
     padding: 14px 16px;
   }
 
   .body {
-    padding: 32px 16px 28px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 12px 16px 16px;
   }
 
   .content {
-    gap: 16px;
+    gap: 10px;
+    max-width: 100%;
+  }
+
+  .hero {
+    gap: 8px;
+  }
+
+  .heroCrown {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .sealWrap,
+  .seal,
+  .sealSvg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .sealOrbit {
+    inset: -6px;
+  }
+
+  .sealPing {
+    inset: -4px;
   }
 
   .heading {
-    font-size: 26px;
-    line-height: 34px;
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  /* Card note carries the encouragement — keep the hero short on small screens. */
+  .kicker {
+    display: none;
   }
 
   .card {
-    padding: 20px 16px;
+    gap: 10px;
+    padding: 14px 16px;
   }
 
   .partnerLogo {
-    width: 160px;
-    height: 41px;
+    width: 140px;
+    height: 36px;
   }
 
-  .status {
-    font-size: 15px;
-    line-height: 22px;
+  .benefits {
+    gap: 4px;
   }
 
   .mobileLegal {
     display: flex;
     justify-content: center;
     width: 100%;
-    padding: 0 16px calc(20px + env(safe-area-inset-bottom));
+    padding: 0 16px calc(12px + env(safe-area-inset-bottom));
     color: var(--legal-text, #7f8b9a);
   }
 }
 
 @media (max-width: 639px) {
   .heading {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 19px;
+    line-height: 24px;
   }
 
   .benefit {
@@ -341,7 +508,36 @@
   }
 }
 
+@keyframes seal-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes seal-ping {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.42);
+  }
+}
+
+@keyframes badge-shine {
+  to {
+    transform: translateX(130%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .sealOrbit,
+  .sealPing,
+  .badge::after {
+    animation: none;
+  }
+
   .cta:hover {
     box-shadow: none;
   }

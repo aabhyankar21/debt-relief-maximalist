@@ -1,7 +1,9 @@
 /**
- * Step 6 income collage —
- * Desktop: Figma 560×560 ring stage (node 204:14279) — insight card
- * Mobile:  390×150 stage window — same treatment as birthday (no rings)
+ * Step 6 affordability dial —
+ * Desktop: cream trust card + blue meter face on the ring stage
+ * Mobile:  390×150 landscape card (copy left, dial right)
+ * Shares Orbit language with the phone vault (cream, pill, chips)
+ * but reads as a progress gauge — not digit seals.
  */
 
 .stage {
@@ -28,68 +30,262 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
+  opacity: 0.4;
   will-change: transform;
 }
 
-.photo {
+.card {
   position: absolute;
-  z-index: 2;
-  overflow: hidden;
-  pointer-events: none;
-  background: transparent;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.photo img {
-  position: absolute;
-  display: block;
-  max-width: none;
-  object-fit: cover;
-  pointer-events: none;
-  user-select: none;
-  background: transparent;
-}
-
-/* Insight card sits behind the portrait (rings 0 < card 1 < photo 2) */
-.callout {
-  position: absolute;
-  z-index: 1;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   box-sizing: border-box;
-  color: #000000;
-  background: #f1f1f1;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
+  color: #201e1c;
+  background: #f6ead6;
+  border-radius: 16px;
+  translate: -50% -50%;
   pointer-events: none;
-  container-type: size;
-  container-name: income-callout;
+  container-type: inline-size;
+  container-name: income-dial;
+  box-shadow:
+    0 16px 36px rgb(32 30 28 / 10%),
+    0 1px 0 rgb(255 255 255 / 60%) inset;
 }
 
-.calloutTitle {
-  margin: 0;
-  /* Figma text at (62.5, 14.5) in 326×144 card */
-  position: absolute;
-  top: 10.07%;
-  left: 19.17%;
-  width: 73%;
-  font-size: clamp(13px, 4.9cqi, 16px);
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px 16px 12px;
+  text-align: center;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px 2px 6px;
+  font-size: clamp(9px, 3.2cqi, 11px);
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: 0;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+  color: #0c7663;
+  text-transform: uppercase;
+  background: rgb(12 118 99 / 10%);
+  border-radius: 999px;
 }
 
-.calloutBody {
+.pillDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  background: #0c7663;
+  border-radius: 50%;
+}
+
+.pillDot[data-pulse] {
+  animation: pillPulse 1.8s ease-in-out infinite;
+}
+
+.title {
   margin: 0;
-  /* Figma text at (62.5, 39.5) in 326×144 card */
-  position: absolute;
-  top: 27.43%;
-  left: 19.17%;
-  width: 74.2%;
-  font-size: clamp(12px, 4.3cqi, 14px);
-  font-weight: 400;
-  line-height: 22px;
+  width: 100%;
+  font-family: var(--font-heading);
+  font-size: clamp(15px, 6.2cqi, 20px);
+  font-weight: 700;
+  line-height: 1.2;
   letter-spacing: 0;
+  text-wrap: pretty;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  font-size: clamp(10px, 3.5cqi, 12px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #201e1c;
+  background: rgb(255 255 255 / 72%);
+  border: 1px solid rgb(32 30 28 / 8%);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 70%) inset;
+}
+
+.note {
+  margin: 2px 0 0;
+  max-width: 28ch;
+  font-size: clamp(10px, 3.3cqi, 12px);
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgb(32 30 28 / 62%);
+  text-wrap: pretty;
+}
+
+/* Cool meter face — Orbit blue family, not the phone vault charcoal. */
+.meter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 16px 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      120% 90% at 50% 110%,
+      rgb(0 51 255 / 22%) 0%,
+      transparent 58%
+    ),
+    linear-gradient(180deg, #1a2748 0%, #151d33 100%);
+  transition: background 0.45s ease;
+}
+
+.meter[data-active] {
+  background:
+    radial-gradient(
+      120% 90% at 50% 110%,
+      rgb(12 118 99 / 28%) 0%,
+      transparent 58%
+    ),
+    linear-gradient(180deg, #1a2748 0%, #152438 100%);
+}
+
+.meterGlow {
+  position: absolute;
+  inset: auto 18% -20%;
+  z-index: 0;
+  height: 55%;
+  pointer-events: none;
+  background: radial-gradient(
+    50% 60% at 50% 50%,
+    rgb(120 160 255 / 35%) 0%,
+    transparent 70%
+  );
+  opacity: 0.55;
+  transition: opacity 0.45s ease, background 0.45s ease;
+}
+
+.meter[data-active] .meterGlow {
+  opacity: 0.85;
+  background: radial-gradient(
+    50% 60% at 50% 50%,
+    rgb(90 200 170 / 40%) 0%,
+    transparent 70%
+  );
+}
+
+.dialSvg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(78%, 220px);
+  height: auto;
+  overflow: visible;
+}
+
+.dialTrack {
+  fill: none;
+  stroke: rgb(255 255 255 / 14%);
+}
+
+.dialFill {
+  fill: none;
+  stroke: #6d8cff;
+  filter: drop-shadow(0 0 6px rgb(109 140 255 / 55%));
+  transition: stroke 0.45s ease, filter 0.45s ease;
+}
+
+.meter[data-active] .dialFill {
+  stroke: #5fd0b0;
+  filter: drop-shadow(0 0 7px rgb(95 208 176 / 55%));
+}
+
+.dialTick {
+  fill: rgb(255 255 255 / 28%);
+}
+
+.dialTip {
+  fill: #ffffff;
+  stroke: #6d8cff;
+  stroke-width: 2;
+  filter: drop-shadow(0 1px 4px rgb(0 0 0 / 35%));
+  transition:
+    stroke 0.45s ease,
+    filter 0.45s ease;
+}
+
+.meter[data-active] .dialTip {
+  stroke: #5fd0b0;
+  filter: drop-shadow(0 0 6px rgb(95 208 176 / 50%));
+}
+
+.meter[data-idle] .dialTip {
+  animation: tipIdle 2.4s ease-in-out infinite;
+}
+
+.meterLabel {
+  position: relative;
+  z-index: 1;
+  margin: 2px 0 0;
+  font-size: clamp(12px, 4.2cqi, 14px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 88%);
+  text-align: center;
+  transition: color 0.35s ease;
+}
+
+.meter[data-active] .meterLabel {
+  color: #e8fff8;
+}
+
+@keyframes tipIdle {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pillPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgb(12 118 99 / 45%);
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.9;
+    box-shadow: 0 0 0 5px rgb(12 118 99 / 0%);
+  }
 }
 
 @media (max-width: 1023px) {
@@ -100,39 +296,124 @@
     aspect-ratio: auto;
     overflow: hidden;
     container-type: inline-size;
-    container-name: income-stage;
+    container-name: income-dial-stage;
   }
 
   .canvas {
     inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px 8px;
+    box-sizing: border-box;
   }
 
   .rings {
     display: none;
   }
 
-  /* Keep callout behind the portrait (same stacking as desktop). */
-  .callout {
-    z-index: 1;
-  }
-
-  .photo {
+  .mobileCard {
+    position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    max-width: 358px;
+    height: 100%;
+    max-height: 132px;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #201e1c;
+    background: #f6ead6;
+    border-radius: 14px;
+    box-shadow:
+      0 8px 24px rgb(0 0 0 / 10%),
+      0 1px 0 rgb(255 255 255 / 55%) inset;
+    pointer-events: none;
   }
 
-  .calloutTitle {
-    top: 8.82%;
-    left: 21.4%;
-    width: 71.2%;
-    font-size: 14px;
-    line-height: 20px;
+  .mobileCopy {
+    display: flex;
+    flex: 1 1 54%;
+    flex-direction: column;
+    min-width: 0;
+    box-sizing: border-box;
   }
 
-  .calloutBody {
-    top: 29.83%;
-    left: 21.4%;
-    width: 70.2%;
-    font-size: 12px;
+  .mobileCopyInner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 10px 12px 14px;
+    box-sizing: border-box;
+  }
+
+  .pill {
+    font-size: 10px;
+  }
+
+  .mobileTitle {
+    margin: 0;
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
     line-height: 18px;
+    letter-spacing: 0;
+    text-align: left;
+    text-wrap: balance;
+  }
+
+  .chips {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .chip {
+    padding: 2px 6px;
+    font-size: 9px;
+  }
+
+  .mobileDial {
+    flex: 0 0 46%;
+    width: auto;
+    min-height: 0;
+    height: 100%;
+    padding: 8px 8px 10px;
+    border-left: 1px solid rgb(0 0 0 / 6%);
+    justify-content: center;
+  }
+
+  .mobileDial .dialSvg {
+    width: min(92%, 140px);
+  }
+
+  .mobileDial .meterLabel {
+    margin-top: 0;
+    font-size: 11px;
+  }
+
+  .meter[data-idle] .dialTip {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillDot[data-pulse] {
+    animation: none;
+  }
+
+  .meter[data-idle] .dialTip {
+    animation: none;
+  }
+
+  .dialFill,
+  .dialTip {
+    transition: none !important;
   }
 }

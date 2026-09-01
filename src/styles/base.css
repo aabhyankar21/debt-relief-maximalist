@@ -77,7 +77,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  /*
+   * Prefer clip over hidden: overflow-x:hidden makes body a scroll
+   * container and breaks position:sticky for bottom CTA docks (Orbit
+   * StickyCtaDock and other concepts’ [data-sticky-cta] buttons).
+   */
+  overflow-x: clip;
 }
 
 h1,

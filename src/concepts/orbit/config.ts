@@ -11,11 +11,11 @@
  * Step 3 mobile:  Figma 390 (node 192:13517)
  * Step 4 desktop: Figma 1440×900 (node 201:13851)
  * Step 4 mobile:  Figma 390 (node 197:13685)
- * Step 5 desktop: Figma 1440×900 (node 201:14012) partner logo orbit
- * Step 5 mobile:  Figma 390 (node 201:14093)
- * Step 6 desktop: Figma 1440×900 (node 204:14279) income portrait orbit
- * Step 6 mobile:  same short-stage + sheet treatment as steps 3–5
- * Step 7 desktop: Figma 1440×900 (node 220:14833) results-ready card orbit
+ * Step 5 desktop: Figma 1440×900 (node 201:14012) number-vault orbit
+ * Step 5 mobile:  Figma 390 (node 201:14093) compact vault strip
+ * Step 6 desktop: affordability dial on rings (income trust card)
+ * Step 6 mobile:  landscape dial card in the short stage window
+ * Step 7 desktop: results radar — centered copy + pin scanning partners
  * Step 7 mobile:  same short-stage + sheet treatment as steps 3–6
  * Step 8 desktop: Figma 1440×900 (node 220:15016) centered match card
  * Step 8 mobile:  adaptive stack of the same match card + rings
@@ -27,14 +27,19 @@ import photoHospital from './assets/photo-hospital.jpg';
 import photoLoan from './assets/photo-loan.jpg';
 import photoCredit from './assets/photo-credit.jpg';
 import photoJohn from './assets/photo-john.png';
-import photoPartner from './assets/photo-partner.png';
+import photoMarcus from './assets/photo-marcus.png';
+import photoAisha from './assets/photo-aisha.png';
 import photoBirthday from './assets/photo-birthday.png';
-import photoIncome from './assets/photo-income.png';
 import avatarGraduates from './assets/avatar-graduates.jpg';
 import avatarCredit from './assets/avatar-credit.jpg';
 import avatarLaptop from './assets/avatar-laptop.jpg';
 import avatarPhone from './assets/avatar-phone.jpg';
 import avatarBlue from './assets/avatar-blue.jpg';
+import avatarHandshake from './assets/avatar-handshake.jpg';
+import avatarGlasses from './assets/avatar-glasses.jpg';
+import avatarOffice from './assets/avatar-office.jpg';
+import avatarDenim from './assets/avatar-denim.jpg';
+import avatarThink from './assets/avatar-think.jpg';
 import iconPersonalLoan from './assets/icon-personal-loan.png';
 import iconCreditCards from './assets/icon-credit-cards.png';
 import iconMedical from './assets/icon-medical.png';
@@ -256,12 +261,16 @@ export const ORBIT_CONFIG = {
   step8: {
     /** Desktop — Figma 220:15016 */
     eyebrow: 'Congratulations!',
-    heading:
-      'We have matched you with your personalized Debt Relief partner',
+    /** `{name}` is replaced with the contact first name when present. */
+    eyebrowNamed: 'Congratulations, {name}!',
+    heading: 'We matched you with a personalized Debt Relief partner',
+    kicker:
+      'You did the hard part. A specialist is ready for the next step.',
+    note: "You're closer to being debt-free than you were this morning.",
     badge: 'Our Pick For You',
     partnerName: 'National Debt Relief',
     status:
-      'You’re almost done! A representative will call shortly to help finish the process.',
+      "You're almost there — a representative will call shortly to help finish the process.",
     bullets: [
       'A+ BBB rating and AFCC accredited',
       'Free consultation and personalized savings estimate',
@@ -289,6 +298,21 @@ export const ORBIT_MOTION = {
   floatAmps: [5, 7, 4, 6] as const,
   /** Per-card float loop durations in seconds. */
   floatDurations: [9, 10.5, 8.5, 11] as const,
+} as const;
+
+/**
+ * Step 1 radar scan — same pin/sweep language as ResultsSpotlight (step 7).
+ * Pin lights each avatar as it passes; images and layout stay as placed.
+ */
+export const ORBIT_SCAN = {
+  /** Full revolution of the scanning pin, seconds. */
+  scanSec: 5.5,
+  /** Distance of the pin from stage center (% of stage). */
+  pinRadius: 40,
+  /** Peak scale when the pin is on an avatar. */
+  litScale: 1.22,
+  /** Half-width of the lit window in degrees (pin “on” the avatar). */
+  litHalfAngle: 16,
 } as const;
 
 export const DEBT_AMOUNT_OPTIONS = [
@@ -339,15 +363,21 @@ export const DEBT_TYPE_OPTIONS = [
 export type DebtTypeId = (typeof DEBT_TYPE_OPTIONS)[number]['id'];
 
 /**
- * Step 5 partner-logo collage —
- * Desktop: dashed rings + 5 partner cards + center callout (Figma 201:14012).
- * Mobile: partner cards + callout in the 390×150 stage window (Figma 201:14093).
+ * Step 5 number vault —
+ * Desktop: dashed rings + dim partner cards + cream vault card (Figma 201:14012).
+ * Mobile: landscape vault card in the 390×150 stage window (Figma 201:14093).
  * Desktop positions are % of the 560×560 ring stage at (126,128).
- * Mobile positions are % of the 390×150 stage window under the header.
  */
-export const PARTNER_ORBIT = {
-  callout:
-    'We chose companies to review based on fees, services and customer satisfaction',
+export const PHONE_VAULT = {
+  pill: 'Encrypted',
+  title: 'Your number stays with us',
+  chips: ['One text', 'Never sold', 'Private'] as const,
+  /**
+   * Cream vault card — centered on the ring stage.
+   * Width only; left/top centering lives in CSS.
+   */
+  card: { w: 62.5 },
+  /** Partner cards recede; they are reviewed companies, not recipients. */
   cards: [
     {
       id: 'jg-wentworth',
@@ -395,86 +425,67 @@ export const PARTNER_ORBIT = {
       h: 13.57,
     },
   ],
-  /** Center callout — Figma 216:14525 at (291,340) 236 wide. */
-  calloutBox: { x: 29.46, y: 37.86, w: 42.14 },
-  /**
-   * Mobile collage — Figma 201:14093.
-   * Coords % of the 390×150 stage window (frame y 48→198).
-   */
-  mobile: {
-    cards: [
-      {
-        id: 'jg-wentworth',
-        image: logoCardJgWentworth,
-        alt: 'JG Wentworth',
-        x: 0.77,
-        y: 5.33,
-        w: 29.23,
-        h: 32,
-      },
-      {
-        id: 'national',
-        image: logoCardNational,
-        alt: 'National Debt Relief',
-        x: 68.97,
-        y: 5.33,
-        w: 29.23,
-        h: 32,
-      },
-      {
-        id: 'americor',
-        image: logoCardAmericor,
-        alt: 'Americor',
-        x: 68.72,
-        y: 52.67,
-        w: 29.23,
-        h: 32,
-      },
-      {
-        id: 'accredited',
-        image: logoCardAccredited,
-        alt: 'Accredited Debt Relief',
-        x: 3.08,
-        y: 58.67,
-        w: 29.23,
-        h: 32,
-      },
-      {
-        id: 'freedom',
-        image: logoCardFreedom,
-        alt: 'Freedom Debt Relief',
-        x: 35.38,
-        y: 71.33,
-        w: 29.23,
-        h: 32,
-      },
-    ],
-    /** Callout — Figma 216:14733 at top 65, w 160, centered. */
-    calloutBox: { x: 29.49, y: 11.33, w: 41.03 },
-  },
 } as const;
 
 /**
  * Step 7 results-ready collage —
- * Desktop: dashed rings + cream results card (Figma 220:14833).
- * Mobile: results card in the 390×150 stage window
+ * Desktop: dashed rings + centered copy + radar pin orbiting partner badges.
+ * Mobile: compact radar orb + copy in the 390×150 stage window
  * (same short-stage treatment as steps 3–6).
- * Desktop positions are % of the 560×560 ring stage at (126,128).
- * Mobile positions are % of the 390×150 stage window under the header.
+ * Angles are degrees clockwise from 12 o'clock.
+ * radius / size are % of the 560×560 ring stage.
  */
 export const RESULTS_SPOTLIGHT = {
   title: 'Your results are ready',
   body: "We've matched you with relief options based on what you shared. One last step to see them.",
+  readyLabel: 'Matching',
+  /** Full revolution of the scanning pin, seconds. */
+  scanSec: 5.5,
+  /** Distance of the pin from stage center (% of stage). */
+  pinRadius: 38.5,
   /**
-   * Cream card — Figma 220:14929 at (227,210) 358×400
-   * relative to rings at (126,128).
+   * Partner badges parked on the rings. The pin lights each as it passes.
+   * Logos hint at real partners without spoiling the Step 8 reveal.
    */
-  card: { x: 18.04, y: 14.64, w: 63.93, h: 71.43 },
-  /** Dark scan panel — Figma 220:14943, 269 tall at bottom of 400. */
-  scanPanel: { h: 67.25 },
+  partners: [
+    {
+      id: 'national',
+      logo: logoCardNational,
+      angle: -18,
+      radius: 42,
+      size: 11.8,
+    },
+    {
+      id: 'freedom',
+      logo: logoCardFreedom,
+      angle: 52,
+      radius: 42,
+      size: 11.8,
+    },
+    {
+      id: 'americor',
+      logo: logoCardAmericor,
+      angle: 128,
+      radius: 33.5,
+      size: 10.4,
+    },
+    {
+      id: 'jg-wentworth',
+      logo: logoCardJgWentworth,
+      angle: 198,
+      radius: 42,
+      size: 11.8,
+    },
+    {
+      id: 'accredited',
+      logo: logoCardAccredited,
+      angle: 286,
+      radius: 33.5,
+      size: 10.4,
+    },
+  ],
   /**
-   * Mobile — landscape card in the 390×150 stage window.
-   * Horizontal cream copy + scan split (not a scaled desktop stack).
+   * Mobile — compact radar + copy in the 390×150 stage window.
    */
   mobile: {
     body: 'Matched to what you shared. One last step to see them.',
@@ -482,47 +493,35 @@ export const RESULTS_SPOTLIGHT = {
 } as const;
 
 /**
- * Step 6 income collage —
- * Desktop: dashed rings + arched portrait + insight card (Figma 204:14279).
- * Mobile: portrait + insight card in the 390×150 stage window
- * (same treatment as birthday/partner mobile stages).
- * Desktop positions are % of the 560×560 ring stage at (126,128).
- * Mobile positions are % of the 390×150 stage window under the header.
+ * Step 6 income affordability dial —
+ * Desktop: dashed rings + cream trust card with blue meter face.
+ * Mobile: landscape dial card in the 390×150 stage window.
+ * Distinct from the phone vault (arc gauge, not digit seals) but same
+ * Orbit language: cream card, green pill, soft chips, ring stage.
+ * Card width is % of the 560×560 ring stage; centering lives in CSS.
  */
 export const INCOME_SPOTLIGHT = {
-  photo: photoIncome,
-  calloutTitle: 'Did you know?',
-  calloutBody:
-    'Most people approved for relief plans pay less per month than their current minimum payments combined.',
-  /**
-   * Photo — Figma 206:14427 at (183,156) 353×413 relative to rings (126,128).
-   * Asset is the node export (already arched + cut out); fill the box 1:1.
-   */
-  photoBox: { x: 10.18, y: 5, w: 63.04, h: 73.75 },
-  photoCrop: { x: 0, y: 0, w: 100, h: 100 },
-  /** Bottom corner radius as % of photoBox width (1000 / 353). */
-  photoRadius: 283.29,
-  /**
-   * Insight card — Figma 219:14830 at (394,208) 326×144
-   * relative to rings at (126,128).
-   */
-  callout: { x: 47.86, y: 14.29, w: 58.21, h: 25.71 },
-  /**
-   * Mobile collage — same short-stage geometry as birthday (Figma 197:13685).
-   * Photo left, callout overlapping right.
-   */
-  mobile: {
-    photoBox: { x: 4.36, y: -9.33, w: 32.82, h: 126 },
-    photoCrop: { x: 0, y: 0, w: 100, h: 100 },
-    photoRadius: 250,
-    callout: { x: 21.03, y: 9.33, w: 74.87, h: 79.33 },
+  pill: 'Estimate only',
+  title: 'We only need a range',
+  chips: ['No bank login', 'Range is enough', 'Private'] as const,
+  note: 'Used to size your match — never sold or shared.',
+  idleLabel: 'Pick a range',
+  idleLevel: 0.2,
+  card: { w: 64 },
+  /** Dial fill + readout keyed to frozen income choice ids. */
+  bands: {
+    'lt-10k': { level: 0.3, label: 'Tight but possible' },
+    '10-50k': { level: 0.5, label: 'Room to plan' },
+    '50-100k': { level: 0.72, label: 'Comfortable fit' },
+    '100k-plus': { level: 0.9, label: 'Strong match' },
+    unsure: { level: 0.42, label: "We'll estimate" },
   },
 } as const;
 
 /**
  * Step 4 birthday collage —
- * Desktop: dashed rings + arched portrait + insight card (Figma 201:13851).
- * Mobile: portrait + insight card in the 390×150 stage window (Figma 197:13685).
+ * Desktop: dashed rings + cutout portrait + cream insight card (Figma 201:13851).
+ * Mobile: cream banner + arched portrait in the 390×150 stage (Figma 197:13685).
  * Desktop positions are % of the 560×560 ring stage at (126,128).
  * Mobile positions are % of the 390×150 stage window under the header.
  */
@@ -532,71 +531,54 @@ export const BIRTHDAY_SPOTLIGHT = {
   calloutBody:
     'People who start relief in their 30s and 40s save the most - years of compounding interest, stopped early.',
   /**
-   * Photo — Figma 206:14428 at (266,143) 280×413 relative to rings (126,128).
-   * Asset is the node export (already arched + cropped); fill the box 1:1.
+   * Photo — Figma 206:14428 at (267,143) 280×362 relative to rings (126,128).
+   * Image crop: left -33.17%, top -5.9%, width 162.93%, height 119.99%.
+   * Cutout PNG — no container corner radius on desktop.
    */
-  photoBox: { x: 25, y: 2.68, w: 50, h: 73.75 },
-  photoCrop: { x: 0, y: 0, w: 100, h: 100 },
-  /** Bottom corner radius as % of photoBox width (700 / 280). */
-  photoRadius: 250,
+  photoBox: { x: 25.18, y: 2.68, w: 50, h: 64.64 },
+  photoCrop: { x: -33.17, y: -5.9, w: 162.93, h: 119.99 },
+  photoRadius: 0,
   /**
-   * Insight card — Figma 217:110 at (399,157) 326×144
-   * relative to rings at (126,128).
+   * Cream insight card — Figma 217:110 at (244,423) 326×130
+   * relative to rings at (126,128). Overlaps the lower portrait.
    */
-  callout: { x: 48.75, y: 5.18, w: 58.21, h: 25.71 },
+  callout: { x: 21.07, y: 52.68, w: 58.21, h: 23.21 },
   /**
    * Mobile collage — Figma 197:13685.
-   * Photo 216:14723 at (17,34) 128×189; callout 216:14729 at (82,62) 292×119
-   * relative to the 390×150 stage window (frame y 48→198).
+   * Cream banner 216:14729 fills the 390×150 stage (frame y 48→198).
+   * Photo 216:14723 at (23,34) 128×189; arch radius 700 / 128.
+   * Crop: left -33.17%, top -5.17%, width 162.93%, height 105.17%.
    */
   mobile: {
-    photoBox: { x: 4.36, y: -9.33, w: 32.82, h: 126 },
-    photoCrop: { x: 0, y: 0, w: 100, h: 100 },
-    /** Bottom corner radius as % of photoBox width (700 / 128). */
-    photoRadius: 250,
-    callout: { x: 21.03, y: 9.33, w: 74.87, h: 79.33 },
+    photoBox: { x: 5.9, y: -9.33, w: 32.82, h: 126 },
+    photoCrop: { x: -33.17, y: -5.17, w: 162.93, h: 105.17 },
+    /** Bottom corner radius as % of photoBox width (Figma 700 / 128). */
+    photoRadius: 546.875,
+    /** Full-bleed cream banner behind the portrait. */
+    callout: { x: 0, y: 0, w: 100, h: 100 },
   },
 } as const;
 
 /**
  * Step 3 partner collage —
- * Desktop: arched portrait + summary card (Figma 159:11858).
- * Mobile: arched portrait + summary card (Figma 192:13517).
- * Desktop positions are % of the 560×560 ring stage.
- * Mobile positions are % of the 268×268 rings box.
+ * Desktop: phone mockup in the rings with a secure recap screen.
+ * Mobile: inset device-screen card in the cream short-stage banner.
+ * Desktop phoneBox is % of the 560×560 ring stage.
  */
 export const PARTNER_SPOTLIGHT = {
-  photo: photoPartner,
-  summaryHeading: "Here's what you have given so far:",
-  amountLabel: 'Debt amount:',
-  typeLabel: 'Debt type:',
+  appName: 'Forbes Advisor',
+  encryptedLabel: 'Encrypted',
+  statusTime: '9:41',
+  summaryHeading: "Here's what you've shared",
+  amountLabel: 'Debt amount',
+  typeLabel: 'Debt type',
+  emptyValue: '—',
+  savedLabel: 'answers saved',
+  nextHint: 'Add your contact next',
   privacyNote:
     'Your information is secure and will never be shared without your permission.',
-  /**
-   * Photo box as % of stage (Figma 200:13825 → 390×463 in 560).
-   * Image crop: absolute fill left -60.72%, top -7.92%, w 168.63%, h 107.92%.
-   */
-  photoBox: { x: 13.39, y: 4.11, w: 69.64, h: 82.68 },
-  photoCrop: { x: -60.72, y: -7.92, w: 168.63, h: 107.92 },
-  /** Bottom corner radius as % of photoBox width (200 / 390). */
-  photoRadius: 51.28,
-  /**
-   * Summary card — Figma 201:13917 at (379,188) 326×144
-   * relative to rings at (126,128).
-   */
-  summaryCard: { x: 45.18, y: 10.71, w: 58.21, h: 25.71 },
-  /**
-   * Mobile collage — Figma 192:13517.
-   * Photo 201:13843 at (11,32) 182×215; summary 216:14709 at (81,59) 293×144
-   * relative to rings Group 3 at (61,-12) 268×268.
-   */
-  mobile: {
-    photoBox: { x: -18.66, y: 16.42, w: 67.91, h: 80.22 },
-    photoCrop: { x: -60.72, y: -7.92, w: 168.63, h: 107.92 },
-    /** Bottom corner radius as % of photoBox width (133.13 / 182). */
-    photoRadius: 73.15,
-    summaryCard: { x: 7.46, y: 26.49, w: 109.33, h: 53.73 },
-  },
+  /** Phone chassis relative to the 560 ring stage. */
+  phoneBox: { x: 30.5, y: 5.5, w: 39, h: 89 },
 } as const;
 
 /**
@@ -604,13 +586,51 @@ export const PARTNER_SPOTLIGHT = {
  * Desktop positions are % of the 560×560 ring stage (Figma 159:11776).
  * Mobile positions are % of the 390×150 stage window under the header
  * (Figma 192:13349); mint/photo overhang slightly above the window.
+ * Carousel rotates through outcome stories (photo + copy).
  */
 export const STORY_SPOTLIGHT = {
-  photo: photoJohn,
-  eyebrow: 'John M. got out of debt',
-  headline: '11 months sooner',
-  detailBefore: 'than planned',
-  detailAfter: '($55,000 paid off in 47 months)',
+  /** Autoplay interval between stories (ms). */
+  autoplayMs: 3500,
+  slides: [
+    {
+      id: 'john',
+      photo: photoJohn,
+      eyebrow: 'John M. got out of debt',
+      headline: '11 months sooner',
+      detailBefore: 'than planned',
+      detailAfter: '($55,000 paid off in 47 months)',
+      /**
+       * Image crop inside photoBox — Figma absolute fill on 192:13498:
+       * left -8.45%, top -2.59%, width 141.24%, height 102.59%.
+       */
+      photoCrop: { x: -8.45, y: -2.59, w: 141.24, h: 102.59 },
+      /** Figma fill on 192:13483 — left -8.28%, top -2.55%, w 140.89%, h 102.64%. */
+      mobilePhotoCrop: { x: -8.28, y: -2.55, w: 140.89, h: 102.64 },
+      photoFit: 'fill' as const,
+    },
+    {
+      id: 'marcus',
+      photo: photoMarcus,
+      eyebrow: 'Marcus R. got out of debt',
+      headline: '9 months sooner',
+      detailBefore: 'than planned',
+      detailAfter: '($42,000 paid off in 36 months)',
+      photoCrop: { x: 0, y: -4, w: 100, h: 108 },
+      mobilePhotoCrop: { x: 0, y: -2, w: 100, h: 108 },
+      photoFit: 'cover' as const,
+    },
+    {
+      id: 'aisha',
+      photo: photoAisha,
+      eyebrow: 'Aisha K. got out of debt',
+      headline: '14 months sooner',
+      detailBefore: 'than planned',
+      detailAfter: '($38,000 paid off in 41 months)',
+      photoCrop: { x: 0, y: -2, w: 100, h: 108 },
+      mobilePhotoCrop: { x: 0, y: 0, w: 100, h: 108 },
+      photoFit: 'cover' as const,
+    },
+  ],
   /**
    * Mint panel behind portrait — Figma 215:109 at (233,144) 358×284
    * relative to rings at (126,128).
@@ -618,15 +638,10 @@ export const STORY_SPOTLIGHT = {
   mint: { x: 19.11, y: 2.86, w: 63.93, h: 50.71 },
   /** Portrait — Figma 192:13498 at (272,177) 279×256. */
   photoBox: { x: 26.07, y: 8.75, w: 49.82, h: 45.71 },
-  /**
-   * Image crop inside photoBox — Figma absolute fill on 192:13498:
-   * left -8.45%, top -2.59%, width 141.24%, height 102.59%.
-   */
-  photoCrop: { x: -8.45, y: -2.59, w: 141.24, h: 102.59 },
   /** Cream card attached under mint — Figma 192:13499 at (233,428). */
   card: { x: 19.11, y: 53.57, w: 63.93 },
-  /** Carousel dots — Figma 216:14516 at (374,577) 64×10. */
-  dots: { x: 44.29, y: 80.18, w: 11.43 },
+  /** Carousel dots — vertically under the cream card (horizontally centered). */
+  dots: { y: 80.18 },
   /**
    * Mobile side-by-side collage — Figma 390 frame (node 192:13349).
    * Coords % of the 390×150 stage window (frame y 48→198).
@@ -636,10 +651,10 @@ export const STORY_SPOTLIGHT = {
     mint: { x: 0, y: -3.33, w: 100, h: 103.33 },
     /** Portrait — Figma 192:13483 at (32,39) 174×159. */
     photoBox: { x: 8.21, y: -6, w: 44.62, h: 106 },
-    /** Figma fill on 192:13483 — left -8.28%, top -2.55%, w 140.89%, h 102.64%. */
-    photoCrop: { x: -8.28, y: -2.55, w: 140.89, h: 102.64 },
     /** Cream card — Figma 192:13484 at (206,72) 167×94. */
     card: { x: 52.82, y: 16, w: 42.82 },
+    /** Dots centered near the bottom of the short stage. */
+    dots: { y: 90 },
   },
 } as const;
 
@@ -665,6 +680,7 @@ export interface OrbitAvatar {
 /**
  * Step 1 desktop circular collage — % of 560×560 rings (Figma 159:11695).
  * Coords from metadata bounding-box centers → unrotated circle top-left.
+ * Each slot uses its own Figma fill (no reused portraits across circles).
  */
 export const ORBIT_AVATARS: OrbitAvatar[] = [
   {
@@ -686,27 +702,29 @@ export const ORBIT_AVATARS: OrbitAvatar[] = [
     z: 4,
   },
   {
-    id: 'phone-sm-top',
-    image: avatarPhone,
-    x: 40.48,
-    y: 10,
-    size: 9.99,
-    rotate: 8.91,
+    /** Figma 216:14455 — handshake couple. */
+    id: 'handshake-sm-top',
+    image: avatarHandshake,
+    x: 38.77,
+    y: 10.23,
+    size: 9.64,
+    rotate: -4.45,
     z: 5,
   },
   {
-    id: 'blue-sm-top',
-    image: avatarBlue,
+    /** Figma 216:14459 — glasses / video call. */
+    id: 'glasses-sm-top',
+    image: avatarGlasses,
     x: 54.46,
     y: 19.46,
     size: 9.64,
     rotate: 0,
     z: 6,
-    crop: { x: -48.66, y: -0.45, w: 149.98, h: 100 },
   },
   {
-    id: 'phone-mid-left',
-    image: avatarPhone,
+    /** Figma 216:14454 — thinking with glasses. */
+    id: 'think-mid-left',
+    image: avatarThink,
     x: 5.83,
     y: 38.76,
     size: 16.65,
@@ -714,8 +732,9 @@ export const ORBIT_AVATARS: OrbitAvatar[] = [
     z: 4,
   },
   {
-    id: 'laptop-mid-right',
-    image: avatarLaptop,
+    /** Figma 216:14457 — man in denim with phone. */
+    id: 'denim-mid-right',
+    image: avatarDenim,
     x: 81.35,
     y: 37.74,
     size: 17.35,
@@ -732,23 +751,14 @@ export const ORBIT_AVATARS: OrbitAvatar[] = [
     z: 5,
   },
   {
-    id: 'credit-sm',
-    image: avatarCredit,
-    x: 29.29,
-    y: 68.97,
-    size: 9.67,
-    rotate: -4.45,
-    z: 6,
-  },
-  {
-    id: 'blue-sm-bot',
-    image: avatarBlue,
+    /** Figma 216:14458 — advisor meeting. */
+    id: 'office-sm-bot',
+    image: avatarOffice,
     x: 52.32,
     y: 68.57,
     size: 9.64,
     rotate: 0,
     z: 6,
-    crop: { x: -48.66, y: -0.45, w: 149.98, h: 100 },
   },
   {
     id: 'phone',
@@ -771,21 +781,25 @@ export const ORBIT_AVATARS: OrbitAvatar[] = [
   },
 ];
 
-/** Cream stats card — % of 560 stage (Figma 206:14446 → 260 wide at 277,319). */
+/**
+ * Relief-medal center hub — % of 560 stage (Figma 206:14446 geometry).
+ * Perfect circle at (299,301) size 214 on the 1440 frame / stage origin (126,128).
+ * Metal rim + brand enamel face; embossed shield + bottom numeral.
+ */
 export const ORBIT_STATS_CARD = {
-  x: 26.96,
-  y: 34.11,
-  w: 46.43,
-  headline: 'Thousands Are Applying Daily For This Loan-Free Relief In 2026',
-  stats: [
-    { value: '45%', label: 'DEBT REDUCTION' },
-    { value: '48K+', label: 'REVIEWS' },
-  ],
+  x: 30.89,
+  y: 30.89,
+  w: 38.21,
+  /** Status pill above the hub headline (radar-center treatment). */
+  pill: 'Live now',
+  /** Short face copy — leaves room for the embossed shield. */
+  headline: 'Thousands Choosing Loan-Free Relief',
 } as const;
 
 /**
  * Step 1 mobile circular collage — % of 268×268 rings at (61, 6)
  * (Figma 192:13248). No cream card on mobile.
+ * Photos match Figma 216:14497–14511 fills.
  */
 export const ORBIT_AVATARS_MOBILE: OrbitAvatar[] = [
   {
@@ -825,8 +839,12 @@ export const ORBIT_AVATARS_MOBILE: OrbitAvatar[] = [
     z: 5,
   },
   {
-    id: 'm-blue',
-    image: avatarBlue,
+    /**
+     * Figma 216:14501 — glasses portrait with the same absolute-fill
+     * crop as the desktop blue avatar.
+     */
+    id: 'm-glasses',
+    image: avatarGlasses,
     x: 73.88,
     y: 51.87,
     size: 33.58,

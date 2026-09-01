@@ -1,16 +1,24 @@
 import { motion, useReducedMotion } from 'motion/react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type CSSProperties,
+} from 'react';
 import { useMediaQuery } from '../../engine/useMediaQuery';
-import carouselDots from './assets/carousel-dots.svg';
 import ringsSrc from './assets/rings.png';
 import { ORBIT_MOTION, STORY_SPOTLIGHT } from './config';
 import styles from './storySpotlight.module.css';
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
+type StorySlide = (typeof STORY_SPOTLIGHT.slides)[number];
+
 /**
  * Left-stage collage for Orbit step 2: mint portrait panel, cream
- * outcome card, dashed rings (desktop), and carousel dots (desktop).
+ * outcome card, dashed rings (desktop), and carousel dots.
  * Desktop: Figma 159:11776. Mobile side-by-side: Figma 192:13349.
+ * Rotates through outcome stories (photo + copy).
  */
 export function StorySpotlight({ className }: { className?: string }) {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
@@ -21,66 +29,46 @@ export function StorySpotlight({ className }: { className?: string }) {
   /** Continuous ring spin — desktop only (honors reduced motion). */
   const ringsSpin = isDesktop && motionReady;
 
+  const slides = STORY_SPOTLIGHT.slides;
+  const [index, setIndex] = useState(0);
+  const slide = slides[index] ?? slides[0];
+
+  const goTo = useCallback(
+    (next: number) => {
+      setIndex(((next % slides.length) + slides.length) % slides.length);
+    },
+    [slides.length],
+  );
+
+  useEffect(() => {
+    if (reduceMotion || slides.length < 2) return;
+    const id = window.setInterval(() => {
+      setIndex((current) => (current + 1) % slides.length);
+    }, STORY_SPOTLIGHT.autoplayMs);
+    return () => window.clearInterval(id);
+    /* Re-arm when the user picks a slide so autoplay waits a full beat. */
+  }, [reduceMotion, slides.length, index]);
+
   if (!isDesktop) {
     return (
-      <div
-        className={`${styles.stage}${className ? ` ${className}` : ''}`}
-        aria-hidden="true"
-      >
-        <div
-          className={styles.mint}
-          style={{
-            left: `${STORY_SPOTLIGHT.mobile.mint.x}%`,
-            top: `${STORY_SPOTLIGHT.mobile.mint.y}%`,
-            width: `${STORY_SPOTLIGHT.mobile.mint.w}%`,
-            height: `${STORY_SPOTLIGHT.mobile.mint.h}%`,
-          }}
-        />
-        <div
-          className={styles.photo}
-          style={{
-            left: `${STORY_SPOTLIGHT.mobile.photoBox.x}%`,
-            top: `${STORY_SPOTLIGHT.mobile.photoBox.y}%`,
-            width: `${STORY_SPOTLIGHT.mobile.photoBox.w}%`,
-            height: `${STORY_SPOTLIGHT.mobile.photoBox.h}%`,
-          }}
-        >
-          <img
-            src={STORY_SPOTLIGHT.photo}
-            alt=""
-            draggable={false}
-            style={{
-              left: `${STORY_SPOTLIGHT.mobile.photoCrop.x}%`,
-              top: `${STORY_SPOTLIGHT.mobile.photoCrop.y}%`,
-              width: `${STORY_SPOTLIGHT.mobile.photoCrop.w}%`,
-              height: `${STORY_SPOTLIGHT.mobile.photoCrop.h}%`,
-            }}
-          />
-        </div>
-        <article
-          className={styles.card}
-          style={{
-            left: `${STORY_SPOTLIGHT.mobile.card.x}%`,
-            top: `${STORY_SPOTLIGHT.mobile.card.y}%`,
-            width: `${STORY_SPOTLIGHT.mobile.card.w}%`,
-          }}
-        >
-          <p className={styles.cardEyebrow}>{STORY_SPOTLIGHT.eyebrow}</p>
-          <p className={styles.cardHeadline}>{STORY_SPOTLIGHT.headline}</p>
-          <p className={styles.cardDetail}>
-            {STORY_SPOTLIGHT.detailBefore} {STORY_SPOTLIGHT.detailAfter}
-          </p>
-        </article>
-      </div>
+      <MobileStorySpotlight
+        className={className}
+        slides={slides}
+        slide={slide}
+        index={index}
+        onSelect={goTo}
+      />
     );
   }
 
-  const { mint, photoBox, photoCrop, card, dots } = STORY_SPOTLIGHT;
+  const { mint, photoBox, card } = STORY_SPOTLIGHT;
+  const dotsY = STORY_SPOTLIGHT.dots.y;
 
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
-      aria-hidden="true"
+      role="group"
+      aria-label="Customer success stories"
     >
       <div className={styles.canvas}>
         <motion.img
@@ -88,6 +76,7 @@ export function StorySpotlight({ className }: { className?: string }) {
           src={ringsSrc}
           alt=""
           draggable={false}
+          aria-hidden="true"
           initial={
             ringsSpin
               ? { scale: motionOn ? 0.94 : 1, rotate: 0 }
@@ -139,17 +128,7 @@ export function StorySpotlight({ className }: { className?: string }) {
               height: `${photoBox.h}%`,
             }}
           >
-            <img
-              src={STORY_SPOTLIGHT.photo}
-              alt=""
-              draggable={false}
-              style={{
-                left: `${photoCrop.x}%`,
-                top: `${photoCrop.y}%`,
-                width: `${photoCrop.w}%`,
-                height: `${photoCrop.h}%`,
-              }}
-            />
+            <StoryPhotos slides={slides} index={index} />
           </div>
           <article
             className={styles.card}
@@ -158,32 +137,170 @@ export function StorySpotlight({ className }: { className?: string }) {
               top: `${card.y}%`,
               width: `${card.w}%`,
             }}
+            aria-live="polite"
           >
-            <p className={styles.cardEyebrow}>{STORY_SPOTLIGHT.eyebrow}</p>
-            <p className={styles.cardHeadline}>{STORY_SPOTLIGHT.headline}</p>
-            <p className={styles.cardDetail}>
-              <span className={styles.cardDetailMuted}>
-                {STORY_SPOTLIGHT.detailBefore}
-              </span>{' '}
-              <span className={styles.cardDetailStrong}>
-                {STORY_SPOTLIGHT.detailAfter}
-              </span>
-            </p>
+            <StoryCardCopy slide={slide} desktop />
           </article>
         </motion.div>
 
-        <img
-          className={styles.dots}
-          src={carouselDots}
-          alt=""
-          draggable={false}
-          style={{
-            left: `${dots.x}%`,
-            top: `${dots.y}%`,
-            width: `${dots.w}%`,
-          }}
+        <CarouselDots
+          count={slides.length}
+          index={index}
+          onSelect={goTo}
+          style={{ top: `${dotsY}%` }}
         />
       </div>
+    </div>
+  );
+}
+
+function MobileStorySpotlight({
+  className,
+  slides,
+  slide,
+  index,
+  onSelect,
+}: {
+  className?: string;
+  slides: readonly StorySlide[];
+  slide: StorySlide;
+  index: number;
+  onSelect: (next: number) => void;
+}) {
+  const { mint, photoBox, card, dots } = STORY_SPOTLIGHT.mobile;
+
+  return (
+    <div
+      className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      role="group"
+      aria-label="Customer success stories"
+    >
+      <div
+        className={styles.mint}
+        style={{
+          left: `${mint.x}%`,
+          top: `${mint.y}%`,
+          width: `${mint.w}%`,
+          height: `${mint.h}%`,
+        }}
+      />
+      <div
+        className={styles.photo}
+        style={{
+          left: `${photoBox.x}%`,
+          top: `${photoBox.y}%`,
+          width: `${photoBox.w}%`,
+          height: `${photoBox.h}%`,
+        }}
+      >
+        <StoryPhotos slides={slides} index={index} mobile />
+      </div>
+      <article
+        className={styles.card}
+        style={{
+          left: `${card.x}%`,
+          top: `${card.y}%`,
+          width: `${card.w}%`,
+        }}
+        aria-live="polite"
+      >
+        <StoryCardCopy slide={slide} />
+      </article>
+      <CarouselDots
+        count={slides.length}
+        index={index}
+        onSelect={onSelect}
+        style={{ top: `${dots.y}%` }}
+      />
+    </div>
+  );
+}
+
+/** Active portrait only — swap is instant so photo and copy never desync. */
+function StoryPhotos({
+  slides,
+  index,
+  mobile = false,
+}: {
+  slides: readonly StorySlide[];
+  index: number;
+  mobile?: boolean;
+}) {
+  const entry = slides[index] ?? slides[0];
+  const crop = mobile ? entry.mobilePhotoCrop : entry.photoCrop;
+
+  return (
+    <img
+      key={entry.id}
+      src={entry.photo}
+      alt=""
+      draggable={false}
+      className={styles.photoImg}
+      data-fit={entry.photoFit}
+      style={{
+        left: `${crop.x}%`,
+        top: `${crop.y}%`,
+        width: `${crop.w}%`,
+        height: `${crop.h}%`,
+      }}
+    />
+  );
+}
+
+function StoryCardCopy({
+  slide,
+  desktop = false,
+}: {
+  slide: StorySlide;
+  desktop?: boolean;
+}) {
+  return (
+    <div className={styles.cardCopy}>
+      <p className={styles.cardEyebrow}>{slide.eyebrow}</p>
+      <p className={styles.cardHeadline}>{slide.headline}</p>
+      <p className={styles.cardDetail}>
+        {desktop ? (
+          <>
+            <span className={styles.cardDetailMuted}>
+              {slide.detailBefore}
+            </span>{' '}
+            <span className={styles.cardDetailStrong}>{slide.detailAfter}</span>
+          </>
+        ) : (
+          <>
+            {slide.detailBefore} {slide.detailAfter}
+          </>
+        )}
+      </p>
+    </div>
+  );
+}
+
+function CarouselDots({
+  count,
+  index,
+  onSelect,
+  style,
+}: {
+  count: number;
+  index: number;
+  onSelect: (next: number) => void;
+  style: CSSProperties;
+}) {
+  return (
+    <div className={styles.dots} style={style} role="tablist" aria-label="Stories">
+      {Array.from({ length: count }, (_, i) => (
+        <button
+          key={i}
+          type="button"
+          role="tab"
+          className={styles.dot}
+          data-active={i === index ? '' : undefined}
+          aria-selected={i === index}
+          aria-label={`Show story ${i + 1}`}
+          onClick={() => onSelect(i)}
+        />
+      ))}
     </div>
   );
 }

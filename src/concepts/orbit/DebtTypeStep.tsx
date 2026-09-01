@@ -47,8 +47,8 @@ export function DebtTypeStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />

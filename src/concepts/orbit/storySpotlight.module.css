@@ -29,6 +29,7 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
+  opacity: 0.4;
   will-change: transform;
 }
 
@@ -55,14 +56,20 @@
   pointer-events: none;
 }
 
-/* Figma absolute-fill crop — stretch to the crop box, do not re-cover. */
-.photo img {
+/* Crop box fill — per-slide data-fit chooses fill (John) vs cover.
+   left/top/width/height come from each slide's crop box. */
+.photoImg {
   position: absolute;
   display: block;
   max-width: none;
   object-fit: fill;
+  object-position: center top;
   pointer-events: none;
   user-select: none;
+}
+
+.photoImg[data-fit='cover'] {
+  object-fit: cover;
 }
 
 .card {
@@ -82,6 +89,12 @@
   container-type: inline-size;
   container-name: story-card;
   pointer-events: none;
+}
+
+.cardCopy {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
 }
 
 .cardEyebrow,
@@ -123,11 +136,43 @@
 .dots {
   position: absolute;
   z-index: 4;
-  display: block;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: auto;
   height: auto;
-  aspect-ratio: 64 / 10;
-  pointer-events: none;
+  pointer-events: auto;
   user-select: none;
+  transform: translateX(-50%);
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #d8d8d8;
+  cursor: pointer;
+  appearance: none;
+  transition: background-color 0.25s ease;
+}
+
+.dot[data-active] {
+  background: #000000;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dot:hover {
+    background: #8a8a8a;
+  }
+
+  .dot[data-active]:hover {
+    background: #000000;
+  }
 }
 
 /*
@@ -147,8 +192,8 @@
     border-radius: 0;
   }
 
-  /* Keep portrait proportions in the short mobile stage (fill stretches). */
-  .photo img {
+  /* Keep portrait proportions in the short mobile stage. */
+  .photoImg {
     object-fit: cover;
     object-position: center top;
   }
@@ -181,6 +226,18 @@
   }
 
   .dots {
-    display: none;
+    aspect-ratio: auto;
+    height: 8px;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #a8a8a8;
+  }
+
+  .dot[data-active] {
+    background: #000000;
   }
 }

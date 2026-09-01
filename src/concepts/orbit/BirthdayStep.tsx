@@ -10,6 +10,7 @@ import forbesAdvisorLogo from './assets/forbes-advisor.png';
 import iconLightbulb from './assets/icon-lightbulb.svg';
 import trustpilotMark from './assets/trustpilot.png';
 import { BirthdaySpotlight } from './BirthdaySpotlight';
+import { StickyCtaDock } from './StickyCtaDock';
 import { ORBIT_CONFIG } from './config';
 import styles from './orbit.module.css';
 import './theme.css';
@@ -53,8 +54,8 @@ export function BirthdayStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -152,7 +153,7 @@ export function BirthdayStep({
             </p>
           </div>
 
-          <div className={styles.ctaDock}>
+          <StickyCtaDock>
             <button
               type="button"
               className={styles.cta}
@@ -161,7 +162,7 @@ export function BirthdayStep({
             >
               {step4.cta}
             </button>
-          </div>
+          </StickyCtaDock>
 
           <div className={styles.trust}>
             {step4.trustItems.map((item) => (

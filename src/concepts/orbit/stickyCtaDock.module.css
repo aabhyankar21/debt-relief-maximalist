@@ -1,0 +1,54 @@
+/**
+ * Shared mobile CTA dock for every Orbit step that has a button.
+ *
+ * Mobile pinning is applied in StickyCtaDock.tsx via position:fixed +
+ * visualViewport sync (not CSS sticky). Fixed-to-layout-viewport alone
+ * can sit below the visual viewport on mobile / embedded browsers.
+ *
+ * Do not reintroduce per-step `.root[data-step=…] .ctaDock` sticky/fixed
+ * rules — every CTA step should render <StickyCtaDock> instead.
+ */
+
+.dock {
+  width: 100%;
+  /* Pull trust up so CTA → trust stays 12px (form gap is 24). Desktop only
+     effectively; mobile fixed overrides margin to 0. */
+  margin-bottom: -12px;
+}
+
+.dock[data-mobile] {
+  margin: 0;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.dock[data-mobile][data-variant='sheet'] {
+  /* Fully opaque — disabled CTAs use opacity < 1, so a transparent
+     dock fade would let trust/rating text print through the button. */
+  background: #ffffff;
+  box-shadow: 0 -10px 28px rgb(0 0 0 / 8%);
+}
+
+.dock[data-variant='card'] {
+  margin-bottom: 0;
+}
+
+.dock[data-mobile][data-variant='card'] {
+  background: #ffffff;
+  box-shadow: 0 -10px 28px rgb(0 0 0 / 8%);
+}
+
+.inner {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* In-flow stand-in so sheet content isn’t covered by the fixed dock.
+   order pushes it past trust/rating/legal so the reserved height
+   sits at the bottom of the sheet — not as a gap under the choices. */
+.spacer {
+  width: 100%;
+  flex-shrink: 0;
+  order: 999;
+  pointer-events: none;
+}

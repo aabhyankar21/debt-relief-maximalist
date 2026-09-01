@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { LegalLinks } from '../../shell/Chrome';
 import arrowLeft from './assets/arrow-left.svg';
 import bbbRating from './assets/bbb-rating.png';
@@ -19,9 +20,10 @@ export interface IncomeStepProps {
 
 /**
  * Orbit — Step 6 (estimated annual income).
- * Desktop: portrait orbit left, income bands right (Figma 204:14279).
- * Mobile: collage above a sheeted 2-column choice grid.
- * Selection auto-advances (same as debt type).
+ * Desktop: affordability dial left, income bands right.
+ * Mobile: landscape dial card above a sheeted choice grid.
+ * Selection auto-advances (same as debt type). Desktop hover
+ * previews the dial so progress feedback is visible before advance.
  */
 export function IncomeStep({
   selectedIncome,
@@ -33,6 +35,8 @@ export function IncomeStep({
   const { step6, copy } = ORBIT_CONFIG;
   const headingLabel = `${step6.headingBefore}${step6.headingAccent}`;
   const clampedProgress = Math.min(100, Math.max(0, progress));
+  const [previewIncome, setPreviewIncome] = useState<string | null>(null);
+  const activeIncome = previewIncome ?? selectedIncome;
 
   return (
     <div
@@ -46,8 +50,8 @@ export function IncomeStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -55,7 +59,7 @@ export function IncomeStep({
 
       <div className={styles.body}>
         <aside className={styles.stage}>
-          <IncomeSpotlight />
+          <IncomeSpotlight incomeId={activeIncome} />
         </aside>
 
         <main className={styles.form}>
@@ -100,6 +104,7 @@ export function IncomeStep({
             className={styles.choices}
             role="radiogroup"
             aria-label={headingLabel}
+            onMouseLeave={() => setPreviewIncome(null)}
           >
             {INCOME_OPTIONS.map((option) => {
               const selected = selectedIncome === option.id;
@@ -112,6 +117,9 @@ export function IncomeStep({
                   data-choice-id={option.id}
                   data-selected={selected}
                   className={styles.choice}
+                  onMouseEnter={() => setPreviewIncome(option.id)}
+                  onFocus={() => setPreviewIncome(option.id)}
+                  onBlur={() => setPreviewIncome(null)}
                   onClick={() => onSelect(option.id)}
                 >
                   {option.label}

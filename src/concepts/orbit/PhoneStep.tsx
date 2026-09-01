@@ -15,6 +15,7 @@ import iconLock from './assets/icon-lock.svg';
 import trustpilotMark from './assets/trustpilot.png';
 import { ORBIT_CONFIG } from './config';
 import { PhoneSpotlight } from './PhoneSpotlight';
+import { StickyCtaDock } from './StickyCtaDock';
 import styles from './orbit.module.css';
 import './theme.css';
 
@@ -30,8 +31,8 @@ export interface PhoneStepProps {
 
 /**
  * Orbit — Step 5 (phone number).
- * Desktop: partner-logo orbit left, phone form right (Figma 201:14012).
- * Mobile: logo collage above a sheeted form (Figma 201:14093).
+ * Desktop: number vault left, phone form right (Figma 201:14012).
+ * Mobile: vault strip above a sheeted form (Figma 201:14093).
  */
 export function PhoneStep({
   phone,
@@ -58,8 +59,8 @@ export function PhoneStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -67,7 +68,7 @@ export function PhoneStep({
 
       <div className={styles.body}>
         <aside className={styles.stage}>
-          <PhoneSpotlight />
+          <PhoneSpotlight phone={phone} />
         </aside>
 
         <main className={styles.form}>
@@ -146,7 +147,7 @@ export function PhoneStep({
           </div>
 
           <div className={styles.ctaStack}>
-            <div className={styles.ctaDock}>
+            <StickyCtaDock>
               <button
                 type="button"
                 className={styles.cta}
@@ -155,7 +156,7 @@ export function PhoneStep({
               >
                 {step5.cta}
               </button>
-            </div>
+            </StickyCtaDock>
 
             <p className={styles.consent}>
               {consent.before}

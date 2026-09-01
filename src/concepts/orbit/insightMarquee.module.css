@@ -19,7 +19,7 @@
   transform: translateX(-50%);
   pointer-events: none;
   user-select: none;
-  opacity: 0.95;
+  opacity: 0.4;
 }
 
 .viewport {

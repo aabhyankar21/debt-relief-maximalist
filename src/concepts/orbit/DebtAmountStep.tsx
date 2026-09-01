@@ -5,6 +5,7 @@ import checkIcon from './assets/check.svg';
 import forbesAdvisorLogo from './assets/forbes-advisor.png';
 import trustpilotMark from './assets/trustpilot.png';
 import { InsightDeck } from './InsightDeck';
+import { StickyCtaDock } from './StickyCtaDock';
 import { DEBT_AMOUNT_OPTIONS, ORBIT_CONFIG } from './config';
 import styles from './orbit.module.css';
 import './theme.css';
@@ -18,7 +19,7 @@ export interface DebtAmountStepProps {
 
 /**
  * Orbit — Step 1.
- * Desktop: circular avatar orbit + cream stats card (Figma 159:11695).
+ * Desktop: circular avatar orbit + cream callout (Figma 159:11695).
  * Mobile: short avatar stage above sheeted form (Figma 192:13248).
  */
 export function DebtAmountStep({
@@ -54,8 +55,8 @@ export function DebtAmountStep({
             className={styles.brandLogo}
             src={forbesAdvisorLogo}
             alt="Forbes Advisor"
-            width={135}
-            height={17}
+            width={405}
+            height={51}
           />
         </span>
         <LegalLinks inHeader />
@@ -100,7 +101,7 @@ export function DebtAmountStep({
             })}
           </div>
 
-          <div className={styles.ctaDock}>
+          <StickyCtaDock>
             <button
               type="button"
               className={styles.cta}
@@ -109,7 +110,7 @@ export function DebtAmountStep({
             >
               {copy.cta}
             </button>
-          </div>
+          </StickyCtaDock>
 
           <div className={styles.trust}>
             {copy.trustItems.map((item) => (
