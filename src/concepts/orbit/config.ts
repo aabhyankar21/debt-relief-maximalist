@@ -15,7 +15,7 @@
  * Step 5 mobile:  Figma 390 (node 201:14093) compact vault strip
  * Step 6 desktop: affordability dial on rings (income trust card)
  * Step 6 mobile:  landscape dial card in the short stage window
- * Step 7 desktop: results radar — centered copy + pin scanning partners
+ * Step 7 desktop: results radar — USA map + sweep scanning city dots
  * Step 7 mobile:  same short-stage + sheet treatment as steps 3–6
  * Step 8 desktop: Figma 1440×900 (node 220:15016) centered match card
  * Step 8 mobile:  adaptive stack of the same match card + rings
@@ -49,6 +49,7 @@ import logoCardNational from './assets/logo-card-national.png';
 import logoCardAmericor from './assets/logo-card-americor.png';
 import logoCardAccredited from './assets/logo-card-accredited.png';
 import logoCardFreedom from './assets/logo-card-freedom.png';
+import usaMap from './assets/usa-map.svg';
 
 export const ORBIT_CONFIG = {
   colors: {
@@ -429,66 +430,92 @@ export const PHONE_VAULT = {
 
 /**
  * Step 7 results-ready collage —
- * Desktop: dashed rings + centered copy + radar pin orbiting partner badges.
+ * Desktop: dashed rings + USA map + radar sweep scanning city dots.
  * Mobile: compact radar orb + copy in the 390×150 stage window
  * (same short-stage treatment as steps 3–6).
- * Angles are degrees clockwise from 12 o'clock.
- * radius / size are % of the 560×560 ring stage.
+ * City x/y are % of the map box.
  */
 export const RESULTS_SPOTLIGHT = {
   title: 'Your results are ready',
   body: "We've matched you with relief options based on what you shared. One last step to see them.",
   readyLabel: 'Matching',
-  /** Full revolution of the scanning pin, seconds. */
+  /** Full revolution of the radar sweep, seconds. */
   scanSec: 5.5,
-  /** Distance of the pin from stage center (% of stage). */
-  pinRadius: 38.5,
+  map: usaMap,
   /**
-   * Partner badges parked on the rings. The pin lights each as it passes.
-   * Logos hint at real partners without spoiling the Step 8 reveal.
+   * Map box on the 560 stage — wide contiguous USA silhouette.
+   * Cities are % of this box (not the full stage).
    */
-  partners: [
-    {
-      id: 'national',
-      logo: logoCardNational,
-      angle: -18,
-      radius: 42,
-      size: 11.8,
-    },
-    {
-      id: 'freedom',
-      logo: logoCardFreedom,
-      angle: 52,
-      radius: 42,
-      size: 11.8,
-    },
-    {
-      id: 'americor',
-      logo: logoCardAmericor,
-      angle: 128,
-      radius: 33.5,
-      size: 10.4,
-    },
-    {
-      id: 'jg-wentworth',
-      logo: logoCardJgWentworth,
-      angle: 198,
-      radius: 42,
-      size: 11.8,
-    },
-    {
-      id: 'accredited',
-      logo: logoCardAccredited,
-      angle: 286,
-      radius: 33.5,
-      size: 10.4,
-    },
+  mapBox: { x: 6, y: 24, w: 88, h: 48 },
+  /**
+   * City dots on the map. The sweep lights each as it passes.
+   * Spread covers coasts + heartland so the scan feels national.
+   * Coords tuned to the cropped contiguous Albers silhouette.
+   */
+  cities: [
+    // Pacific Northwest
+    { id: 'seattle', x: 12, y: 16 },
+    { id: 'portland', x: 10, y: 26 },
+    // California + Southwest
+    { id: 'sf', x: 6, y: 48 },
+    { id: 'la', x: 9, y: 64 },
+    { id: 'sandiego', x: 11, y: 74 },
+    { id: 'vegas', x: 16, y: 56 },
+    { id: 'phoenix', x: 18, y: 68 },
+    { id: 'albuquerque', x: 30, y: 62 },
+    // Mountain / Plains
+    { id: 'saltlake', x: 24, y: 40 },
+    { id: 'denver', x: 34, y: 46 },
+    { id: 'billings', x: 32, y: 22 },
+    { id: 'omaha', x: 50, y: 40 },
+    { id: 'kansascity', x: 54, y: 50 },
+    { id: 'okc', x: 48, y: 64 },
+    // Texas + South
+    { id: 'dallas', x: 48, y: 70 },
+    { id: 'austin', x: 46, y: 78 },
+    { id: 'houston', x: 52, y: 82 },
+    { id: 'neworleans', x: 62, y: 84 },
+    { id: 'memphis', x: 64, y: 64 },
+    // Midwest / Great Lakes
+    { id: 'minneapolis', x: 55, y: 26 },
+    { id: 'milwaukee', x: 64, y: 32 },
+    { id: 'chicago', x: 66, y: 40 },
+    { id: 'detroit', x: 72, y: 36 },
+    { id: 'indianapolis', x: 70, y: 48 },
+    { id: 'stlouis', x: 62, y: 52 },
+    { id: 'cleveland', x: 76, y: 38 },
+    // Southeast
+    { id: 'nashville', x: 70, y: 60 },
+    { id: 'atlanta', x: 74, y: 66 },
+    { id: 'charlotte', x: 80, y: 62 },
+    { id: 'tampa', x: 78, y: 84 },
+    { id: 'miami', x: 82, y: 90 },
+    // Northeast Mid-Atlantic
+    { id: 'pittsburgh', x: 80, y: 42 },
+    { id: 'dc', x: 86, y: 48 },
+    { id: 'philadelphia', x: 88, y: 42 },
+    { id: 'nyc', x: 89, y: 34 },
+    { id: 'buffalo', x: 84, y: 30 },
+    { id: 'boston', x: 94, y: 28 },
   ],
   /**
    * Mobile — compact radar + copy in the 390×150 stage window.
    */
   mobile: {
     body: 'Matched to what you shared. One last step to see them.',
+    /** Subset so the compact orb stays readable. */
+    cityIds: [
+      'seattle',
+      'la',
+      'phoenix',
+      'denver',
+      'dallas',
+      'chicago',
+      'atlanta',
+      'miami',
+      'nyc',
+      'boston',
+    ] as const,
   },
 } as const;
 

@@ -1,6 +1,6 @@
 /**
  * Step 7 results-ready collage —
- * Desktop: dashed rings + centered copy + radar pin scanning partners
+ * Desktop: dashed rings + USA map + city dots + radar sweep
  * Mobile:  390×150 stage — compact radar orb + copy
  */
 
@@ -33,12 +33,60 @@
   will-change: transform;
 }
 
+/* ── USA map + city dots ───────────────────────────────── */
+
+.mapLayer {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.mapImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 8px 18px rgb(0 51 255 / 8%));
+}
+
+.citySlot {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+}
+
+.cityDot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7aa0ff 0%, #0033ff 62%, #35416e 100%);
+  box-shadow:
+    0 0 0 1.5px rgb(255 255 255 / 88%),
+    0 0 8px rgb(0 51 255 / 32%);
+}
+
+.cityScan {
+  animation: cityPing var(--scan-sec) linear var(--ping-delay, 0s) infinite;
+}
+
+.cityStatic {
+  opacity: 0.7;
+  filter: saturate(0.85);
+}
+
 /* ── Center copy (no card) ─────────────────────────────── */
 
 .centerCopy {
   position: absolute;
   z-index: 4;
-  inset: 26%;
+  inset: 28%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -52,7 +100,7 @@
   background: radial-gradient(
     circle at 50% 50%,
     rgb(255 255 255 / 94%) 0%,
-    rgb(255 255 255 / 78%) 52%,
+    rgb(255 255 255 / 78%) 48%,
     rgb(255 255 255 / 0%) 72%
   );
 }
@@ -109,59 +157,7 @@
   text-wrap: pretty;
 }
 
-/* ── Partner badges on the rings ───────────────────────── */
-
-.partnerSlot {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  pointer-events: none;
-  transform: rotate(var(--angle, 0deg));
-}
-
-.partnerEnter {
-  width: var(--size, 11%);
-  margin-top: calc(50% - var(--radius, 42%));
-}
-
-.partner {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid rgb(0 0 0 / 6%);
-  border-radius: 50%;
-  box-shadow:
-    0 6px 16px rgb(0 0 0 / 8%),
-    0 1px 0 rgb(255 255 255 / 70%) inset;
-  transform: rotate(calc(-1 * var(--angle, 0deg)));
-  transform-origin: center center;
-}
-
-.partner img {
-  display: block;
-  width: 72%;
-  height: 72%;
-  margin: 14% auto;
-  object-fit: contain;
-  pointer-events: none;
-  user-select: none;
-}
-
-.partnerScan {
-  animation: partnerPing var(--scan-sec) linear var(--ping-delay, 0s) infinite;
-}
-
-.partnerStatic {
-  opacity: 0.72;
-  filter: saturate(0.85);
-}
-
-/* ── Radar pin + sweep ─────────────────────────────────── */
+/* ── Radar sweep ───────────────────────────────────────── */
 
 .radarArm {
   position: absolute;
@@ -177,7 +173,8 @@
 
 .radarSweep {
   position: absolute;
-  inset: 8%;
+  /* Reach the outer / last dashed circle of the stage. */
+  inset: 0;
   border-radius: 50%;
   background: conic-gradient(
     from -18deg at 50% 50%,
@@ -191,81 +188,9 @@
     circle at 50% 50%,
     transparent 18%,
     #000 30%,
-    #000 72%,
-    transparent 78%
+    #000 96%,
+    transparent 100%
   );
-}
-
-.pinAnchor {
-  position: absolute;
-  left: 50%;
-  top: calc(50% - var(--pin-radius, 38.5%));
-  width: 0;
-  height: 0;
-}
-
-.pinTrail {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 42px;
-  height: 10px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    rgb(0 51 255 / 0%) 0%,
-    rgb(0 51 255 / 28%) 55%,
-    rgb(120 160 255 / 55%) 100%
-  );
-  transform: translate(-100%, -50%) rotate(-8deg);
-  transform-origin: right center;
-  filter: blur(0.4px);
-}
-
-.pinUpright {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 50%;
-}
-
-.radarSpin .pinUpright {
-  animation: radarSpinCounter var(--scan-sec) linear infinite;
-}
-
-.pin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 18px;
-  height: 24px;
-  transform: translate(-50%, -78%);
-}
-
-.pinHead {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  border-radius: 50% 50% 50% 0;
-  background: linear-gradient(145deg, #3d66ff 0%, #0033ff 55%, #35416e 100%);
-  box-shadow:
-    0 0 0 2px rgb(255 255 255 / 90%),
-    0 0 14px rgb(0 51 255 / 55%),
-    0 4px 10px rgb(0 51 255 / 28%);
-  transform: translateX(-50%) rotate(-45deg);
-}
-
-.pinCore {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 0 6px rgb(255 255 255 / 80%);
-  transform: translateX(-50%);
 }
 
 @keyframes radarSpin {
@@ -274,32 +199,25 @@
   }
 }
 
-@keyframes radarSpinCounter {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
-@keyframes partnerPing {
+@keyframes cityPing {
   0%,
   8% {
     opacity: 1;
-    filter: saturate(1.08) brightness(1.02);
+    filter: saturate(1.15) brightness(1.08);
     box-shadow:
-      0 0 0 3px rgb(0 51 255 / 18%),
-      0 0 20px rgb(0 51 255 / 36%),
-      0 8px 18px rgb(0 0 0 / 12%),
-      0 1px 0 rgb(255 255 255 / 80%) inset;
-    transform: rotate(calc(-1 * var(--angle, 0deg))) scale(1.1);
+      0 0 0 4px rgb(0 51 255 / 18%),
+      0 0 18px rgb(0 51 255 / 48%),
+      0 0 0 2px rgb(255 255 255 / 92%);
+    transform: scale(1.45);
   }
   16%,
   100% {
-    opacity: 0.78;
-    filter: saturate(0.8);
+    opacity: 0.72;
+    filter: saturate(0.85);
     box-shadow:
-      0 5px 14px rgb(0 0 0 / 8%),
-      0 1px 0 rgb(255 255 255 / 65%) inset;
-    transform: rotate(calc(-1 * var(--angle, 0deg))) scale(1);
+      0 0 0 2px rgb(255 255 255 / 80%),
+      0 0 8px rgb(0 51 255 / 28%);
+    transform: scale(1);
   }
 }
 
@@ -362,45 +280,18 @@
     user-select: none;
   }
 
-  .partnerSlotCompact .partner {
-    border-width: 1px;
-    box-shadow:
-      0 3px 8px rgb(0 0 0 / 8%),
-      0 1px 0 rgb(255 255 255 / 70%) inset;
+  .mapLayerCompact .mapImage {
+    filter: none;
+    opacity: 0.95;
   }
 
-  .partnerSlotCompact .partner img {
-    width: 68%;
-    height: 68%;
-    margin: 16% auto;
-  }
-
-  .radarArmCompact .pin {
-    width: 12px;
-    height: 16px;
-  }
-
-  .radarArmCompact .pinHead {
-    width: 11px;
-    height: 11px;
-    box-shadow:
-      0 0 0 1.5px rgb(255 255 255 / 90%),
-      0 0 10px rgb(0 51 255 / 50%);
-  }
-
-  .radarArmCompact .pinCore {
-    top: 2.5px;
-    width: 4px;
-    height: 4px;
-  }
-
-  .radarArmCompact .pinTrail {
-    width: 22px;
+  .citySlotCompact .cityDot {
+    width: 6px;
     height: 6px;
-  }
-
-  .radarArmCompact .radarSweep {
-    inset: 6%;
+    margin: -3px 0 0 -3px;
+    box-shadow:
+      0 0 0 1.5px rgb(255 255 255 / 88%),
+      0 0 7px rgb(0 51 255 / 35%);
   }
 
   .mobileCopy {
@@ -446,7 +337,7 @@
     animation: none;
   }
 
-  .partnerScan {
+  .cityScan {
     animation: none;
     opacity: 0.78;
     filter: saturate(0.9);

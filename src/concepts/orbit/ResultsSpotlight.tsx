@@ -7,7 +7,17 @@ import styles from './resultsSpotlight.module.css';
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
-/** Negative delay so the partner ping peaks when the pin reaches its angle. */
+type City = (typeof RESULTS_SPOTLIGHT.cities)[number];
+
+/** Clockwise degrees from 12 o'clock for a city on the stage. */
+function cityAngle(city: City): number {
+  const { mapBox } = RESULTS_SPOTLIGHT;
+  const sx = mapBox.x + (city.x / 100) * mapBox.w;
+  const sy = mapBox.y + (city.y / 100) * mapBox.h;
+  return (Math.atan2(sx - 50, -(sy - 50)) * 180) / Math.PI;
+}
+
+/** Negative delay so the city ping peaks when the sweep reaches its angle. */
 function pingDelaySec(angle: number) {
   const norm = ((angle % 360) + 360) % 360;
   return (norm / 360 - 1) * RESULTS_SPOTLIGHT.scanSec;
@@ -19,8 +29,8 @@ export interface ResultsSpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 7.
- * Desktop: dashed rings, centered "results ready" copy, and a radar pin
- * that orbits the rings scanning partner badges.
+ * Desktop: dashed rings, USA map with city dots, centered "results ready"
+ * copy, and a radar sweep across the map.
  * Mobile: compact radar orb + copy in the short stage.
  */
 export function ResultsSpotlight({ className }: ResultsSpotlightProps) {
@@ -77,21 +87,9 @@ export function ResultsSpotlight({ className }: ResultsSpotlightProps) {
           }
         />
 
-        {RESULTS_SPOTLIGHT.partners.map((partner, index) => (
-          <PartnerBadge
-            key={partner.id}
-            partner={partner}
-            animate={!reduceMotion}
-            enterDelay={motionOn ? 0.08 + index * 0.05 : 0}
-            motionOn={motionOn}
-          />
-        ))}
+        <UsaMapLayer animate={!reduceMotion} enter={motionOn} />
 
-        <RadarPin
-          animate={!reduceMotion}
-          radius={RESULTS_SPOTLIGHT.pinRadius}
-          enter={motionOn}
-        />
+        <RadarSweep animate={!reduceMotion} enter={motionOn} />
 
         <motion.div
           className={styles.centerCopy}
@@ -113,6 +111,10 @@ function MobileResultsSpotlight({
   className?: string;
   animate: boolean;
 }) {
+  const mobileCities = RESULTS_SPOTLIGHT.cities.filter((city) =>
+    (RESULTS_SPOTLIGHT.mobile.cityIds as readonly string[]).includes(city.id),
+  );
+
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
@@ -131,22 +133,13 @@ function MobileResultsSpotlight({
             alt=""
             draggable={false}
           />
-          {RESULTS_SPOTLIGHT.partners.slice(0, 4).map((partner) => (
-            <PartnerBadge
-              key={partner.id}
-              partner={partner}
-              animate={animate}
-              enterDelay={0}
-              motionOn={false}
-              compact
-            />
-          ))}
-          <RadarPin
+          <UsaMapLayer
             animate={animate}
-            radius={RESULTS_SPOTLIGHT.pinRadius}
             enter={false}
+            cities={mobileCities}
             compact
           />
+          <RadarSweep animate={animate} enter={false} />
         </div>
         <div className={styles.mobileCopy}>
           <CenterCopy pulse={animate} mobile />
@@ -182,82 +175,105 @@ function CenterCopy({
   );
 }
 
-function PartnerBadge({
-  partner,
+function UsaMapLayer({
+  animate,
+  enter,
+  cities = RESULTS_SPOTLIGHT.cities,
+  compact = false,
+}: {
+  animate: boolean;
+  enter: boolean;
+  cities?: readonly City[];
+  compact?: boolean;
+}) {
+  const { mapBox } = RESULTS_SPOTLIGHT;
+
+  return (
+    <motion.div
+      className={`${styles.mapLayer}${compact ? ` ${styles.mapLayerCompact}` : ''}`}
+      style={
+        {
+          left: `${mapBox.x}%`,
+          top: `${mapBox.y}%`,
+          width: `${mapBox.w}%`,
+          height: `${mapBox.h}%`,
+        } as CSSProperties
+      }
+      initial={enter ? { opacity: 0, scale: 0.96 } : false}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.55, ease: EASE_OUT, delay: 0.05 }}
+    >
+      <img
+        className={styles.mapImage}
+        src={RESULTS_SPOTLIGHT.map}
+        alt=""
+        draggable={false}
+      />
+      {cities.map((city, index) => (
+        <CityDot
+          key={city.id}
+          city={city}
+          animate={animate}
+          enterDelay={enter ? 0.1 + index * 0.02 : 0}
+          motionOn={enter}
+          compact={compact}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
+function CityDot({
+  city,
   animate,
   enterDelay,
   motionOn,
   compact = false,
 }: {
-  partner: (typeof RESULTS_SPOTLIGHT.partners)[number];
+  city: City;
   animate: boolean;
   enterDelay: number;
   motionOn: boolean;
   compact?: boolean;
 }) {
+  const angle = cityAngle(city);
+
   return (
     <div
-      className={`${styles.partnerSlot}${compact ? ` ${styles.partnerSlotCompact}` : ''}`}
+      className={`${styles.citySlot}${compact ? ` ${styles.citySlotCompact}` : ''}`}
       style={
         {
-          ['--angle' as string]: `${partner.angle}deg`,
-          ['--radius' as string]: `${partner.radius}%`,
-          ['--size' as string]: `${partner.size}%`,
-          ['--ping-delay' as string]: `${pingDelaySec(partner.angle)}s`,
+          left: `${city.x}%`,
+          top: `${city.y}%`,
+          ['--ping-delay' as string]: `${pingDelaySec(angle)}s`,
         } as CSSProperties
       }
     >
-      <motion.div
-        className={styles.partnerEnter}
-        initial={motionOn ? { opacity: 0 } : false}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.45, ease: EASE_OUT, delay: enterDelay }}
-      >
-        <div
-          className={`${styles.partner}${animate ? ` ${styles.partnerScan}` : ` ${styles.partnerStatic}`}`}
-        >
-          <img src={partner.logo} alt="" draggable={false} />
-        </div>
-      </motion.div>
+      <motion.span
+        className={`${styles.cityDot}${animate ? ` ${styles.cityScan}` : ` ${styles.cityStatic}`}`}
+        initial={motionOn ? { scale: 0, opacity: 0 } : false}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.35, ease: EASE_OUT, delay: enterDelay }}
+      />
     </div>
   );
 }
 
-function RadarPin({
+function RadarSweep({
   animate,
-  radius,
   enter,
-  compact = false,
 }: {
   animate: boolean;
-  radius: number;
   enter: boolean;
-  compact?: boolean;
 }) {
   return (
     <motion.div
-      className={`${styles.radarArm}${compact ? ` ${styles.radarArmCompact}` : ''}${
-        animate ? ` ${styles.radarSpin}` : ''
-      }`}
-      style={
-        {
-          ['--pin-radius' as string]: `${radius}%`,
-        } as CSSProperties
-      }
+      className={`${styles.radarArm}${animate ? ` ${styles.radarSpin}` : ''}`}
       initial={enter ? { opacity: 0 } : false}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: EASE_OUT, delay: 0.2 }}
     >
       <div className={styles.radarSweep} />
-      <div className={styles.pinAnchor}>
-        <span className={styles.pinTrail} />
-        <div className={styles.pinUpright}>
-          <span className={styles.pin}>
-            <span className={styles.pinHead} />
-            <span className={styles.pinCore} />
-          </span>
-        </div>
-      </div>
     </motion.div>
   );
 }
