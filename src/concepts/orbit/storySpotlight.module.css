@@ -147,6 +147,12 @@
     border-radius: 0;
   }
 
+  /* Keep portrait proportions in the short mobile stage (fill stretches). */
+  .photo img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
   .card {
     gap: 4px;
     padding: 10px 11px;
