@@ -15,8 +15,9 @@ const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 type StorySlide = (typeof STORY_SPOTLIGHT.slides)[number];
 
 /**
- * Left-stage collage for Orbit step 2: mint portrait panel, cream
- * outcome card, dashed rings (desktop), and carousel dots.
+ * Left-stage collage for Orbit step 2: pastel portrait panel (tone
+ * matched per slide), cream outcome card, dashed rings (desktop),
+ * and carousel dots.
  * Desktop: Figma 159:11776. Mobile side-by-side: Figma 192:13349.
  * Rotates through outcome stories (photo + copy).
  */
@@ -117,6 +118,7 @@ export function StorySpotlight({ className }: { className?: string }) {
               top: `${mint.y}%`,
               width: `${mint.w}%`,
               height: `${mint.h}%`,
+              background: slide.panelColor,
             }}
           />
           <div
@@ -182,6 +184,7 @@ function MobileStorySpotlight({
           top: `${mint.y}%`,
           width: `${mint.w}%`,
           height: `${mint.h}%`,
+          background: slide.panelColor,
         }}
       />
       <div

@@ -63,8 +63,11 @@ export const ORBIT_CONFIG = {
     cardCream: '#f6ead6',
     cardCreamText: '#000000',
     cardInkText: '#f6ead6',
-    /** Step 2 story panel behind the portrait. */
-    storyMint: '#e7fff9',
+    /**
+     * Step 2 story panel fallback (per-slide pastels live on
+     * STORY_SPOTLIGHT.slides[].panelColor).
+     */
+    storyMint: '#e5f2ea',
     choiceBorder: '#d7dce5',
     choiceText: '#1f2937',
     trustBg: '#fffbf6',
@@ -609,11 +612,13 @@ export const PARTNER_SPOTLIGHT = {
 } as const;
 
 /**
- * Step 2 story collage — mint panel + portrait + cream outcome card.
+ * Step 2 story collage — pastel panel + portrait + cream outcome card.
  * Desktop positions are % of the 560×560 ring stage (Figma 159:11776).
  * Mobile positions are % of the 390×150 stage window under the header
  * (Figma 192:13349); mint/photo overhang slightly above the window.
  * Carousel rotates through outcome stories (photo + copy).
+ * panelColor is a cool pastel pulled from each portrait’s clothing /
+ * vibe — kept off warm cream (#f6ead6) so the join stays crisp.
  */
 export const STORY_SPOTLIGHT = {
   /** Autoplay interval between stories (ms). */
@@ -626,6 +631,8 @@ export const STORY_SPOTLIGHT = {
       headline: '11 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($55,000 paid off in 47 months)',
+      /** Soft rose from burgundy sweater — cool enough vs cream card. */
+      panelColor: '#f3e4ec',
       /**
        * Image crop inside photoBox — Figma absolute fill on 192:13498:
        * left -8.45%, top -2.59%, width 141.24%, height 102.59%.
@@ -642,6 +649,8 @@ export const STORY_SPOTLIGHT = {
       headline: '9 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($42,000 paid off in 36 months)',
+      /** Soft sage from olive shirt. */
+      panelColor: '#e5f2ea',
       photoCrop: { x: 0, y: -4, w: 100, h: 108 },
       mobilePhotoCrop: { x: 0, y: -2, w: 100, h: 108 },
       photoFit: 'cover' as const,
@@ -653,6 +662,8 @@ export const STORY_SPOTLIGHT = {
       headline: '14 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($38,000 paid off in 41 months)',
+      /** Soft periwinkle — cool accent vs white tee + cream card. */
+      panelColor: '#e7eaf7',
       photoCrop: { x: 0, y: -2, w: 100, h: 108 },
       mobilePhotoCrop: { x: 0, y: 0, w: 100, h: 108 },
       photoFit: 'cover' as const,

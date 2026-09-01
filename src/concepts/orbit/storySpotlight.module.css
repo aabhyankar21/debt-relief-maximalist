@@ -44,9 +44,11 @@
 .mint {
   position: absolute;
   z-index: 1;
-  background: #e7fff9;
+  /* Fallback — each slide sets background from panelColor. */
+  background: #e5f2ea;
   border-radius: 8px 8px 0 0;
   pointer-events: none;
+  transition: background-color 0.45s ease;
 }
 
 .photo {
