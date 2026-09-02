@@ -3,8 +3,8 @@
  * Copy, collage layout, and accent colours live here so screens
  * can be tuned without touching layout or animation code.
  *
- * Step 1 desktop: Figma 1440×900 (node 159:11695) circular avatar orbit
- * Step 1 mobile:  Figma 390 (node 192:13248) short avatar stage + sheet
+ * Step 1 desktop: globe + US map + isometric portrait tiles
+ * Step 1 mobile:  Figma 390 (node 192:13248) short globe stage + sheet
  * Step 2 desktop: Figma 1440×900 (node 159:11776)
  * Step 2 mobile:  Figma 390 (node 192:13349)
  * Step 3 desktop: Figma 1440×900 (node 159:11858)
@@ -292,8 +292,8 @@ export const ORBIT_MOTION = {
   enterStaggerSec: 0.06,
   /** Card entrance duration, seconds. */
   enterDurSec: 0.42,
-  /** Hover scale multiplier. */
-  hoverScale: 1.32,
+  /** Hover scale multiplier (holographic tile expand). */
+  hoverScale: 1.95,
   /** How far hover pulls a card toward stage center (0–1). */
   hoverPull: 0.42,
   /** Hover spring — higher stiffness = snappier. */
@@ -550,41 +550,44 @@ export const INCOME_SPOTLIGHT = {
 
 /**
  * Step 4 birthday collage —
- * Desktop: dashed rings + cutout portrait + cream insight card (Figma 201:13851).
- * Mobile: cream banner + arched portrait in the 390×150 stage (Figma 197:13685).
- * Desktop positions are % of the 560×560 ring stage at (126,128).
- * Mobile positions are % of the 390×150 stage window under the header.
+ * Desktop: rings + portrait + holo glass insight + decade timeline.
+ * Mobile: glass banner + arched portrait in the 390×150 stage.
+ * Desktop positions are % of the 560×560 ring stage.
  */
 export const BIRTHDAY_SPOTLIGHT = {
   photo: photoBirthday,
   calloutTitle: 'Did you know?',
   calloutBody:
     'People who start relief in their 30s and 40s save the most - years of compounding interest, stopped early.',
+  /** Shorter body for the compact mobile glass banner. */
+  mobileCalloutBody:
+    'Start in your 30s and 40s to stop compounding interest early.',
+  badgeLabel: 'Peak savings window',
+  decades: [
+    { id: '20s', label: '20s', peak: false },
+    { id: '30s', label: '30s', peak: true },
+    { id: '40s', label: '40s', peak: true },
+    { id: '50s', label: '50s+', peak: false },
+  ] as const,
   /**
-   * Photo — Figma 206:14428 at (267,143) 280×362 relative to rings (126,128).
-   * Image crop: left -33.17%, top -5.9%, width 162.93%, height 119.99%.
-   * Cutout PNG — no container corner radius on desktop.
+   * Photo — cutout PNG; positions relative to the 560 ring stage.
    */
   photoBox: { x: 25.18, y: 2.68, w: 50, h: 64.64 },
   photoCrop: { x: -33.17, y: -5.9, w: 162.93, h: 119.99 },
   photoRadius: 0,
+  /** Peak-window pill near the portrait shoulder. */
+  badge: { x: 58, y: 10, w: 34 },
+  /** Decade constellation above the glass callout. */
+  timeline: { x: 18, y: 52, w: 64 },
+  /** Glass insight card — height is content-driven in CSS. */
+  callout: { x: 18, y: 61, w: 64 },
   /**
-   * Cream insight card — Figma 217:110 at (244,423) 326×130
-   * relative to rings at (126,128). Overlaps the lower portrait.
-   */
-  callout: { x: 21.07, y: 52.68, w: 58.21, h: 23.21 },
-  /**
-   * Mobile collage — Figma 197:13685.
-   * Cream banner 216:14729 fills the 390×150 stage (frame y 48→198).
-   * Photo 216:14723 at (23,34) 128×189; arch radius 700 / 128.
-   * Crop: left -33.17%, top -5.17%, width 162.93%, height 105.17%.
+   * Mobile collage — glass banner + arched portrait.
+   * Photo geometry is owned by CSS (cqw → 128×189 @ 390) so it
+   * doesn’t stretch when the stage banner height changes.
    */
   mobile: {
-    photoBox: { x: 5.9, y: -9.33, w: 32.82, h: 126 },
-    photoCrop: { x: -33.17, y: -5.17, w: 162.93, h: 105.17 },
-    /** Bottom corner radius as % of photoBox width (Figma 700 / 128). */
-    photoRadius: 546.875,
-    /** Full-bleed cream banner behind the portrait. */
+    /** Full-bleed glass banner behind the portrait. */
     callout: { x: 0, y: 0, w: 100, h: 100 },
   },
 } as const;
@@ -607,8 +610,12 @@ export const PARTNER_SPOTLIGHT = {
   nextHint: 'Add your contact next',
   privacyNote:
     'Your information is secure and will never be shared without your permission.',
-  /** Phone chassis relative to the 560 ring stage. */
-  phoneBox: { x: 30.5, y: 5.5, w: 39, h: 89 },
+  /**
+   * Phone chassis relative to the 560 ring stage.
+   * Width drives size; height comes from a real-device aspect ratio in CSS
+   * so the mockup can’t stretch or squat.
+   */
+  phoneBox: { x: 30.5, y: 9.5, w: 39 },
 } as const;
 
 /**
@@ -696,203 +703,275 @@ export const STORY_SPOTLIGHT = {
   },
 } as const;
 
-export interface OrbitAvatar {
+export interface OrbitGlobePerson {
   id: string;
   image: string;
-  /** Top-left as % of the ring stage. */
+  city: string;
+  /** State pin on the map box (% of map). */
+  pin: { x: number; y: number };
+  /** Tile top-left as % of the ring stage. */
   x: number;
   y: number;
-  /** Diameter as % of the ring stage. */
+  /** Square edge as % of the ring stage. */
   size: number;
-  /** CSS rotate in degrees. */
-  rotate: number;
+  /** Resting isometric pose (CSS rotateX / rotateY / rotateZ). */
+  pitch: number;
+  yaw: number;
+  roll: number;
   /** Stacking order. */
   z: number;
   /**
-   * Optional absolute-fill crop inside the circle
+   * Optional absolute-fill crop inside the square
    * (Figma left/top/width/height %).
    */
   crop?: { x: number; y: number; w: number; h: number };
 }
 
 /**
- * Step 1 desktop circular collage — % of 560×560 rings (Figma 159:11695).
- * Coords from metadata bounding-box centers → unrotated circle top-left.
- * Each slot uses its own Figma fill (no reused portraits across circles).
+ * Step 1 globe + isometric portraits — % of the 560×560 ring stage.
+ * Pins use the same Albers city coords as RESULTS_SPOTLIGHT (map-box %).
+ * Tiles float around the globe; hover flattens them toward camera.
  */
-export const ORBIT_AVATARS: OrbitAvatar[] = [
-  {
-    id: 'graduates',
-    image: avatarGraduates,
-    x: 8.22,
-    y: 6.13,
-    size: 21.43,
-    rotate: -3,
-    z: 3,
-  },
-  {
-    id: 'credit',
-    image: avatarCredit,
-    x: 75.56,
-    y: 3.6,
-    size: 21.43,
-    rotate: 12,
-    z: 4,
-  },
-  {
-    /** Figma 216:14455 — handshake couple. */
-    id: 'handshake-sm-top',
-    image: avatarHandshake,
-    x: 38.77,
-    y: 10.23,
-    size: 9.64,
-    rotate: -4.45,
-    z: 5,
-  },
-  {
-    /** Figma 216:14459 — glasses / video call. */
-    id: 'glasses-sm-top',
-    image: avatarGlasses,
-    x: 54.46,
-    y: 19.46,
-    size: 9.64,
-    rotate: 0,
-    z: 6,
-  },
-  {
-    /** Figma 216:14454 — thinking with glasses. */
-    id: 'think-mid-left',
-    image: avatarThink,
-    x: 5.83,
-    y: 38.76,
-    size: 16.65,
-    rotate: -12,
-    z: 4,
-  },
-  {
-    /** Figma 216:14457 — man in denim with phone. */
-    id: 'denim-mid-right',
-    image: avatarDenim,
-    x: 81.35,
-    y: 37.74,
-    size: 17.35,
-    rotate: 3,
-    z: 4,
-  },
+export const ORBIT_GLOBE = {
+  map: usaMap,
+  /** Sphere centered on the 560 stage (x/y = (100 − w) / 2). */
+  sphere: { x: 23, y: 23, w: 54 },
+  /**
+   * Contiguous USA on the globe face — % of the sphere box.
+   * Modest isometric tilt is applied in CSS, not here.
+   */
+  mapBox: { x: 7, y: 27, w: 86, h: 48 },
+  /** Extra city dots (no portrait) so the scan feels national. */
+  dots: [
+    { id: 'portland', x: 10, y: 26 },
+    { id: 'sf', x: 6, y: 48 },
+    { id: 'vegas', x: 16, y: 56 },
+    { id: 'saltlake', x: 24, y: 40 },
+    { id: 'albuquerque', x: 30, y: 62 },
+    { id: 'omaha', x: 50, y: 40 },
+    { id: 'okc', x: 48, y: 64 },
+    { id: 'houston', x: 52, y: 82 },
+    { id: 'minneapolis', x: 55, y: 26 },
+    { id: 'detroit', x: 72, y: 36 },
+    { id: 'nashville', x: 70, y: 60 },
+    { id: 'tampa', x: 78, y: 84 },
+    { id: 'dc', x: 86, y: 48 },
+    { id: 'philadelphia', x: 88, y: 42 },
+  ],
+} as const;
+
+/** Center copy on the globe face. */
+export const ORBIT_STATS_CARD = {
+  headline: 'Thousands Choosing Loan-Free Relief',
+} as const;
+
+export const ORBIT_GLOBE_PEOPLE: OrbitGlobePerson[] = [
   {
     id: 'laptop',
     image: avatarLaptop,
-    x: 0.6,
-    y: 63.23,
-    size: 21.43,
-    rotate: 3,
+    city: 'Seattle',
+    pin: { x: 12, y: 16 },
+    x: 14.2,
+    y: 23.2,
+    size: 10.2,
+    pitch: 12,
+    yaw: -18,
+    roll: -6,
     z: 5,
   },
   {
-    /** Figma 216:14458 — advisor meeting. */
-    id: 'office-sm-bot',
-    image: avatarOffice,
-    x: 52.32,
-    y: 68.57,
-    size: 9.64,
-    rotate: 0,
-    z: 6,
-  },
-  {
-    id: 'phone',
-    image: avatarPhone,
-    x: 71.1,
-    y: 73.06,
-    size: 21.43,
-    rotate: -12,
-    z: 5,
+    id: 'denim',
+    image: avatarDenim,
+    city: 'Los Angeles',
+    pin: { x: 9, y: 64 },
+    x: 13.2,
+    y: 44.3,
+    size: 9.4,
+    pitch: 10,
+    yaw: -20,
+    roll: 5,
+    z: 4,
   },
   {
     id: 'blue',
     image: avatarBlue,
-    x: 35.71,
-    y: 81.07,
-    size: 21.43,
-    rotate: 0,
-    z: 7,
+    city: 'Phoenix',
+    pin: { x: 18, y: 68 },
+    x: 15,
+    y: 56.3,
+    size: 9.8,
+    pitch: 14,
+    yaw: -12,
+    roll: -3,
+    z: 6,
     crop: { x: -48.66, y: -0.45, w: 149.98, h: 100 },
+  },
+  {
+    id: 'think',
+    image: avatarThink,
+    city: 'Denver',
+    pin: { x: 34, y: 46 },
+    x: 29.4,
+    y: 13.7,
+    size: 8.8,
+    pitch: 10,
+    yaw: -8,
+    roll: 6,
+    z: 4,
+  },
+  {
+    id: 'office',
+    image: avatarOffice,
+    city: 'Dallas',
+    pin: { x: 48, y: 70 },
+    x: 40.1,
+    y: 67.1,
+    size: 7.6,
+    pitch: 12,
+    yaw: 6,
+    roll: -4,
+    z: 5,
+  },
+  {
+    id: 'handshake',
+    image: avatarHandshake,
+    city: 'Chicago',
+    pin: { x: 66, y: 40 },
+    x: 52.1,
+    y: 13.1,
+    size: 7.4,
+    pitch: 8,
+    yaw: 10,
+    roll: 3,
+    z: 5,
+  },
+  {
+    id: 'glasses',
+    image: avatarGlasses,
+    city: 'Atlanta',
+    pin: { x: 74, y: 66 },
+    x: 62.6,
+    y: 67.1,
+    size: 7.4,
+    pitch: 12,
+    yaw: 14,
+    roll: -5,
+    z: 5,
+  },
+  {
+    id: 'phone',
+    image: avatarPhone,
+    city: 'Miami',
+    pin: { x: 82, y: 90 },
+    x: 72.8,
+    y: 54.8,
+    size: 10,
+    pitch: 12,
+    yaw: 16,
+    roll: 4,
+    z: 6,
+  },
+  {
+    id: 'credit',
+    image: avatarCredit,
+    city: 'New York',
+    pin: { x: 89, y: 34 },
+    x: 72.7,
+    y: 27.7,
+    size: 10.2,
+    pitch: 8,
+    yaw: 18,
+    roll: -7,
+    z: 5,
+  },
+  {
+    id: 'graduates',
+    image: avatarGraduates,
+    city: 'Boston',
+    pin: { x: 94, y: 28 },
+    x: 71.2,
+    y: 12.7,
+    size: 10.6,
+    pitch: 10,
+    yaw: 16,
+    roll: 5,
+    z: 6,
   },
 ];
 
 /**
- * Relief-medal center hub — % of 560 stage (Figma 206:14446 geometry).
- * Perfect circle at (299,301) size 214 on the 1440 frame / stage origin (126,128).
- * Metal rim + brand enamel face; embossed shield + bottom numeral.
+ * Step 1 mobile globe strip — % of the 268×268 canvas in the 150px window.
  */
-export const ORBIT_STATS_CARD = {
-  x: 30.89,
-  y: 30.89,
-  w: 38.21,
-  /** Status pill above the hub headline (radar-center treatment). */
-  pill: 'Live now',
-  /** Short face copy — leaves room for the embossed shield. */
-  headline: 'Thousands Choosing Loan-Free Relief',
-} as const;
-
-/**
- * Step 1 mobile circular collage — % of 268×268 rings at (61, 6)
- * (Figma 192:13248). No cream card on mobile.
- * Photos match Figma 216:14497–14511 fills.
- */
-export const ORBIT_AVATARS_MOBILE: OrbitAvatar[] = [
+export const ORBIT_GLOBE_PEOPLE_MOBILE: OrbitGlobePerson[] = [
   {
     id: 'm-graduates',
     image: avatarGraduates,
-    x: -28.34,
-    y: 6.47,
-    size: 44.78,
-    rotate: -3,
-    z: 3,
+    city: 'Boston',
+    pin: { x: 94, y: 28 },
+    x: 6,
+    y: 22,
+    size: 20,
+    pitch: 16,
+    yaw: -26,
+    roll: -6,
+    z: 4,
   },
   {
-    id: 'm-phone-top',
+    id: 'm-phone',
     image: avatarPhone,
-    x: 52.31,
-    y: 13.12,
-    size: 31.34,
-    rotate: 8.91,
-    z: 4,
+    city: 'Miami',
+    pin: { x: 82, y: 90 },
+    x: 41,
+    y: 20,
+    size: 16,
+    pitch: 14,
+    yaw: 12,
+    roll: 6,
+    z: 5,
   },
   {
     id: 'm-credit',
     image: avatarCredit,
-    x: 94.44,
-    y: 4.16,
-    size: 44.78,
-    rotate: 12,
-    z: 3,
+    city: 'New York',
+    pin: { x: 89, y: 34 },
+    x: 72,
+    y: 18,
+    size: 18,
+    pitch: 18,
+    yaw: 30,
+    roll: -8,
+    z: 4,
   },
   {
     id: 'm-laptop',
     image: avatarLaptop,
-    x: 11.69,
-    y: 38.08,
-    size: 44.78,
-    rotate: 3,
+    city: 'Seattle',
+    pin: { x: 12, y: 16 },
+    x: 18,
+    y: 48,
+    size: 18,
+    pitch: 20,
+    yaw: -22,
+    roll: 4,
     z: 5,
   },
   {
-    /**
-     * Figma 216:14501 — glasses portrait with the same absolute-fill
-     * crop as the desktop blue avatar.
-     */
     id: 'm-glasses',
     image: avatarGlasses,
-    x: 73.88,
-    y: 51.87,
-    size: 33.58,
-    rotate: 0,
+    city: 'Atlanta',
+    pin: { x: 74, y: 66 },
+    x: 64,
+    y: 48,
+    size: 17,
+    pitch: 16,
+    yaw: 24,
+    roll: -4,
     z: 6,
     crop: { x: -48.66, y: -0.45, w: 149.98, h: 100 },
   },
 ];
 
-/** @deprecated Kept for unused marquee; step 1 now uses ORBIT_AVATARS. */
+/** @deprecated Kept for unused marquee; step 1 now uses ORBIT_GLOBE_PEOPLE. */
 export type InsightCardTone = 'ink' | 'cream';
 
 export interface InsightCard {

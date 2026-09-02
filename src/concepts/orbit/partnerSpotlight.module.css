@@ -1,7 +1,7 @@
 /**
  * Step 3 partner collage —
- * Desktop: phone mockup in the 560×560 ring stage
- * Mobile:  inset device-screen card in the 390×155 cream banner
+ * Desktop: holographic HUD phone in the 560×560 ring stage
+ * Mobile:  inset glass device card in a soft blue stage banner
  */
 
 .stage {
@@ -28,13 +28,16 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
-  opacity: 0.4;
+  opacity: 0.38;
   will-change: transform;
 }
 
 .phoneWrap {
   position: absolute;
   z-index: 2;
+  /* iPhone 15-ish outer ratio — keeps the mockup from stretching. */
+  aspect-ratio: 71.5 / 147.5;
+  height: auto;
   pointer-events: none;
 }
 
@@ -43,10 +46,12 @@
  * was fraying the black bezel). Shadow lives on .phone instead.
  */
 .phoneTilt {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  /* Positive Y yaw aims the screen toward the form on the right. */
-  transform: perspective(1200px) rotateY(10deg) rotateX(3deg);
+  /* Light yaw toward the form — heavy tilt foreshortens and reads “odd”. */
+  transform: perspective(1400px) rotateY(6deg) rotateX(1.5deg);
   transform-style: preserve-3d;
   /* Container lives here so .phone can use cqi for concentric radii. */
   container-type: inline-size;
@@ -55,7 +60,7 @@
 
 /*
  * Concentric frame: outer radius 16cqi, rim 2.8cqi, inner = outer - rim.
- * Matching radii keep the black border corners clean.
+ * Matching radii keep the bezel corners clean.
  */
 .phone {
   --phone-radius: 16cqi;
@@ -68,12 +73,13 @@
   box-sizing: border-box;
   padding: var(--phone-rim);
   border-radius: var(--phone-radius);
-  background: linear-gradient(160deg, #2e2e33 0%, #141417 45%, #0a0a0c 100%);
+  background: #1a2340;
   box-shadow:
-    0 28px 40px rgb(16 18 28 / 24%),
-    0 10px 18px rgb(0 51 255 / 10%),
-    inset 0 1px 0 rgb(255 255 255 / 22%),
-    inset 0 -1px 0 rgb(0 0 0 / 55%);
+    0 0 0 1px rgb(32 36 56 / 35%),
+    0 18px 28px rgb(16 18 40 / 16%),
+    0 6px 12px rgb(16 18 40 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 18%),
+    inset 0 -1px 0 rgb(0 0 0 / 45%);
   isolation: isolate;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -85,8 +91,8 @@
 .btnPower {
   position: absolute;
   z-index: 3;
-  background: #1a1a1e;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 8%);
+  background: #1c2644;
+  box-shadow: inset 0 0 0 1px rgb(122 160 255 / 14%);
 }
 
 .btnSilent {
@@ -127,7 +133,8 @@
   height: 100%;
   overflow: hidden;
   border-radius: var(--screen-radius);
-  background: #000;
+  background: #0a1228;
+  box-shadow: inset 0 0 0 1px rgb(122 160 255 / 18%);
 }
 
 .screen {
@@ -144,24 +151,37 @@
   background:
     radial-gradient(
       90% 55% at 50% -5%,
-      rgb(255 255 255 / 70%) 0%,
+      rgb(255 255 255 / 55%) 0%,
       transparent 55%
     ),
-    linear-gradient(180deg, #fff7e9 0%, #f3e2c4 52%, #e9d4ad 100%);
+    linear-gradient(
+      180deg,
+      #f4f7ff 0%,
+      #e4ebff 48%,
+      #d4def8 100%
+    );
 }
 
 .screenGlare {
   position: absolute;
-  inset: 0;
+  inset: -8%;
   z-index: 4;
   pointer-events: none;
   border-radius: inherit;
   background: linear-gradient(
-    122deg,
-    rgb(255 255 255 / 14%) 0%,
-    rgb(255 255 255 / 0%) 26%,
-    transparent 50%
+    118deg,
+    transparent 38%,
+    rgb(255 255 255 / 0%) 44%,
+    rgb(255 255 255 / 34%) 50%,
+    rgb(255 255 255 / 0%) 56%,
+    transparent 62%
   );
+  opacity: 0;
+  mix-blend-mode: soft-light;
+}
+
+.stage[data-alive] .screenGlare {
+  animation: screenSheen 8.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .statusBar {
@@ -187,8 +207,9 @@
 .dynamicIsland {
   width: clamp(42px, 28cqi, 72px);
   height: clamp(10px, 6.2cqi, 18px);
-  background: #0d0d0f;
+  background: #0d1428;
   border-radius: 999px;
+  box-shadow: 0 0 0 1px rgb(122 160 255 / 18%);
 }
 
 .statusIcons {
@@ -239,7 +260,9 @@
   color: #ffffff;
   background: linear-gradient(135deg, #0033ff 0%, #35416e 100%);
   border-radius: 7px;
-  box-shadow: 0 4px 10px rgb(0 51 255 / 22%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 35%),
+    0 4px 12px rgb(0 51 255 / 28%);
 }
 
 .appName {
@@ -265,9 +288,10 @@
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #0c7663;
-  background: rgb(12 118 99 / 14%);
-  border: 1px solid rgb(12 118 99 / 16%);
+  background: rgb(12 118 99 / 12%);
+  border: 1px solid rgb(12 118 99 / 20%);
   border-radius: 999px;
+  box-shadow: 0 0 10px rgb(12 118 99 / 10%);
 }
 
 .encryptedIcon {
@@ -311,19 +335,22 @@
   justify-content: space-between;
   gap: 8px;
   padding: 9px 10px;
-  background: #ffffff;
-  border: 1px solid rgb(32 30 28 / 10%);
+  background: rgb(255 255 255 / 58%);
+  border: 1px solid rgb(0 51 255 / 16%);
   border-radius: 11px;
   box-shadow:
-    0 1px 0 rgb(255 255 255 / 90%) inset,
-    0 6px 14px rgb(32 30 28 / 8%);
+    0 0 0 1px rgb(255 255 255 / 45%) inset,
+    0 0 14px rgb(0 51 255 / 8%),
+    0 6px 14px rgb(20 30 60 / 6%);
 }
 
 .answerCard[data-filled] {
-  border-color: rgb(12 118 99 / 22%);
+  border-color: rgb(0 51 255 / 28%);
+  background: rgb(255 255 255 / 72%);
   box-shadow:
-    0 1px 0 rgb(255 255 255 / 90%) inset,
-    0 6px 14px rgb(12 118 99 / 8%);
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 16px rgb(0 51 255 / 12%),
+    0 6px 14px rgb(0 51 255 / 8%);
 }
 
 .answerCopy {
@@ -368,7 +395,7 @@
   flex-shrink: 0;
   width: clamp(12px, 5.5cqi, 15px);
   height: clamp(12px, 5.5cqi, 15px);
-  border: 1.5px dashed rgb(81 82 96 / 35%);
+  border: 1.5px dashed rgb(0 51 255 / 28%);
   border-radius: 50%;
 }
 
@@ -400,7 +427,7 @@
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: rgb(81 82 96 / 45%);
+  background: rgb(0 51 255 / 28%);
 }
 
 .privacyNote {
@@ -411,7 +438,7 @@
   align-items: flex-start;
   width: 100%;
   margin: auto 0 3%;
-  color: #324076;
+  color: #35416e;
   font-size: clamp(7px, 3.2cqi, 9.5px);
   font-weight: 400;
   line-height: 1.35;
@@ -438,7 +465,7 @@
   width: 34%;
   height: clamp(3px, 1.4cqi, 5px);
   margin: 2% auto 0;
-  background: rgb(32 30 28 / 55%);
+  background: rgb(0 51 255 / 28%);
   border-radius: 999px;
 }
 
@@ -454,6 +481,22 @@
   display: none;
 }
 
+@keyframes screenSheen {
+  0%,
+  68% {
+    opacity: 0;
+    transform: translateX(-48%) rotate(12deg);
+  }
+  76% {
+    opacity: 0.75;
+  }
+  88%,
+  100% {
+    opacity: 0;
+    transform: translateX(48%) rotate(12deg);
+  }
+}
+
 @media (max-width: 1023px) {
   .stage {
     width: 100%;
@@ -461,7 +504,7 @@
     min-height: 155px;
     aspect-ratio: auto;
     overflow: hidden;
-    background: #f6ead6;
+    background: linear-gradient(180deg, #eef2ff 0%, #e0e8fb 100%);
     container-type: inline-size;
     container-name: partner-stage;
   }
@@ -475,8 +518,8 @@
   }
 
   /*
-   * Full inset device screen — thin continuous frame, no peeking chassis
-   * so the overflow:hidden stage never slices the black border.
+   * Full inset glass device — thin continuous frame, no peeking chassis
+   * so the overflow:hidden stage never slices the border.
    */
   .mobileDevice {
     position: absolute;
@@ -487,13 +530,15 @@
     padding: 3px;
     overflow: hidden;
     border-radius: 18px;
-    background: linear-gradient(160deg, #2e2e33 0%, #121215 100%);
+    background: linear-gradient(160deg, #3a4668 0%, #121a34 100%);
     box-shadow:
-      0 10px 18px rgb(16 18 28 / 14%),
-      inset 0 1px 0 rgb(255 255 255 / 18%);
+      0 0 0 1px rgb(122 160 255 / 24%),
+      0 10px 20px rgb(0 51 255 / 12%),
+      inset 0 1px 0 rgb(255 255 255 / 22%);
   }
 
   .mobileScreen {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -503,10 +548,16 @@
     padding: 10px 12px 11px;
     overflow: hidden;
     border-radius: 15px;
-    background: linear-gradient(180deg, #fffaf2 0%, #f3e2c4 100%);
+    background: linear-gradient(180deg, #f4f7ff 0%, #dfe7fb 100%);
+  }
+
+  .mobileScreen .screenGlare {
+    display: block;
   }
 
   .mobileTop {
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -515,6 +566,8 @@
   }
 
   .mobileBody {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex: 1 1 auto;
     align-items: stretch;
@@ -611,5 +664,9 @@
 @media (prefers-reduced-motion: reduce) {
   .rings {
     will-change: auto;
+  }
+
+  .stage[data-alive] .screenGlare {
+    animation: none;
   }
 }

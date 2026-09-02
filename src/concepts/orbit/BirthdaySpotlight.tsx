@@ -12,24 +12,27 @@ export interface BirthdaySpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 4.
- * Desktop: dashed rings, cutout portrait, cream insight card (Figma 201:13851).
- * Mobile: cream banner + arched portrait in the short stage (Figma 197:13685).
+ * Desktop: rings + portrait + peak badge + decade timeline + glass insight.
+ * Mobile: glass banner + arched portrait with compact HUD chips.
  */
 export function BirthdaySpotlight({ className }: BirthdaySpotlightProps) {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const reduceMotion = useReducedMotion() ?? false;
   const motionOn = isDesktop && !reduceMotion;
   const ringsSpin = isDesktop && !reduceMotion;
+  const alive = !reduceMotion;
 
   if (!isDesktop) {
-    return <MobileBirthdaySpotlight className={className} />;
+    return <MobileBirthdaySpotlight className={className} alive={alive} />;
   }
 
-  const { photoBox, photoCrop, photoRadius, callout } = BIRTHDAY_SPOTLIGHT;
+  const { photoBox, photoCrop, photoRadius, callout, badge, timeline } =
+    BIRTHDAY_SPOTLIGHT;
 
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
@@ -88,22 +91,59 @@ export function BirthdaySpotlight({ className }: BirthdaySpotlightProps) {
           />
         </motion.div>
 
+        <motion.div
+          className={styles.badge}
+          style={{
+            left: `${badge.x}%`,
+            top: `${badge.y}%`,
+            width: `${badge.w}%`,
+          }}
+          initial={motionOn ? { opacity: 0, y: 8, scale: 0.96 } : false}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.45,
+            delay: motionOn ? 0.18 : 0,
+            ease: EASE_OUT,
+          }}
+        >
+          <span className={styles.badgeDot} />
+          {BIRTHDAY_SPOTLIGHT.badgeLabel}
+        </motion.div>
+
+        <motion.div
+          className={styles.timeline}
+          style={{
+            left: `${timeline.x}%`,
+            top: `${timeline.y}%`,
+            width: `${timeline.w}%`,
+          }}
+          initial={motionOn ? { opacity: 0, y: 10 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: motionOn ? 0.22 : 0,
+            ease: EASE_OUT,
+          }}
+        >
+          <DecadeTimeline />
+        </motion.div>
+
         <motion.article
           className={styles.callout}
           style={{
             left: `${callout.x}%`,
             top: `${callout.y}%`,
             width: `${callout.w}%`,
-            height: `${callout.h}%`,
           }}
           initial={motionOn ? { scale: 0.98, opacity: 0 } : false}
           animate={{ scale: 1, opacity: 1 }}
           transition={{
             duration: 0.5,
-            delay: motionOn ? 0.14 : 0,
+            delay: motionOn ? 0.28 : 0,
             ease: EASE_OUT,
           }}
         >
+          <span className={styles.calloutSheen} />
           <CalloutBody />
         </motion.article>
       </div>
@@ -111,37 +151,31 @@ export function BirthdaySpotlight({ className }: BirthdaySpotlightProps) {
   );
 }
 
-function MobileBirthdaySpotlight({ className }: { className?: string }) {
-  const { photoBox, photoCrop, photoRadius, callout } =
-    BIRTHDAY_SPOTLIGHT.mobile;
+function MobileBirthdaySpotlight({
+  className,
+  alive,
+}: {
+  className?: string;
+  alive: boolean;
+}) {
+  const { callout } = BIRTHDAY_SPOTLIGHT.mobile;
 
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
-        <div
-          className={styles.photo}
-          style={{
-            left: `${photoBox.x}%`,
-            top: `${photoBox.y}%`,
-            width: `${photoBox.w}%`,
-            height: `${photoBox.h}%`,
-            borderBottomLeftRadius: `${photoRadius}%`,
-            borderBottomRightRadius: `${photoRadius}%`,
-          }}
-        >
+        {/*
+          Mobile photo size/crop is CSS-owned (cqw) so the 128×189 arched
+          portrait stays correct when the stage banner height changes.
+        */}
+        <div className={styles.photo}>
           <img
             src={BIRTHDAY_SPOTLIGHT.photo}
             alt=""
             draggable={false}
-            style={{
-              left: `${photoCrop.x}%`,
-              top: `${photoCrop.y}%`,
-              width: `${photoCrop.w}%`,
-              height: `${photoCrop.h}%`,
-            }}
           />
         </div>
 
@@ -154,9 +188,40 @@ function MobileBirthdaySpotlight({ className }: { className?: string }) {
             height: `${callout.h}%`,
           }}
         >
-          <CalloutBody />
+          <span className={styles.calloutSheen} />
+          <div className={styles.mobileCopy}>
+            <span className={styles.badge}>
+              <span className={styles.badgeDot} />
+              {BIRTHDAY_SPOTLIGHT.badgeLabel}
+            </span>
+            <p className={styles.calloutTitle}>
+              {BIRTHDAY_SPOTLIGHT.calloutTitle}
+            </p>
+            <p className={styles.calloutBody}>
+              {BIRTHDAY_SPOTLIGHT.mobileCalloutBody}
+            </p>
+            <div className={styles.timeline}>
+              <DecadeTimeline />
+            </div>
+          </div>
         </article>
       </div>
+    </div>
+  );
+}
+
+function DecadeTimeline() {
+  return (
+    <div className={styles.decadeRow}>
+      {BIRTHDAY_SPOTLIGHT.decades.map((decade) => (
+        <span
+          key={decade.id}
+          className={styles.decade}
+          data-peak={decade.peak ? '' : undefined}
+        >
+          {decade.label}
+        </span>
+      ))}
     </div>
   );
 }

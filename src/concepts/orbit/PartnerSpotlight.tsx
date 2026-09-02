@@ -18,8 +18,8 @@ export interface PartnerSpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 3.
- * Desktop: spinning rings + phone mockup with a secure recap screen.
- * Mobile: inset device-screen card with the same recap (no clipped chassis).
+ * Desktop: rings + holographic HUD phone with a secure recap screen.
+ * Mobile: inset glass device card with the same recap.
  */
 export function PartnerSpotlight({
   className,
@@ -30,6 +30,7 @@ export function PartnerSpotlight({
   const reduceMotion = useReducedMotion() ?? false;
   const motionOn = isDesktop && !reduceMotion;
   const ringsSpin = !reduceMotion;
+  const alive = !reduceMotion;
 
   if (!isDesktop) {
     return (
@@ -38,6 +39,7 @@ export function PartnerSpotlight({
         debtAmountLabel={debtAmountLabel}
         debtTypeLabel={debtTypeLabel}
         animate={!reduceMotion}
+        alive={alive}
       />
     );
   }
@@ -47,6 +49,7 @@ export function PartnerSpotlight({
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
@@ -88,7 +91,6 @@ export function PartnerSpotlight({
             left: `${phoneBox.x}%`,
             top: `${phoneBox.y}%`,
             width: `${phoneBox.w}%`,
-            height: `${phoneBox.h}%`,
           }}
           initial={motionOn ? { scale: 0.94, opacity: 0, y: 18 } : false}
           animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -112,11 +114,13 @@ function MobilePartnerSpotlight({
   debtAmountLabel,
   debtTypeLabel,
   animate,
+  alive,
 }: {
   className?: string;
   debtAmountLabel: string | null;
   debtTypeLabel: string | null;
   animate: boolean;
+  alive: boolean;
 }) {
   const rows = [
     {
@@ -135,10 +139,12 @@ function MobilePartnerSpotlight({
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.mobileDevice}>
         <div className={styles.mobileScreen}>
+          <span className={styles.screenGlare} />
           <div className={styles.mobileTop}>
             <div className={styles.appIdentity}>
               <span className={styles.appMark}>FA</span>

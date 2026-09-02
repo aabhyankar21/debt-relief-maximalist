@@ -19,8 +19,8 @@ export interface DebtAmountStepProps {
 
 /**
  * Orbit — Step 1.
- * Desktop: circular avatar orbit + cream callout (Figma 159:11695).
- * Mobile: short avatar stage above sheeted form (Figma 192:13248).
+ * Desktop: globe + isometric portraits + HUD nameplate.
+ * Mobile: short globe stage above sheeted form (Figma 192:13248).
  */
 export function DebtAmountStep({
   selectedBand,
