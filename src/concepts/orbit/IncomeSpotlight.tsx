@@ -28,8 +28,8 @@ export interface IncomeSpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 6.
- * Desktop: dashed rings + cream affordability dial card.
- * Mobile: landscape dial card in the short stage (idle trust state).
+ * Desktop: dashed rings + glass affordability dial card.
+ * Mobile: landscape glass dial card in the short stage (idle trust state).
  */
 export function IncomeSpotlight({
   className,
@@ -39,6 +39,7 @@ export function IncomeSpotlight({
   const reduceMotion = useReducedMotion() ?? false;
   const motionOn = isDesktop && !reduceMotion;
   const ringsSpin = isDesktop && !reduceMotion;
+  const alive = !reduceMotion;
   const dial = resolveDial(incomeId);
 
   if (!isDesktop) {
@@ -47,6 +48,7 @@ export function IncomeSpotlight({
         className={className}
         dial={dial}
         animate={!reduceMotion}
+        alive={alive}
       />
     );
   }
@@ -55,6 +57,7 @@ export function IncomeSpotlight({
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
       data-active={dial.active ? '' : undefined}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
@@ -97,7 +100,8 @@ export function IncomeSpotlight({
             ease: EASE_OUT,
           }}
         >
-          <CardCopy />
+          <span className={styles.cardSheen} />
+          <CardCopy pulse={alive} />
           <DialPanel dial={dial} animate={!reduceMotion} />
         </motion.article>
       </div>
@@ -109,21 +113,25 @@ function MobileIncomeSpotlight({
   className,
   dial,
   animate,
+  alive,
 }: {
   className?: string;
   dial: DialState;
   animate: boolean;
+  alive: boolean;
 }) {
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
       data-active={dial.active ? '' : undefined}
+      data-alive={alive || undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
         <article className={styles.mobileCard}>
+          <span className={styles.cardSheen} />
           <div className={styles.mobileCopy}>
-            <CardCopy compact />
+            <CardCopy compact pulse={alive} />
           </div>
           <DialPanel
             className={styles.mobileDial}
@@ -137,11 +145,17 @@ function MobileIncomeSpotlight({
   );
 }
 
-function CardCopy({ compact = false }: { compact?: boolean }) {
+function CardCopy({
+  compact = false,
+  pulse = false,
+}: {
+  compact?: boolean;
+  pulse?: boolean;
+}) {
   return (
     <div className={compact ? styles.mobileCopyInner : styles.copy}>
       <span className={styles.pill}>
-        <span className={styles.pillDot} data-pulse="" />
+        <span className={styles.pillDot} data-pulse={pulse ? '' : undefined} />
         {INCOME_SPOTLIGHT.pill}
       </span>
       <p className={compact ? styles.mobileTitle : styles.title}>

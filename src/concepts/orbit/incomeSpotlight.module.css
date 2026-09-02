@@ -1,9 +1,8 @@
 /**
  * Step 6 affordability dial —
- * Desktop: cream trust card + blue meter face on the ring stage
- * Mobile:  390×150 landscape card (copy left, dial right)
- * Shares Orbit language with the phone vault (cream, pill, chips)
- * but reads as a progress gauge — not digit seals.
+ * Desktop: glass trust card + HUD meter face on the ring stage
+ * Mobile:  390×150 landscape glass card (copy left, dial right)
+ * Shares Orbit holographic language with birthday / partner steps.
  */
 
 .stage {
@@ -30,7 +29,7 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
-  opacity: 0.4;
+  opacity: 0.38;
   will-change: transform;
 }
 
@@ -44,18 +43,55 @@
   overflow: hidden;
   box-sizing: border-box;
   color: #201e1c;
-  background: #f6ead6;
   border-radius: 16px;
   translate: -50% -50%;
   pointer-events: none;
   container-type: inline-size;
   container-name: income-dial;
+  background:
+    radial-gradient(
+      120% 80% at 12% -10%,
+      rgb(255 255 255 / 72%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(244 247 255 / 88%) 0%,
+      rgb(228 235 255 / 82%) 100%
+    );
+  border: 1px solid rgb(0 51 255 / 16%);
   box-shadow:
-    0 16px 36px rgb(32 30 28 / 10%),
-    0 1px 0 rgb(255 255 255 / 60%) inset;
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 22px rgb(0 51 255 / 8%),
+    0 14px 28px rgb(20 30 60 / 8%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.cardSheen {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 38%,
+    rgb(255 255 255 / 0%) 44%,
+    rgb(255 255 255 / 34%) 50%,
+    rgb(255 255 255 / 0%) 56%,
+    transparent 62%
+  );
+  opacity: 0;
+  mix-blend-mode: soft-light;
+}
+
+.stage[data-alive] .cardSheen {
+  animation: cardSheen 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .copy {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,29 +106,37 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 2px 8px 2px 6px;
-  font-size: clamp(9px, 3.2cqi, 11px);
-  font-weight: 600;
-  line-height: 14px;
+  gap: 6px;
+  padding: 7px 12px 7px 10px;
+  font-size: clamp(10px, 3.2cqi, 12px);
+  font-weight: 650;
+  line-height: 1;
   letter-spacing: 0.02em;
-  color: #0c7663;
-  text-transform: uppercase;
-  background: rgb(12 118 99 / 10%);
+  color: #0033ff;
+  white-space: nowrap;
+  background: rgb(255 255 255 / 78%);
+  border: 1px solid rgb(0 51 255 / 22%);
   border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 18px rgb(0 51 255 / 12%),
+    0 8px 18px rgb(20 30 60 / 8%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .pillDot {
   display: block;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
-  background: #0c7663;
+  background: #0033ff;
   border-radius: 50%;
+  box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
 }
 
-.pillDot[data-pulse] {
-  animation: pillPulse 1.8s ease-in-out infinite;
+.stage[data-alive] .pillDot[data-pulse] {
+  animation: pillPulse 2.8s ease-in-out infinite;
 }
 
 .title {
@@ -102,7 +146,8 @@
   font-size: clamp(15px, 6.2cqi, 20px);
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
+  color: #201e1c;
   text-wrap: pretty;
 }
 
@@ -121,16 +166,20 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
+  padding: 4px 9px;
   font-size: clamp(10px, 3.5cqi, 12px);
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: 0.01em;
-  color: #201e1c;
-  background: rgb(255 255 255 / 72%);
-  border: 1px solid rgb(32 30 28 / 8%);
+  color: #35416e;
+  background: rgb(255 255 255 / 62%);
+  border: 1px solid rgb(0 51 255 / 14%);
   border-radius: 999px;
-  box-shadow: 0 1px 0 rgb(255 255 255 / 70%) inset;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 50%) inset,
+    0 4px 10px rgb(20 30 60 / 5%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .note {
@@ -139,13 +188,14 @@
   font-size: clamp(10px, 3.3cqi, 12px);
   font-weight: 500;
   line-height: 1.35;
-  color: rgb(32 30 28 / 62%);
+  color: #515260;
   text-wrap: pretty;
 }
 
-/* Cool meter face — Orbit blue family, not the phone vault charcoal. */
+/* Cool meter face — nested HUD panel inside the glass card. */
 .meter {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,10 +207,11 @@
   background:
     radial-gradient(
       120% 90% at 50% 110%,
-      rgb(0 51 255 / 22%) 0%,
+      rgb(0 51 255 / 28%) 0%,
       transparent 58%
     ),
     linear-gradient(180deg, #1a2748 0%, #151d33 100%);
+  border-top: 1px solid rgb(122 160 255 / 18%);
   transition: background 0.45s ease;
 }
 
@@ -277,24 +328,37 @@
 @keyframes pillPulse {
   0%,
   100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgb(12 118 99 / 45%);
+    box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
   }
   50% {
-    transform: scale(1.08);
-    opacity: 0.9;
-    box-shadow: 0 0 0 5px rgb(12 118 99 / 0%);
+    box-shadow: 0 0 0 5px rgb(0 51 255 / 22%);
+  }
+}
+
+@keyframes cardSheen {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translateX(-48%) rotate(12deg);
+  }
+  78% {
+    opacity: 0.7;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateX(48%) rotate(12deg);
   }
 }
 
 @media (max-width: 1023px) {
   .stage {
     width: 100%;
-    height: calc(150 * 100cqw / 390);
-    min-height: 150px;
+    height: calc(155 * 100cqw / 390);
+    min-height: 155px;
     aspect-ratio: auto;
     overflow: hidden;
+    background: linear-gradient(180deg, #eef2ff 0%, #e0e8fb 100%);
     container-type: inline-size;
     container-name: income-dial-stage;
   }
@@ -304,7 +368,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 16px 8px;
+    padding: 10px 12px 12px;
     box-sizing: border-box;
   }
 
@@ -325,15 +389,35 @@
     overflow: hidden;
     box-sizing: border-box;
     color: #201e1c;
-    background: #f6ead6;
     border-radius: 14px;
+    background:
+      radial-gradient(
+        120% 80% at 12% -10%,
+        rgb(255 255 255 / 72%) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(244 247 255 / 92%) 0%,
+        rgb(228 235 255 / 88%) 100%
+      );
+    border: 1px solid rgb(0 51 255 / 16%);
     box-shadow:
-      0 8px 24px rgb(0 0 0 / 10%),
-      0 1px 0 rgb(255 255 255 / 55%) inset;
+      0 0 0 1px rgb(255 255 255 / 55%) inset,
+      0 0 18px rgb(0 51 255 / 8%),
+      0 10px 22px rgb(20 30 60 / 8%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     pointer-events: none;
   }
 
+  .mobileCard .cardSheen {
+    display: none;
+  }
+
   .mobileCopy {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex: 1 1 54%;
     flex-direction: column;
@@ -353,7 +437,14 @@
   }
 
   .pill {
+    padding: 5px 9px 5px 7px;
     font-size: 10px;
+    gap: 5px;
+  }
+
+  .pillDot {
+    width: 6px;
+    height: 6px;
   }
 
   .mobileTitle {
@@ -363,8 +454,9 @@
     font-size: 15px;
     font-weight: 700;
     line-height: 18px;
-    letter-spacing: 0;
+    letter-spacing: -0.01em;
     text-align: left;
+    color: #201e1c;
     text-wrap: balance;
   }
 
@@ -380,12 +472,15 @@
   }
 
   .mobileDial {
+    position: relative;
+    z-index: 1;
     flex: 0 0 46%;
     width: auto;
     min-height: 0;
     height: 100%;
     padding: 8px 8px 10px;
-    border-left: 1px solid rgb(0 0 0 / 6%);
+    border-top: none;
+    border-left: 1px solid rgb(122 160 255 / 18%);
     justify-content: center;
   }
 
@@ -404,7 +499,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pillDot[data-pulse] {
+  .rings {
+    will-change: auto;
+  }
+
+  .stage[data-alive] .pillDot[data-pulse],
+  .stage[data-alive] .cardSheen {
     animation: none;
   }
 

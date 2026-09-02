@@ -63,11 +63,6 @@ export const ORBIT_CONFIG = {
     cardCream: '#f6ead6',
     cardCreamText: '#000000',
     cardInkText: '#f6ead6',
-    /**
-     * Step 2 story panel fallback (per-slide pastels live on
-     * STORY_SPOTLIGHT.slides[].panelColor).
-     */
-    storyMint: '#e5f2ea',
     choiceBorder: '#d7dce5',
     choiceText: '#1f2937',
     trustBg: '#fffbf6',
@@ -368,8 +363,8 @@ export type DebtTypeId = (typeof DEBT_TYPE_OPTIONS)[number]['id'];
 
 /**
  * Step 5 number vault —
- * Desktop: dashed rings + dim partner cards + cream vault card (Figma 201:14012).
- * Mobile: landscape vault card in the 390×150 stage window (Figma 201:14093).
+ * Desktop: dashed rings + dim partner cards + glass vault card (Figma 201:14012).
+ * Mobile: landscape glass vault card in the 390×150 stage window (Figma 201:14093).
  * Desktop positions are % of the 560×560 ring stage at (126,128).
  */
 export const PHONE_VAULT = {
@@ -377,7 +372,7 @@ export const PHONE_VAULT = {
   title: 'Your number stays with us',
   chips: ['One text', 'Never sold', 'Private'] as const,
   /**
-   * Cream vault card — centered on the ring stage.
+   * Glass vault card — centered on the ring stage.
    * Width only; left/top centering lives in CSS.
    */
   card: { w: 62.5 },
@@ -523,11 +518,9 @@ export const RESULTS_SPOTLIGHT = {
 } as const;
 
 /**
- * Step 6 income affordability dial —
- * Desktop: dashed rings + cream trust card with blue meter face.
- * Mobile: landscape dial card in the 390×150 stage window.
- * Distinct from the phone vault (arc gauge, not digit seals) but same
- * Orbit language: cream card, green pill, soft chips, ring stage.
+ * Step 6 affordability collage —
+ * Desktop: glass trust card + HUD dial on the ring stage.
+ * Mobile: landscape glass dial card in the short stage banner.
  * Card width is % of the 560×560 ring stage; centering lives in CSS.
  */
 export const INCOME_SPOTLIGHT = {
@@ -619,17 +612,17 @@ export const PARTNER_SPOTLIGHT = {
 } as const;
 
 /**
- * Step 2 story collage — pastel panel + portrait + cream outcome card.
- * Desktop positions are % of the 560×560 ring stage (Figma 159:11776).
- * Mobile positions are % of the 390×150 stage window under the header
- * (Figma 192:13349); mint/photo overhang slightly above the window.
+ * Step 2 story collage —
+ * Desktop: rings + portrait + glass outcome card + carousel.
+ * Mobile: glass banner + arched portrait + compact outcome copy.
+ * Desktop positions are % of the 560×560 ring stage.
  * Carousel rotates through outcome stories (photo + copy).
- * panelColor is a cool pastel pulled from each portrait’s clothing /
- * vibe — kept off warm cream (#f6ead6) so the join stays crisp.
  */
 export const STORY_SPOTLIGHT = {
   /** Autoplay interval between stories (ms). */
   autoplayMs: 3500,
+  /** Static pill above the rotating story copy. */
+  badgeLabel: 'Paid off early',
   slides: [
     {
       id: 'john',
@@ -638,16 +631,9 @@ export const STORY_SPOTLIGHT = {
       headline: '11 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($55,000 paid off in 47 months)',
-      /** Soft rose from burgundy sweater — cool enough vs cream card. */
-      panelColor: '#f3e4ec',
-      /**
-       * Image crop inside photoBox — Figma absolute fill on 192:13498:
-       * left -8.45%, top -2.59%, width 141.24%, height 102.59%.
-       */
-      photoCrop: { x: -8.45, y: -2.59, w: 141.24, h: 102.59 },
-      /** Figma fill on 192:13483 — left -8.28%, top -2.55%, w 140.89%, h 102.64%. */
-      mobilePhotoCrop: { x: -8.28, y: -2.55, w: 140.89, h: 102.64 },
-      photoFit: 'fill' as const,
+      /** Near-square cutouts — frame is wide enough that cover won’t clip sides. */
+      photoCrop: { x: 0, y: -2, w: 100, h: 104 },
+      photoFit: 'cover' as const,
     },
     {
       id: 'marcus',
@@ -656,10 +642,7 @@ export const STORY_SPOTLIGHT = {
       headline: '9 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($42,000 paid off in 36 months)',
-      /** Soft sage from olive shirt. */
-      panelColor: '#e5f2ea',
-      photoCrop: { x: 0, y: -4, w: 100, h: 108 },
-      mobilePhotoCrop: { x: 0, y: -2, w: 100, h: 108 },
+      photoCrop: { x: 0, y: -2, w: 100, h: 104 },
       photoFit: 'cover' as const,
     },
     {
@@ -669,37 +652,26 @@ export const STORY_SPOTLIGHT = {
       headline: '14 months sooner',
       detailBefore: 'than planned',
       detailAfter: '($38,000 paid off in 41 months)',
-      /** Soft periwinkle — cool accent vs white tee + cream card. */
-      panelColor: '#e7eaf7',
-      photoCrop: { x: 0, y: -2, w: 100, h: 108 },
-      mobilePhotoCrop: { x: 0, y: 0, w: 100, h: 108 },
+      photoCrop: { x: 0, y: -1, w: 100, h: 102 },
       photoFit: 'cover' as const,
     },
   ],
   /**
-   * Mint panel behind portrait — Figma 215:109 at (233,144) 358×284
-   * relative to rings at (126,128).
+   * Portrait window — ~1.11 aspect so square cutouts (~1.0–1.09)
+   * fill with cover without losing left/right edges.
    */
-  mint: { x: 19.11, y: 2.86, w: 63.93, h: 50.71 },
-  /** Portrait — Figma 192:13498 at (272,177) 279×256. */
-  photoBox: { x: 26.07, y: 8.75, w: 49.82, h: 45.71 },
-  /** Cream card attached under mint — Figma 192:13499 at (233,428). */
-  card: { x: 19.11, y: 53.57, w: 63.93 },
-  /** Carousel dots — vertically under the cream card (horizontally centered). */
-  dots: { y: 80.18 },
+  photoBox: { x: 20, y: 2.5, w: 60, h: 54 },
+  /** Glass outcome card — height is content-driven in CSS. */
+  callout: { x: 16, y: 56, w: 68 },
+  /** Carousel dots under the glass card. */
+  dots: { y: 84 },
   /**
-   * Mobile side-by-side collage — Figma 390 frame (node 192:13349).
-   * Coords % of the 390×150 stage window (frame y 48→198).
+   * Mobile collage — glass banner + full cutout portrait.
+   * Photo geometry is owned by CSS (cqw contain + overflow visible).
    */
   mobile: {
-    /** Full-bleed mint strip — Figma 216:14495 at frame y=43, h=155. */
-    mint: { x: 0, y: -3.33, w: 100, h: 103.33 },
-    /** Portrait — Figma 192:13483 at (32,39) 174×159. */
-    photoBox: { x: 8.21, y: -6, w: 44.62, h: 106 },
-    /** Cream card — Figma 192:13484 at (206,72) 167×94. */
-    card: { x: 52.82, y: 16, w: 42.82 },
-    /** Dots centered near the bottom of the short stage. */
-    dots: { y: 90 },
+    /** Full-bleed glass banner behind the portrait. */
+    callout: { x: 0, y: 0, w: 100, h: 100 },
   },
 } as const;
 

@@ -1,7 +1,7 @@
 /**
  * Step 5 number vault —
- * Desktop: Figma 560×560 ring stage — dim partner cards + cream vault
- * Mobile:  390×150 stage — landscape cream + sealing number panel
+ * Desktop: Figma 560×560 ring stage — dim partner cards + glass vault
+ * Mobile:  390×150 stage — landscape glass + sealing number panel
  */
 
 .stage {
@@ -78,19 +78,56 @@
   overflow: hidden;
   box-sizing: border-box;
   color: #201e1c;
-  background: #f6ead6;
-  border-radius: 16px;
   /* Separate from Motion's transform:scale so entrance + centering coexist. */
   translate: -50% -50%;
   pointer-events: none;
+  border-radius: 14px;
+  background:
+    radial-gradient(
+      120% 80% at 12% -10%,
+      rgb(255 255 255 / 72%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(244 247 255 / 88%) 0%,
+      rgb(228 235 255 / 82%) 100%
+    );
+  border: 1px solid rgb(0 51 255 / 16%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 22px rgb(0 51 255 / 8%),
+    0 14px 28px rgb(20 30 60 / 8%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   container-type: inline-size;
   container-name: phone-vault;
-  box-shadow:
-    0 16px 36px rgb(32 30 28 / 10%),
-    0 1px 0 rgb(255 255 255 / 60%) inset;
+}
+
+.cardSheen {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 38%,
+    rgb(255 255 255 / 0%) 44%,
+    rgb(255 255 255 / 34%) 50%,
+    rgb(255 255 255 / 0%) 56%,
+    transparent 62%
+  );
+  opacity: 0;
+  mix-blend-mode: soft-light;
+}
+
+.stage[data-alive] .cardSheen {
+  animation: cardSheen 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
 .copy {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -105,85 +142,131 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 2px 8px 2px 6px;
-  font-size: clamp(9px, 3.2cqi, 11px);
-  font-weight: 600;
-  line-height: 14px;
+  gap: 6px;
+  box-sizing: border-box;
+  padding: 6px 11px 6px 9px;
+  font-size: clamp(10px, 3.2cqi, 12px);
+  font-weight: 650;
+  line-height: 1;
   letter-spacing: 0.02em;
-  color: #0c7663;
+  color: #0033ff;
   text-transform: uppercase;
-  background: rgb(12 118 99 / 10%);
+  white-space: nowrap;
+  background: rgb(255 255 255 / 78%);
+  border: 1px solid rgb(0 51 255 / 22%);
   border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 18px rgb(0 51 255 / 12%),
+    0 8px 18px rgb(20 30 60 / 8%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .pillDot {
   display: block;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
-  background: #0c7663;
+  background: #0033ff;
   border-radius: 50%;
+  box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
 }
 
 .pillDot[data-pulse] {
-  animation: pillPulse 1.8s ease-in-out infinite;
+  animation: pillPulse 2.8s ease-in-out infinite;
 }
 
 .title {
+  position: relative;
+  z-index: 1;
   margin: 0;
   width: 100%;
-  font-family: var(--font-heading);
-  font-size: clamp(15px, 6.4cqi, 20px);
+  font-size: clamp(14px, 5.2cqi, 16px);
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
+  color: #201e1c;
   text-wrap: pretty;
 }
 
 .chips {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
   margin: 0;
-  padding: 0;
+  padding: 6px 8px;
   list-style: none;
+  box-sizing: border-box;
+  background: rgb(255 255 255 / 62%);
+  border: 1px solid rgb(0 51 255 / 14%);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 50%) inset,
+    0 8px 18px rgb(20 30 60 / 6%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .chip {
+  flex: 1 1 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
-  font-size: clamp(10px, 3.6cqi, 12px);
+  min-height: 26px;
+  padding: 0 6px;
+  font-size: clamp(10px, 3.4cqi, 12px);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1;
   letter-spacing: 0.01em;
-  color: #201e1c;
-  background: rgb(255 255 255 / 72%);
-  border: 1px solid rgb(32 30 28 / 8%);
+  color: #515260;
+  white-space: nowrap;
   border-radius: 999px;
-  box-shadow: 0 1px 0 rgb(255 255 255 / 70%) inset;
+}
+
+.chip:last-child {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0033ff 0%, #35416e 100%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 28%) inset,
+    0 4px 12px rgb(0 51 255 / 28%);
 }
 
 .vault {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  width: 100%;
-  min-height: 72px;
-  padding: 16px 14px;
+  width: auto;
+  min-height: 68px;
+  margin: 0 10px 10px;
+  padding: 14px 12px;
   overflow: hidden;
-  background: #3a3a3a;
+  border-radius: 12px;
+  background:
+    radial-gradient(
+      120% 90% at 50% 110%,
+      rgb(0 51 255 / 22%) 0%,
+      transparent 58%
+    ),
+    linear-gradient(180deg, #1a2748 0%, #151d33 100%);
+  border: 1px solid rgb(122 160 255 / 16%);
   transition: background 0.45s ease;
 }
 
 .vault[data-sealed] {
-  background: #2f3338;
+  background:
+    radial-gradient(
+      120% 90% at 50% 110%,
+      rgb(0 51 255 / 32%) 0%,
+      transparent 58%
+    ),
+    linear-gradient(180deg, #1a2748 0%, #152438 100%);
 }
 
 .vaultRow {
@@ -231,8 +314,8 @@
 }
 
 .slot[data-flash] {
-  color: #e8fff8;
-  background: rgb(12 118 99 / 52%);
+  color: #e8eeff;
+  background: rgb(0 51 255 / 52%);
   animation: slotFlash 0.38s ease;
 }
 
@@ -243,7 +326,7 @@
 }
 
 .vault[data-sealed] .slot[data-sealed] {
-  background: rgb(159 214 200 / 58%);
+  background: rgb(160 184 255 / 58%);
 }
 
 .vaultLock {
@@ -254,7 +337,7 @@
   width: 22px;
   height: 22px;
   margin-left: 2px;
-  background: rgb(12 118 99 / 14%);
+  background: rgb(0 51 255 / 18%);
   border-radius: 50%;
   opacity: 0;
   transform: scale(0.72);
@@ -267,7 +350,7 @@
 .vaultLock[data-on] {
   opacity: 1;
   transform: scale(1);
-  background: rgb(12 118 99 / 28%);
+  background: rgb(0 51 255 / 36%);
 }
 
 .vaultLock img {
@@ -284,7 +367,7 @@
   pointer-events: none;
   background: radial-gradient(
     120% 70% at 50% 100%,
-    rgb(12 118 99 / 18%) 0%,
+    rgb(0 51 255 / 22%) 0%,
     transparent 62%
   );
   opacity: 0;
@@ -374,14 +457,26 @@
 @keyframes pillPulse {
   0%,
   100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgb(12 118 99 / 45%);
+    box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
   }
   50% {
-    transform: scale(1.08);
-    opacity: 0.9;
-    box-shadow: 0 0 0 5px rgb(12 118 99 / 0%);
+    box-shadow: 0 0 0 5px rgb(0 51 255 / 22%);
+  }
+}
+
+@keyframes cardSheen {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translateX(-48%) rotate(12deg);
+  }
+  78% {
+    opacity: 0.7;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateX(48%) rotate(12deg);
   }
 }
 
@@ -391,7 +486,7 @@
     height: calc(150 * 100cqw / 390);
     min-height: 150px;
     aspect-ratio: auto;
-    overflow: hidden;
+    overflow: visible;
     container-type: inline-size;
     container-name: phone-vault-stage;
   }
@@ -406,7 +501,8 @@
   }
 
   .rings,
-  .logo {
+  .logo,
+  .cardSheen {
     display: none;
   }
 
@@ -423,60 +519,110 @@
     overflow: hidden;
     box-sizing: border-box;
     color: #201e1c;
-    background: #f6ead6;
-    border-radius: 14px;
-    box-shadow:
-      0 8px 24px rgb(0 0 0 / 10%),
-      0 1px 0 rgb(255 255 255 / 55%) inset;
     pointer-events: none;
+    border-radius: 14px;
+    background:
+      radial-gradient(
+        120% 80% at 12% -10%,
+        rgb(255 255 255 / 72%) 0%,
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(244 247 255 / 88%) 0%,
+        rgb(228 235 255 / 82%) 100%
+      );
+    border: 1px solid rgb(0 51 255 / 16%);
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 55%) inset,
+      0 0 22px rgb(0 51 255 / 8%),
+      0 8px 18px rgb(20 30 60 / 8%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .mobileCopy {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex: 1 1 52%;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 5px;
+    gap: 6px;
     min-width: 0;
-    padding: 12px 12px 12px 14px;
+    padding: 10px 10px 10px 12px;
     box-sizing: border-box;
   }
 
   .pill {
+    padding: 5px 9px 5px 7px;
     font-size: 10px;
+    gap: 5px;
+  }
+
+  .pillDot {
+    width: 6px;
+    height: 6px;
   }
 
   .mobileTitle {
     margin: 0;
     width: 100%;
-    font-family: var(--font-heading);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
-    line-height: 18px;
-    letter-spacing: 0;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: #201e1c;
     text-align: left;
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
   .chips {
-    justify-content: flex-start;
+    width: auto;
+    max-width: 100%;
     flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 4px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .chip {
-    padding: 2px 6px;
+    flex: 0 0 auto;
+    min-height: 0;
+    padding: 4px 7px;
     font-size: 9px;
+    color: #35416e;
+    background: rgb(255 255 255 / 72%);
+    border: 1px solid rgb(0 51 255 / 14%);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 50%) inset;
+  }
+
+  .chip:last-child {
+    color: #ffffff;
+    background: linear-gradient(135deg, #0033ff 0%, #35416e 100%);
+    border-color: transparent;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 28%) inset,
+      0 3px 8px rgb(0 51 255 / 24%);
   }
 
   .mobileVault {
-    flex: 0 0 48%;
+    position: relative;
+    z-index: 1;
+    flex: 0 0 42%;
     width: auto;
     min-height: 0;
-    height: 100%;
+    height: auto;
+    align-self: stretch;
+    margin: 8px 8px 8px 0;
     padding: 10px 8px;
-    border-left: 1px solid rgb(0 0 0 / 6%);
   }
 
   .mobileVault .vaultRow {
@@ -526,7 +672,8 @@
     animation: none;
   }
 
-  .pillDot[data-pulse] {
+  .pillDot[data-pulse],
+  .stage[data-alive] .cardSheen {
     animation: none;
   }
 

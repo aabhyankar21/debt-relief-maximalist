@@ -1,7 +1,7 @@
 /**
  * Step 2 story collage —
- * Desktop: Figma 560×560 ring stage (node 159:11776)
- * Mobile:  Figma 390×150 window under header (node 192:13349)
+ * Desktop: rings + portrait + glass outcome card + carousel
+ * Mobile:  glass banner + full cutout portrait + compact HUD copy
  */
 
 .stage {
@@ -12,7 +12,6 @@
   overflow: visible;
 }
 
-/* Square positioning context — all % coords resolve against this box. */
 .canvas {
   position: absolute;
   inset: 0;
@@ -29,102 +28,182 @@
   height: 100%;
   pointer-events: none;
   user-select: none;
-  opacity: 0.4;
+  opacity: 0.38;
   will-change: transform;
-}
-
-/* Groups mint + photo + card for a shared entrance motion. */
-.panel {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.mint {
-  position: absolute;
-  z-index: 1;
-  /* Fallback — each slide sets background from panelColor. */
-  background: #e5f2ea;
-  border-radius: 8px 8px 0 0;
-  pointer-events: none;
-  transition: background-color 0.45s ease;
 }
 
 .photo {
   position: absolute;
-  z-index: 2;
-  overflow: hidden;
+  z-index: 1;
+  overflow: visible;
   pointer-events: none;
+  background: transparent;
 }
 
-/* Crop box fill — per-slide data-fit chooses fill (John) vs cover.
-   left/top/width/height come from each slide's crop box. */
+.photoHalo {
+  position: absolute;
+  z-index: 0;
+  left: 8%;
+  top: 10%;
+  width: 84%;
+  height: 78%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 42%,
+    rgb(0 51 255 / 16%) 0%,
+    rgb(0 51 255 / 6%) 42%,
+    transparent 72%
+  );
+}
+
 .photoImg {
   position: absolute;
+  z-index: 1;
   display: block;
   max-width: none;
-  object-fit: fill;
+  object-fit: cover;
   object-position: center top;
   pointer-events: none;
   user-select: none;
 }
 
-.photoImg[data-fit='cover'] {
-  object-fit: cover;
+.photoImg[data-fit='fill'] {
+  object-fit: fill;
 }
 
-.card {
+/* Glass outcome card — height follows copy */
+.callout {
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 6px;
-  padding: 16px;
   overflow: hidden;
+  box-sizing: border-box;
+  height: auto;
+  padding: 14px 16px 15px;
   text-align: center;
-  color: #000000;
-  background: #f6ead6;
-  /* Square top joins the mint panel; rounded bottom only. */
-  border-radius: 0 0 8.97px 8.97px;
-  box-shadow: 0 12px 12px rgb(0 0 0 / 10%);
-  container-type: inline-size;
-  container-name: story-card;
+  color: #201e1c;
   pointer-events: none;
+  border-radius: 14px;
+  background:
+    radial-gradient(
+      120% 80% at 12% -10%,
+      rgb(255 255 255 / 72%) 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(244 247 255 / 88%) 0%,
+      rgb(228 235 255 / 82%) 100%
+    );
+  border: 1px solid rgb(0 51 255 / 16%);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 22px rgb(0 51 255 / 8%),
+    0 14px 28px rgb(20 30 60 / 8%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  container-type: inline-size;
+  container-name: story-callout;
 }
 
-.cardCopy {
-  display: flex;
-  flex-direction: column;
-  gap: inherit;
+.calloutSheen {
+  position: absolute;
+  inset: -20%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    118deg,
+    transparent 38%,
+    rgb(255 255 255 / 0%) 44%,
+    rgb(255 255 255 / 34%) 50%,
+    rgb(255 255 255 / 0%) 56%,
+    transparent 62%
+  );
+  opacity: 0;
+  mix-blend-mode: soft-light;
+}
+
+.stage[data-alive] .calloutSheen {
+  animation: calloutSheen 9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.badge {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 11px 6px 9px;
+  font-size: clamp(10px, 2.8cqi, 12px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #0033ff;
+  white-space: nowrap;
+  pointer-events: none;
+  background: rgb(255 255 255 / 78%);
+  border: 1px solid rgb(0 51 255 / 22%);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 55%) inset,
+    0 0 18px rgb(0 51 255 / 12%),
+    0 6px 14px rgb(20 30 60 / 6%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.badgeDot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #0033ff;
+  box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
+}
+
+.stage[data-alive] .badgeDot {
+  animation: badgePulse 2.8s ease-in-out infinite;
 }
 
 .cardEyebrow,
 .cardHeadline,
 .cardDetail {
+  position: relative;
+  z-index: 1;
   margin: 0;
 }
 
 .cardEyebrow {
-  font-size: clamp(14px, 4.5cqi, 16px);
-  font-weight: 400;
+  font-size: clamp(12px, 3.6cqi, 14px);
+  font-weight: 500;
   line-height: 1.25;
   letter-spacing: 0;
+  color: #35416e;
 }
 
 .cardHeadline {
-  font-size: clamp(24px, 8.9cqi, 32px);
+  font-size: clamp(22px, 7.4cqi, 30px);
   font-weight: 700;
-  line-height: 1.19;
-  letter-spacing: 0;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #201e1c;
   white-space: nowrap;
 }
 
 .cardDetail {
-  font-size: clamp(12px, 3.9cqi, 14px);
+  font-size: clamp(11px, 3.4cqi, 13px);
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.4;
   letter-spacing: 0;
+  color: #35416e;
+  text-wrap: pretty;
 }
 
 .cardDetailMuted {
@@ -132,7 +211,8 @@
 }
 
 .cardDetailStrong {
-  font-weight: 600;
+  font-weight: 650;
+  color: #201e1c;
 }
 
 .dots {
@@ -145,101 +225,210 @@
   gap: 8px;
   width: auto;
   height: auto;
+  padding: 6px 10px;
   pointer-events: auto;
   user-select: none;
   transform: translateX(-50%);
+  background: rgb(255 255 255 / 58%);
+  border: 1px solid rgb(0 51 255 / 14%);
+  border-radius: 999px;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 50%) inset,
+    0 6px 14px rgb(20 30 60 / 6%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .dot {
   flex: 0 0 auto;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: #d8d8d8;
+  background: rgb(0 51 255 / 22%);
   cursor: pointer;
   appearance: none;
-  transition: background-color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .dot[data-active] {
-  background: #000000;
+  background: #0033ff;
+  box-shadow: 0 0 0 3px rgb(0 51 255 / 16%);
+  transform: scale(1.1);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .dot:hover {
-    background: #8a8a8a;
+    background: rgb(0 51 255 / 45%);
   }
 
   .dot[data-active]:hover {
-    background: #000000;
+    background: #0033ff;
   }
 }
 
-/*
- * Mobile — 150px window under the 48px header (form sheet at y=198).
- * Full-bleed mint strip; photo left + cream card right (no rings).
- */
+.mobileCopy {
+  display: contents;
+}
+
+@keyframes badgePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgb(0 51 255 / 14%);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgb(0 51 255 / 22%);
+  }
+}
+
+@keyframes calloutSheen {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translateX(-48%) rotate(12deg);
+  }
+  78% {
+    opacity: 0.7;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateX(48%) rotate(12deg);
+  }
+}
+
 @media (max-width: 1023px) {
   .stage {
     width: 100%;
-    height: 150px;
+    height: calc(168 * 100cqw / 390);
+    min-height: 168px;
     aspect-ratio: auto;
-    margin: 0;
+    overflow: visible;
+    container-type: inline-size;
+    container-name: story-stage;
+  }
+
+  .canvas {
+    inset: 0;
     overflow: visible;
   }
 
-  .mint {
+  .rings {
+    display: none;
+  }
+
+  .photoHalo {
+    display: none;
+  }
+
+  /*
+   * Square cutout lowered so the person straddles the stage → form
+   * seam (~32px onto the sheet). Form z-index clips the lower torso
+   * so the portrait stacks on the white form edge. contain keeps
+   * sides intact.
+   */
+  .photo {
+    z-index: 2;
+    left: calc(2 * 100cqw / 390);
+    top: calc(16 * 100cqw / 390);
+    width: calc(184 * 100cqw / 390);
+    height: calc(184 * 100cqw / 390);
+    overflow: visible;
     border-radius: 0;
   }
 
-  /* Keep portrait proportions in the short mobile stage. */
   .photoImg {
-    object-fit: cover;
-    object-position: center top;
+    inset: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center center;
   }
 
-  .card {
-    gap: 4px;
-    padding: 10px 11px;
+  .callout {
+    z-index: 1;
+    display: flex;
+    align-items: stretch;
+    padding: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
     text-align: left;
-    border-radius: 6px;
+    background: linear-gradient(180deg, #eef2ff 0%, #e0e8fb 100%);
     box-shadow: none;
-    justify-content: center;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
-  .cardEyebrow,
-  .cardDetail {
+  .calloutSheen {
+    display: none;
+  }
+
+  .mobileCopy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 14px 22px 48%;
+    min-height: 100%;
+  }
+
+  .badge {
+    padding: 5px 9px 5px 7px;
     font-size: 10px;
-    font-weight: 500;
-    line-height: 14px;
+    gap: 5px;
+  }
+
+  .badgeDot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .cardEyebrow {
+    font-size: 11px;
+    line-height: 1.25;
   }
 
   .cardHeadline {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 1.15;
     white-space: normal;
   }
 
-  .cardDetailMuted,
-  .cardDetailStrong {
-    font-weight: 500;
+  .cardDetail {
+    font-size: 11px;
+    line-height: 1.35;
   }
 
   .dots {
-    aspect-ratio: auto;
-    height: 8px;
+    z-index: 3;
     gap: 6px;
+    padding: 4px 8px;
+    bottom: 14px;
   }
 
   .dot {
-    width: 8px;
-    height: 8px;
-    background: #a8a8a8;
+    width: 7px;
+    height: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rings {
+    will-change: auto;
   }
 
-  .dot[data-active] {
-    background: #000000;
+  .stage[data-alive] .badgeDot,
+  .stage[data-alive] .calloutSheen {
+    animation: none;
   }
 }

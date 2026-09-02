@@ -15,20 +15,16 @@ const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 type StorySlide = (typeof STORY_SPOTLIGHT.slides)[number];
 
 /**
- * Left-stage collage for Orbit step 2: pastel portrait panel (tone
- * matched per slide), cream outcome card, dashed rings (desktop),
- * and carousel dots.
- * Desktop: Figma 159:11776. Mobile side-by-side: Figma 192:13349.
- * Rotates through outcome stories (photo + copy).
+ * Left-stage collage for Orbit step 2.
+ * Desktop: rings + portrait + glass outcome card + carousel.
+ * Mobile: glass banner + cutout stacked on the form sheet edge.
  */
 export function StorySpotlight({ className }: { className?: string }) {
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   const reduceMotion = useReducedMotion() ?? false;
-  const motionReady = !reduceMotion;
-  /** Desktop-only entrance / lift motion for photo + card. */
-  const motionOn = isDesktop && motionReady;
-  /** Continuous ring spin — desktop only (honors reduced motion). */
-  const ringsSpin = isDesktop && motionReady;
+  const motionOn = isDesktop && !reduceMotion;
+  const ringsSpin = isDesktop && !reduceMotion;
+  const alive = !reduceMotion;
 
   const slides = STORY_SPOTLIGHT.slides;
   const [index, setIndex] = useState(0);
@@ -58,16 +54,18 @@ export function StorySpotlight({ className }: { className?: string }) {
         slide={slide}
         index={index}
         onSelect={goTo}
+        alive={alive}
       />
     );
   }
 
-  const { mint, photoBox, card } = STORY_SPOTLIGHT;
+  const { photoBox, callout } = STORY_SPOTLIGHT;
   const dotsY = STORY_SPOTLIGHT.dots.y;
 
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       role="group"
       aria-label="Customer success stories"
     >
@@ -106,44 +104,40 @@ export function StorySpotlight({ className }: { className?: string }) {
         />
 
         <motion.div
-          className={styles.panel}
-          initial={motionOn ? { y: 28, scale: 0.96 } : false}
-          animate={{ y: 0, scale: 1 }}
+          className={styles.photo}
+          style={{
+            left: `${photoBox.x}%`,
+            top: `${photoBox.y}%`,
+            width: `${photoBox.w}%`,
+            height: `${photoBox.h}%`,
+          }}
+          initial={motionOn ? { scale: 0.96, y: 12 } : false}
+          animate={{ scale: 1, y: 0 }}
           transition={{ duration: 0.55, ease: EASE_OUT }}
         >
-          <div
-            className={styles.mint}
-            style={{
-              left: `${mint.x}%`,
-              top: `${mint.y}%`,
-              width: `${mint.w}%`,
-              height: `${mint.h}%`,
-              background: slide.panelColor,
-            }}
-          />
-          <div
-            className={styles.photo}
-            style={{
-              left: `${photoBox.x}%`,
-              top: `${photoBox.y}%`,
-              width: `${photoBox.w}%`,
-              height: `${photoBox.h}%`,
-            }}
-          >
-            <StoryPhotos slides={slides} index={index} />
-          </div>
-          <article
-            className={styles.card}
-            style={{
-              left: `${card.x}%`,
-              top: `${card.y}%`,
-              width: `${card.w}%`,
-            }}
-            aria-live="polite"
-          >
-            <StoryCardCopy slide={slide} desktop />
-          </article>
+          <span className={styles.photoHalo} aria-hidden="true" />
+          <StoryPhotos slides={slides} index={index} />
         </motion.div>
+
+        <motion.article
+          className={styles.callout}
+          style={{
+            left: `${callout.x}%`,
+            top: `${callout.y}%`,
+            width: `${callout.w}%`,
+          }}
+          initial={motionOn ? { scale: 0.98, opacity: 0, y: 10 } : false}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: motionOn ? 0.18 : 0,
+            ease: EASE_OUT,
+          }}
+          aria-live="polite"
+        >
+          <span className={styles.calloutSheen} />
+          <StoryCardCopy slide={slide} />
+        </motion.article>
 
         <CarouselDots
           count={slides.length}
@@ -162,59 +156,56 @@ function MobileStorySpotlight({
   slide,
   index,
   onSelect,
+  alive,
 }: {
   className?: string;
   slides: readonly StorySlide[];
   slide: StorySlide;
   index: number;
   onSelect: (next: number) => void;
+  alive: boolean;
 }) {
-  const { mint, photoBox, card, dots } = STORY_SPOTLIGHT.mobile;
+  const { callout } = STORY_SPOTLIGHT.mobile;
 
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       role="group"
       aria-label="Customer success stories"
     >
-      <div
-        className={styles.mint}
-        style={{
-          left: `${mint.x}%`,
-          top: `${mint.y}%`,
-          width: `${mint.w}%`,
-          height: `${mint.h}%`,
-          background: slide.panelColor,
-        }}
-      />
-      <div
-        className={styles.photo}
-        style={{
-          left: `${photoBox.x}%`,
-          top: `${photoBox.y}%`,
-          width: `${photoBox.w}%`,
-          height: `${photoBox.h}%`,
-        }}
-      >
-        <StoryPhotos slides={slides} index={index} mobile />
+      <div className={styles.canvas}>
+        {/*
+          Mobile photo size is CSS-owned (cqw). Cutouts use contain +
+          overflow:visible so sides aren’t re-cropped by a mask.
+        */}
+        <div className={styles.photo}>
+          <StoryPhotos slides={slides} index={index} mobile />
+        </div>
+
+        <article
+          className={styles.callout}
+          style={{
+            left: `${callout.x}%`,
+            top: `${callout.y}%`,
+            width: `${callout.w}%`,
+            height: `${callout.h}%`,
+          }}
+          aria-live="polite"
+        >
+          <span className={styles.calloutSheen} />
+          <div className={styles.mobileCopy}>
+            <StoryCardCopy slide={slide} />
+          </div>
+        </article>
+
+        <CarouselDots
+          count={slides.length}
+          index={index}
+          onSelect={onSelect}
+          style={{ bottom: '8px', top: 'auto' }}
+        />
       </div>
-      <article
-        className={styles.card}
-        style={{
-          left: `${card.x}%`,
-          top: `${card.y}%`,
-          width: `${card.w}%`,
-        }}
-        aria-live="polite"
-      >
-        <StoryCardCopy slide={slide} />
-      </article>
-      <CarouselDots
-        count={slides.length}
-        index={index}
-        onSelect={onSelect}
-        style={{ top: `${dots.y}%` }}
-      />
     </div>
   );
 }
@@ -230,7 +221,20 @@ function StoryPhotos({
   mobile?: boolean;
 }) {
   const entry = slides[index] ?? slides[0];
-  const crop = mobile ? entry.mobilePhotoCrop : entry.photoCrop;
+  const crop = entry.photoCrop;
+
+  if (mobile) {
+    return (
+      <img
+        key={entry.id}
+        src={entry.photo}
+        alt=""
+        draggable={false}
+        className={styles.photoImg}
+        data-fit={entry.photoFit}
+      />
+    );
+  }
 
   return (
     <img
@@ -250,32 +254,20 @@ function StoryPhotos({
   );
 }
 
-function StoryCardCopy({
-  slide,
-  desktop = false,
-}: {
-  slide: StorySlide;
-  desktop?: boolean;
-}) {
+function StoryCardCopy({ slide }: { slide: StorySlide }) {
   return (
-    <div className={styles.cardCopy}>
+    <>
+      <span className={styles.badge}>
+        <span className={styles.badgeDot} />
+        {STORY_SPOTLIGHT.badgeLabel}
+      </span>
       <p className={styles.cardEyebrow}>{slide.eyebrow}</p>
       <p className={styles.cardHeadline}>{slide.headline}</p>
       <p className={styles.cardDetail}>
-        {desktop ? (
-          <>
-            <span className={styles.cardDetailMuted}>
-              {slide.detailBefore}
-            </span>{' '}
-            <span className={styles.cardDetailStrong}>{slide.detailAfter}</span>
-          </>
-        ) : (
-          <>
-            {slide.detailBefore} {slide.detailAfter}
-          </>
-        )}
+        <span className={styles.cardDetailMuted}>{slide.detailBefore}</span>{' '}
+        <span className={styles.cardDetailStrong}>{slide.detailAfter}</span>
       </p>
-    </div>
+    </>
   );
 }
 

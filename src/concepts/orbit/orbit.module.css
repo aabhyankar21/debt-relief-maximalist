@@ -899,10 +899,19 @@
     margin-bottom: 4px;
   }
 
-  /* Step 2 mobile — short stage, allow collage overhang */
+  /* Step 2 mobile — short stage; portrait stacks over the form seam */
   .root[data-step='debt-type'] .stage {
     padding: 0;
     overflow: visible;
+  }
+
+  /*
+   * Keep the sheet above the stage collage so the cutout tucks under
+   * the rounded form edge (same stacking language as birthday).
+   */
+  .root[data-step='debt-type'] .form {
+    position: relative;
+    z-index: 2;
   }
 
   /* Step 3/5/7 mobile — clip collage to the stage window */

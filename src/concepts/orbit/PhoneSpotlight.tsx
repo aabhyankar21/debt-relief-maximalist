@@ -19,8 +19,8 @@ export interface PhoneSpotlightProps {
 
 /**
  * Left-stage collage for Orbit step 5.
- * Desktop: dashed rings + dim partner cards + cream number vault.
- * Mobile: landscape vault card in the short stage (no partner logos).
+ * Desktop: dashed rings + dim partner cards + glass number vault.
+ * Mobile: landscape glass vault card in the short stage (no partner logos).
  */
 export function PhoneSpotlight({
   className,
@@ -31,6 +31,7 @@ export function PhoneSpotlight({
   const motionOn = isDesktop && !reduceMotion;
   const ringsSpin = isDesktop && !reduceMotion;
   const vault = useVaultSealing(phone, !reduceMotion);
+  const alive = !reduceMotion;
 
   if (!isDesktop) {
     return (
@@ -47,6 +48,7 @@ export function PhoneSpotlight({
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={alive || undefined}
       data-sealed={vault.sealed ? '' : undefined}
       aria-hidden="true"
     >
@@ -121,6 +123,7 @@ export function PhoneSpotlight({
             ease: EASE_OUT,
           }}
         >
+          <span className={styles.cardSheen} />
           <div className={styles.copy}>
             <span className={styles.pill}>
               <span
@@ -157,11 +160,13 @@ function MobilePhoneSpotlight({
   return (
     <div
       className={`${styles.stage}${className ? ` ${className}` : ''}`}
+      data-alive={animate || undefined}
       data-sealed={vault.sealed ? '' : undefined}
       aria-hidden="true"
     >
       <div className={styles.canvas}>
         <article className={styles.mobileCard}>
+          <span className={styles.cardSheen} />
           <div className={styles.mobileCopy}>
             <span className={styles.pill}>
               <span
